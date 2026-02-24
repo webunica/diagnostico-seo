@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-// ── Groq usa el SDK de OpenAI con baseURL diferente ───────────────────
-const groq = new OpenAI({
-    apiKey: process.env.GROQ_API_KEY ?? '',
-    baseURL: 'https://api.groq.com/openai/v1',
-});
 
 interface KeywordItem {
     keyword: string;
@@ -82,6 +77,12 @@ REGLAS IMPORTANTES:
 - Las "questions" deben empezar con palabras interrogativas: cómo, qué, cuándo, cuánto, cuál, dónde, por qué
 - "negative" son keywords que traen tráfico irrelevante a excluir
 - Dificultad "low" = keywords de cola larga con poca competencia, "high" = muy competidas`;
+
+        // ── Groq usa el SDK de OpenAI con baseURL diferente ───────────────────
+        const groq = new OpenAI({
+            apiKey: process.env.GROQ_API_KEY ?? '',
+            baseURL: 'https://api.groq.com/openai/v1',
+        });
 
         const completion = await groq.chat.completions.create({
             model: 'llama-3.3-70b-versatile',

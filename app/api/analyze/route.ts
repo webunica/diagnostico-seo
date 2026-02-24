@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 // ── Fetcher con timeout ──────────────────────────────────────────────
 async function safeFetch(url: string, timeoutMs = 15000): Promise<Response | null> {
     const ctrl = new AbortController();
@@ -269,6 +267,7 @@ export async function POST(req: NextRequest) {
         const prompt = buildPrompt(pageData, seo);
 
         // Llamar a OpenAI (GPT-4o-mini — más económico y muy capaz)
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
         const completion = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             max_tokens: 4096,
