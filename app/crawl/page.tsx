@@ -244,7 +244,7 @@ export default function CrawlPage() {
                                 onChange={e => setDomain(e.target.value)}
                                 disabled={crawling}
                                 style={{
-                                    flex: 1, border: 'none', outline: 'none',
+                                    flex: 1, border: 'none',
                                     color: '#1a1a2e', fontSize: '0.97rem',
                                     padding: '14px 18px', fontFamily: 'inherit',
                                     background: 'transparent',
@@ -258,7 +258,7 @@ export default function CrawlPage() {
                                     border: 'none', borderLeft: '1px solid #e5e7eb',
                                     background: 'white', color: '#6b7280',
                                     fontSize: '0.85rem', padding: '0 14px',
-                                    fontFamily: 'inherit', cursor: 'pointer', outline: 'none',
+                                    fontFamily: 'inherit', cursor: 'pointer',
                                 }}
                             >
                                 <option value={50}>50 URLs</option>
@@ -359,7 +359,7 @@ export default function CrawlPage() {
                                     border: '1px solid rgba(255,255,255,0.08)',
                                     borderRadius: 10, padding: '11px 14px 11px 40px',
                                     color: 'var(--text)', fontSize: '0.9rem',
-                                    fontFamily: 'inherit', outline: 'none',
+                                    fontFamily: 'inherit',
                                 }}
                             />
                         </div>

@@ -335,7 +335,7 @@ export default function KeywordsPage() {
                                 <textarea
                                     value={description}
                                     onChange={e => setDescription(e.target.value)}
-                                    placeholder="Ej: Taller mecánico especializado en autos japoneses, service, diagnóstico y reparación de motor en Santiago..."
+                                    placeholder="Ej: Taller mecánico especializado en autos japoneses, service, diagnóstico y reparación de motor en Santiago…"
                                     rows={3}
                                     disabled={loading}
                                     style={{
@@ -345,7 +345,7 @@ export default function KeywordsPage() {
                                         borderRadius: 10, padding: '12px 14px',
                                         color: 'var(--text)', fontSize: '0.92rem',
                                         fontFamily: 'inherit', resize: 'vertical',
-                                        outline: 'none', lineHeight: 1.5,
+                                        lineHeight: 1.5,
                                         transition: 'border-color 0.2s',
                                     }}
                                     onFocus={e => (e.target.style.borderColor = 'rgba(59,130,246,0.5)')}
@@ -372,7 +372,7 @@ export default function KeywordsPage() {
                                             border: '1px solid rgba(255,255,255,0.1)',
                                             borderRadius: 10, padding: '11px 14px',
                                             color: 'var(--text)', fontSize: '0.9rem',
-                                            fontFamily: 'inherit', outline: 'none', cursor: 'pointer',
+                                            fontFamily: 'inherit', cursor: 'pointer',
                                         }}
                                     >
                                         {COUNTRIES.map(c => <option key={c} value={c} style={{ background: '#0f172a' }}>{c}</option>)}
@@ -393,7 +393,7 @@ export default function KeywordsPage() {
                                             border: '1px solid rgba(255,255,255,0.1)',
                                             borderRadius: 10, padding: '11px 14px',
                                             color: 'var(--text)', fontSize: '0.9rem',
-                                            fontFamily: 'inherit', outline: 'none', cursor: 'pointer',
+                                            fontFamily: 'inherit', cursor: 'pointer',
                                         }}
                                     >
                                         {FOCUS_OPTIONS.map(o => <option key={o.value} value={o.value} style={{ background: '#0f172a' }}>{o.label}</option>)}

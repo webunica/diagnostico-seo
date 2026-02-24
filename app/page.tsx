@@ -150,7 +150,7 @@ export default function HomePage() {
               <input
                 className="url-input"
                 type="text"
-                placeholder="Introduce la URL de tu sitio web..."
+                placeholder="Introduce la URL de tu sitio web…"
                 value={url}
                 onChange={e => setUrl(e.target.value)}
                 disabled={loading || freeLoading}
@@ -223,7 +223,7 @@ export default function HomePage() {
                       color: 'white', fontSize: '0.88rem',
                       fontFamily: 'monospace', fontWeight: 700,
                       letterSpacing: '0.1em', width: 130, textAlign: 'center',
-                      outline: 'none',
+                      lineHeight: 1.5,
                     }}
                   />
                   <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.4)' }}>

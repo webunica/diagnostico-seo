@@ -306,10 +306,11 @@ button {
   background: transparent;
   border: none;
   outline: none;
-  color: var(--text);
-  font-size: 0.97rem;
-  padding: 15px 20px;
-  font-family: inherit;
+}
+
+.url-input:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -2px;
 }
 
 .url-input::placeholder {
@@ -325,7 +326,7 @@ button {
   font-size: 0.93rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -719,7 +720,7 @@ button {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: var(--shadow-orange);
   position: relative;
   overflow: hidden;
@@ -850,7 +851,7 @@ button {
   border-radius: var(--r-md);
   font-size: 0.86rem;
   color: var(--text-muted);
-  transition: all 0.4s;
+  transition: background 0.4s, border-color 0.4s, color 0.4s;
   box-shadow: var(--shadow-sm);
 }
 
@@ -1440,7 +1441,7 @@ button {
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .btn-secondary:hover {
@@ -1458,7 +1459,7 @@ button {
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: var(--shadow-purple);
 }
 

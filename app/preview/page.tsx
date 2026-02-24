@@ -270,32 +270,32 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
                         <LockedCard
                             icon="📊"
                             title="Contenido & E-E-A-T"
-                            teaser="Thin content, signals de autoridad, calidad de texto..."
+                            teaser="Thin content, signals de autoridad, calidad de texto…"
                         />
                         <LockedCard
                             icon="🏗️"
                             title="Schema / Datos Estructurados"
-                            teaser="Validación JSON-LD, tipos recomendados, rich snippets..."
+                            teaser="Validación JSON-LD, tipos recomendados, rich snippets…"
                         />
                         <LockedCard
                             icon="⚡"
                             title="Core Web Vitals"
-                            teaser="LCP, INP, CLS estimados, oportunidades de mejora..."
+                            teaser="LCP, INP, CLS estimados, oportunidades de mejora…"
                         />
                         <LockedCard
                             icon="🗺️"
                             title="Plan de Acción Priorizado"
-                            teaser="Crítico → Alto → Medio con tiempos estimados de implementación..."
+                            teaser="Crítico → Alto → Medio con tiempos estimados de implementación…"
                         />
                         <LockedCard
                             icon="🎯"
                             title="Quick Wins"
-                            teaser="5+ acciones de alto impacto y bajo esfuerzo listas para implementar..."
+                            teaser="5+ acciones de alto impacto y bajo esfuerzo listas para implementar…"
                         />
                         <LockedCard
                             icon="🏷️"
                             title="Title & Meta Recommendations"
-                            teaser="Title tag y meta description recomendados exactos para tu negocio..."
+                            teaser="Title tag y meta description recomendados exactos para tu negocio…"
                         />
                     </div>
                 </div>
