@@ -1,18 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
+import axios from 'axios';
+import https from 'https';
 
-// ── Fetcher con timeout ──────────────────────────────────────────────
-async function safeFetch(url: string, timeoutMs = 12000): Promise<Response | null> {
-    const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+const agent = new https.Agent({ rejectUnauthorized: false });
+
+// ── Fetcher con timeout y Axios para evitar errores TLS en Node 18+ ──
+async function safeFetch(url: string, timeoutMs = 15000): Promise<{ ok: boolean; status: number; text: () => Promise<string>; url: string; headers: { get: (name: string) => string | null } } | null> {
     try {
-        const r = await fetch(url, {
-            signal: ctrl.signal,
+        const r = await axios.get(url, {
+            timeout: timeoutMs,
+            httpsAgent: agent,
             headers: { 'User-Agent': 'DiagnosticoSEO/1.0 (+https://diagnosticoseo.com)' },
+            validateStatus: () => true, // resolve to all status codes
+            responseType: 'text'
         });
-        clearTimeout(tid);
-        return r;
-    } catch {
-        clearTimeout(tid);
+        return {
+            ok: r.status >= 200 && r.status < 300,
+            status: r.status,
+            text: async () => r.data,
+            url: r.request?.res?.responseUrl || url,
+            headers: {
+                get: (name: string) => (r.headers[name.toLowerCase()] as string) || null
+            }
+        };
+    } catch (e) {
+        console.error('safeFetch error for ' + url + ':', e);
         return null;
     }
 }
@@ -49,7 +61,7 @@ export async function POST(req: NextRequest) {
         // Fetch homepage
         const homeResp = await safeFetch(normalized);
         if (!homeResp) {
-            return NextResponse.json({ error: 'No se pudo acceder al sitio.' }, { status: 422 });
+            return NextResponse.json({ error: 'No se pudo acceder al sitio (conexión bloqueada o sitio web inactivo).' }, { status: 422 });
         }
 
         const html = await homeResp.text();
