@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, Suspense, useCallback } from 'react';
+import { useEffect, useState, Suspense, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -842,8 +842,11 @@ function SuccessInner() {
     const [step, setStep] = useState(0);
     const [report, setReport] = useState<Report | null>(null);
     const [failed, setFailed] = useState('');
+    const hasRun = useRef(false);
 
     useEffect(() => {
+        if (hasRun.current) return;
+        hasRun.current = true;
         const status = searchParams.get('status');
         const paymentId = searchParams.get('payment_id') ?? '';
         const externalRef = searchParams.get('external_reference') ?? '';
@@ -876,8 +879,9 @@ function SuccessInner() {
                 const data = await res.json();
                 if (!res.ok || data.error) { setFailed(data.error ?? 'Error al generar el análisis.'); return; }
                 setReport(data);
-            } catch {
-                setFailed('Error de conexión. Intenta recargar la página.');
+            } catch (err: unknown) {
+                console.error(err);
+                setFailed('Error al conectar con el servidor.');
             }
         };
 
