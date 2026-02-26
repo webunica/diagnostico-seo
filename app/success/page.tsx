@@ -522,21 +522,24 @@ function ReportView({ report }: { report: Report }) {
                         <div className="report-section-title">📈 Resumen por Categoría</div>
                     </div>
                     <div className="report-section-body">
-                        <div className="score-bars" style={{ gap: 16 }}>
+                        <div className="score-bars-report" style={{ gap: 16 }}>
                             {Object.entries(report.sections).map(([key, sec]) => (
-                                <div className="score-bar-item" key={key}>
-                                    <div className="score-bar-label" style={{ width: 200, fontSize: '0.88rem' }}>
+                                <div className="score-bar-item-r" key={key}>
+                                    <div className="score-bar-label-r" style={{ width: 220, fontSize: '0.88rem', fontWeight: 700, color: 'var(--text)' }}>
                                         {SECTION_ICONS[key]} {SECTION_NAMES[key]}
                                     </div>
-                                    <div className="score-bar-track">
+                                    <div className="score-bar-track-r">
                                         <div
                                             className={`score-bar-fill ${sec.status}`}
                                             style={{ width: `${sec.score}%` }}
                                         />
                                     </div>
                                     <div className="score-bar-value" style={{
-                                        color: sec.score >= 70 ? '#34D399' : sec.score >= 40 ? '#FCD34D' : '#FCA5A5',
-                                        fontWeight: 700,
+                                        color: sec.score >= 70 ? 'var(--orange)' : sec.score >= 40 ? 'var(--yellow)' : 'var(--red)',
+                                        fontWeight: 800,
+                                        fontSize: '1rem',
+                                        width: '40px',
+                                        textAlign: 'right'
                                     }}>
                                         {sec.score}
                                     </div>
@@ -557,10 +560,10 @@ function ReportView({ report }: { report: Report }) {
                             <div className="meta-card">
                                 <div className="meta-label">Title Tag actual</div>
                                 <div className="meta-current">{report.titleAnalysis.current || '—'}</div>
-                                <div className="length-bar">
+                                <div className="length-bar" style={{ borderRadius: 2, border: '1px solid var(--border)', background: 'rgba(0,0,0,0.06)' }}>
                                     <div
                                         className={`length-fill ${report.titleAnalysis.status}`}
-                                        style={{ width: `${Math.min((report.titleAnalysis.length / 70) * 100, 100)}%` }}
+                                        style={{ width: `${Math.min((report.titleAnalysis.length / 70) * 100, 100)}%`, borderRadius: 0 }}
                                     />
                                 </div>
                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: 8 }}>
@@ -588,10 +591,10 @@ function ReportView({ report }: { report: Report }) {
                             <div className="meta-card">
                                 <div className="meta-label">Meta Description actual</div>
                                 <div className="meta-current">{report.descriptionAnalysis.current || '—'}</div>
-                                <div className="length-bar">
+                                <div className="length-bar" style={{ borderRadius: 2, border: '1px solid var(--border)', background: 'rgba(0,0,0,0.06)' }}>
                                     <div
                                         className={`length-fill ${report.descriptionAnalysis.status}`}
-                                        style={{ width: `${Math.min((report.descriptionAnalysis.length / 160) * 100, 100)}%` }}
+                                        style={{ width: `${Math.min((report.descriptionAnalysis.length / 160) * 100, 100)}%`, borderRadius: 0 }}
                                     />
                                 </div>
                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: 8 }}>
