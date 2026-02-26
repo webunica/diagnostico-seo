@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
             // Cupón válido → bypass de pago
             // Codificamos la URL en base64url y generamos un payment_id especial
             const encodedUrl = Buffer.from(normalizedUrl).toString('base64url');
-            const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+            const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || req.nextUrl.origin;
 
             // El payment_id "COUPON_COD100" es verificado en /api/analyze
             const checkoutUrl = `${baseUrl}/success?status=approved&payment_id=COUPON_${normalizedCoupon}&external_reference=${encodedUrl}`;
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
 
         // ── Flujo normal: crear preferencia MercadoPago ───────────────
         const encodedUrl = Buffer.from(normalizedUrl).toString('base64url');
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || req.nextUrl.origin;
         const price = Number(process.env.NEXT_PUBLIC_PRICE_CLP ?? 9990);
 
         const preference = new Preference(client);
