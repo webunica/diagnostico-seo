@@ -449,19 +449,19 @@ function ScoreGauge({ score }: { score: number }) {
     const radius = 54;
     const circ = 2 * Math.PI * radius;
     const filled = (score / 100) * circ;
-    const color = score >= 70 ? '#10B981' : score >= 40 ? '#F59E0B' : '#EF4444';
+    const color = score >= 70 ? '#37FFDB' : score >= 40 ? '#f59e0b' : '#ef4444';
 
     return (
         <div className="score-gauge">
             <div className="score-wrapper">
                 <svg width="130" height="130" viewBox="0 0 130 130">
-                    <circle cx="65" cy="65" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
+                    <circle cx="65" cy="65" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="12" />
                     <circle
                         cx="65" cy="65" r={radius} fill="none"
-                        stroke={color} strokeWidth="10"
-                        strokeLinecap="round"
+                        stroke={color} strokeWidth="12"
+                        strokeLinecap="butt"
                         strokeDasharray={`${filled} ${circ}`}
-                        style={{ transition: 'stroke-dasharray 1.2s ease', filter: `drop-shadow(0 0 8px ${color}60)` }}
+                        style={{ transition: 'stroke-dasharray 1.2s ease', filter: `drop-shadow(4px 4px 0px ${color})` }}
                     />
                 </svg>
                 <div className="score-number" style={{ color }}>{score}</div>
@@ -492,7 +492,7 @@ function ReportView({ report }: { report: Report }) {
                     <div className="logo-icon">🔍</div>
                     <span>DiagnósticoSEO</span>
                 </div>
-                <a href="/" style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>← Nuevo análisis</a>
+                <a href="/">← Nuevo análisis</a>
             </nav>
 
             {/* Header */}
@@ -505,7 +505,7 @@ function ReportView({ report }: { report: Report }) {
                             <span>⚙️ {report.platform}</span>
                             <span>📅 {date}</span>
                         </div>
-                        <p style={{ marginTop: 16, fontSize: '0.92rem', color: 'var(--text-muted)', maxWidth: 600, lineHeight: 1.6 }}>
+                        <p style={{ marginTop: 16, fontSize: '0.96rem', color: 'var(--text-on-dark-muted)', maxWidth: 680, lineHeight: 1.6, fontWeight: 500 }}>
                             {report.summary}
                         </p>
                     </div>
