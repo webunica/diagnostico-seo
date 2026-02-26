@@ -5,65 +5,58 @@
    ═══════════════════════════════════════════════ */
 :root {
   /* Fondos */
-  --bg-body: #E5E9FF;
-  /* primary del json */
+  --bg-body: #FFFFFF;
   --bg-alt: #FFFFFF;
-  /* background del json */
   --bg-card: #FFFFFF;
   --bg-card-hover: #F8F9FA;
-  --bg-dark: #262E45;
-  /* buttonSecondary del json */
-  --bg-dark-2: #1c2131;
+  --bg-dark: #3200C1;
+  --bg-dark-2: #2A00A3;
 
   /* Bordes */
   --border: #D1D5DB;
   --border-mid: #9CA3AF;
-  --border-hover: #F44438;
+  --border-hover: #37FFDB;
 
   /* Texto sobre fondos CLAROS */
-  --text: #252A2C;
-  /* textPrimary del json */
-  --text-muted: #2F2C2C;
-  /* textColor del input del json */
+  --text: #3200C1;
+  --text-muted: #343A40;
   --text-subtle: #6B7280;
 
   /* Texto sobre fondos OSCUROS (hero, navbar) */
   --text-on-dark: #FFFFFF;
-  --text-on-dark-muted: rgba(255, 255, 255, 0.80);
-  --text-on-dark-subtle: rgba(255, 255, 255, 0.50);
+  --text-on-dark-muted: rgba(255, 255, 255, 0.85);
+  --text-on-dark-subtle: rgba(255, 255, 255, 0.60);
 
-  /* Acento (Accent color dictado por el JSON) */
-  --purple: #F44438;
-  --purple-mid: #e33d32;
-  --purple-light: #ff685d;
-  --purple-glow: rgba(244, 68, 56, 0.18);
+  /* Acento */
+  --purple: #3200C1;
+  --purple-mid: #2A00A3;
+  --purple-light: #4400FA;
+  --purple-glow: rgba(50, 0, 193, 0.18);
 
   /* CTA / Link principal */
-  --orange: #F44438;
-  --orange-dark: #D32F2F;
-  --orange-light: #FF5252;
+  --orange: #37FFDB;
+  --orange-dark: #2ce6c5;
+  --orange-light: #5effe0;
 
   /* Utilidad */
   --green: #10b981;
   --green-light: #34d399;
   --yellow: #f59e0b;
   --red: #ef4444;
-  --blue: #3b82f6;
+  --blue: #3200C1;
 
-  /* Radios - modificados a 0px según JSON */
+  /* Radios - modificados según JSON */
   --r-sm: 0px;
-  --r-md: 0px;
-  --r-lg: 0px;
-  --r-xl: 0px;
+  --r-md: 4px;
+  --r-lg: 4px;
+  --r-xl: 4px;
 
   /* Sombras */
-  --shadow-sm: rgba(0, 0, 0, 0.075) 0px 1px 1px 0px inset;
-  /* input shadow */
-  --shadow-card: rgba(0, 0, 0, 0.05) 0px 4px 10px;
-  --shadow-lg: rgba(244, 68, 56, 0.3) 0px 10px 30px 0px;
-  /* button primary shadow */
-  --shadow-orange: rgba(244, 68, 56, 0.3) 0px 10px 30px 0px;
-  --shadow-purple: rgba(244, 68, 56, 0.3) 0px 10px 30px 0px;
+  --shadow-sm: none;
+  --shadow-card: none;
+  --shadow-lg: none;
+  --shadow-orange: none;
+  --shadow-purple: none;
 }
 
 /* ═══════════════════════════════════════════════
@@ -290,7 +283,7 @@ button {
 .url-form-inner {
   display: flex;
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: 4px;
   overflow: hidden;
   max-width: 620px;
   margin: 0 auto;
@@ -315,10 +308,10 @@ button {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-  color: #ffffff;
+  background: var(--orange);
+  color: #3200C1;
   border: none;
-  border-radius: 0 10px 10px 0;
+  border-radius: var(--r-md);
   padding: 15px 26px;
   font-size: 0.93rem;
   font-weight: 700;
@@ -332,7 +325,7 @@ button {
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--orange-light), var(--orange));
+  background: var(--orange-dark);
   box-shadow: var(--shadow-orange);
 }
 
@@ -709,8 +702,8 @@ button {
 
 .btn-buy {
   width: 100%;
-  background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-  color: #fff;
+  background: var(--orange);
+  color: #3200C1;
   border: none;
   border-radius: var(--r-md);
   padding: 16px;
@@ -1430,10 +1423,10 @@ button {
 }
 
 .btn-secondary {
-  background: var(--bg-alt);
-  color: var(--purple);
-  border: 1.5px solid var(--border-mid);
-  border-radius: var(--r-sm);
+  background: #FFFFFF;
+  color: #3200C1;
+  border: 1.5px solid #3200C1;
+  border-radius: var(--r-md);
   padding: 10px 18px;
   font-size: 0.88rem;
   font-weight: 600;
@@ -1442,9 +1435,9 @@ button {
 }
 
 .btn-secondary:hover {
-  background: var(--purple);
-  color: #fff;
-  border-color: var(--purple);
+  background: #3200C1;
+  color: #FFFFFF;
+  border-color: #3200C1;
 }
 
 .btn-download {
