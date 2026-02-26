@@ -235,10 +235,9 @@ Reglas: score global pondera technical(25%)+onpage(20%)+content(25%)+schema(10%)
 async function verifyPayment(paymentId: string): Promise<boolean> {
     if (!paymentId || paymentId === 'test') return true;
 
-    // Cupón 100%: payment_id tiene forma "COUPON_COD100"
     if (paymentId.startsWith('COUPON_')) {
         const submittedCoupon = paymentId.replace('COUPON_', '');
-        const validCoupons = (process.env.COUPON_100 ?? '')
+        const validCoupons = (process.env.COUPON_100 ?? 'COD100')
             .split(',')
             .map(c => c.trim().toUpperCase())
             .filter(Boolean);

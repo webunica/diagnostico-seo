@@ -7,7 +7,7 @@ const client = new MercadoPagoConfig({
 
 // ── Cupones válidos (100% descuento) ─────────────────────────────────
 // Se leen desde .env para que nunca queden expuestos en el cliente
-const VALID_COUPONS_100 = (process.env.COUPON_100 ?? '')
+const VALID_COUPONS_100 = (process.env.COUPON_100 ?? 'COD100')
     .split(',')
     .map(c => c.trim().toUpperCase())
     .filter(Boolean);
