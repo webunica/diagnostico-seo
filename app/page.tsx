@@ -120,6 +120,7 @@ export default function HomePage() {
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
           <a href="/keywords">🔑 Keywords</a>
           <a href="/crawl">🕷️ Crawl</a>
+          <a href="/dashboard" style={{ fontWeight: 700 }}>🔌 API</a>
           <div className="badge-price">$9.990 CLP / reporte</div>
         </div>
       </nav>
