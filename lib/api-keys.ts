@@ -380,3 +380,59 @@ export function rateLimitHeaders(record: ApiKey): Record<string, string> {
 export function storageBackend(): 'upstash' | 'local-json' {
     return useUpstash ? 'upstash' : 'local-json';
 }
+
+/**
+ * ADMIN: Cambia el plan de una key por su ID.
+ * Actualiza plan, requestsLimit y mantiene el requestsUsed actual.
+ */
+export async function upgradePlan(
+    id: string,
+    newPlan: string,
+): Promise<{ ok: boolean; error?: string; record?: Omit<ApiKey, 'keyHash'> }> {
+    if (!PLANS[newPlan]) return { ok: false, error: `Plan inválido: ${newPlan}` };
+
+    const hash = await kvGet<string>(`ak:i:${id}`);
+    if (!hash) return { ok: false, error: 'Key no encontrada.' };
+
+    const rec = await kvGet<ApiKey>(`ak:h:${hash}`);
+    if (!rec) return { ok: false, error: 'Key no encontrada en store.' };
+
+    const updated: ApiKey = {
+        ...rec,
+        plan: newPlan,
+        requestsLimit: PLANS[newPlan].requestsPerMonth,
+        // No tocamos requestsUsed — el uso ya consumido sigue contando
+    };
+
+    await kvSet(`ak:h:${hash}`, updated);
+    const { keyHash: _kh, ...safe } = updated;
+    return { ok: true, record: safe };
+}
+
+/**
+ * ADMIN: Reactiva una key por su ID (reversa de revocar).
+ */
+export async function reactivateKey(id: string): Promise<boolean> {
+    const hash = await kvGet<string>(`ak:i:${id}`);
+    if (!hash) return false;
+    const rec = await kvGet<ApiKey>(`ak:h:${hash}`);
+    if (!rec) return false;
+    await kvSet(`ak:h:${hash}`, { ...rec, isActive: true });
+    return true;
+}
+
+/**
+ * ADMIN: Resetea manualmente el contador de requests de una key.
+ */
+export async function resetUsage(id: string): Promise<boolean> {
+    const hash = await kvGet<string>(`ak:i:${id}`);
+    if (!hash) return false;
+    const rec = await kvGet<ApiKey>(`ak:h:${hash}`);
+    if (!rec) return false;
+    await kvSet(`ak:h:${hash}`, {
+        ...rec,
+        requestsUsed: 0,
+        resetAt: nextResetDate(),
+    });
+    return true;
+}
