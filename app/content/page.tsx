@@ -3,454 +3,465 @@
 import { useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
+/* ─────────────────────────────────────────────────────────────────────
+   DARK-THEME TOKENS  (scoped to this page via wrapper div)
+   The global CSS uses a light/TocToc theme; this page needs its own
+   dark atmosphere independent of those CSS variables.
+───────────────────────────────────────────────────────────────────── */
+const T = {
+    bg: '#080d18',
+    bgCard: 'rgba(255,255,255,0.03)',
+    bgCardHov: 'rgba(255,255,255,0.055)',
+    border: 'rgba(255,255,255,0.08)',
+    borderMid: 'rgba(255,255,255,0.14)',
+    text: '#f0f4ff',
+    textMuted: 'rgba(240,244,255,0.65)',
+    textSubtle: 'rgba(240,244,255,0.38)',
+    purple: '#8b5cf6',
+    purpleDim: 'rgba(139,92,246,0.18)',
+    purpleBorder: 'rgba(139,92,246,0.3)',
+    cyan: '#06b6d4',
+    green: '#34d399',
+    greenDim: 'rgba(52,211,153,0.12)',
+    greenBorder: 'rgba(52,211,153,0.28)',
+    blue: '#60a5fa',
+    blueDim: 'rgba(96,165,250,0.1)',
+    blueBorder: 'rgba(96,165,250,0.22)',
+    yellow: '#fbbf24',
+    yellowDim: 'rgba(251,191,36,0.08)',
+    yellowBorder: 'rgba(251,191,36,0.25)',
+    red: '#f87171',
+    violet: '#a78bfa',
+    violetDim: 'rgba(167,139,250,0.12)',
+    violetBorder: 'rgba(167,139,250,0.28)',
+} as const;
+
+// ── Shared style helpers ───────────────────────────────────────────────
+const pill = (bg: string, border: string, color: string): React.CSSProperties => ({
+    display: 'inline-flex', alignItems: 'center',
+    background: bg, border: `1px solid ${border}`,
+    borderRadius: 20, padding: '3px 11px',
+    fontSize: '0.73rem', fontWeight: 700, color,
+    whiteSpace: 'nowrap' as const,
+});
+
+const card: React.CSSProperties = {
+    background: T.bgCard,
+    border: `1px solid ${T.border}`,
+    borderRadius: 14,
+    padding: '20px 22px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+};
+
 // ── Types ────────────────────────────────────────────────────────────
-interface ImageSuggestion {
-    placement: string;
-    altText: string;
-    description: string;
-    type: string;
-    keywords: string[];
-}
-
-interface H3Block {
-    h3: string;
-    content: string;
-    keywords: string[];
-}
-
-interface Section {
-    h2: string;
-    intro: string;
-    h3s: H3Block[];
-    imageSuggestion?: ImageSuggestion;
-    cta?: string;
-}
-
-interface SeoCheckItem {
-    item: string;
-    status: 'ok' | 'warn' | 'fail';
-    value: string;
-}
-
-interface InternalLink {
-    anchor: string;
-    targetPage: string;
-    reason: string;
-}
+interface ImageSuggestion { placement: string; altText: string; description: string; type: string; keywords: string[]; }
+interface H3Block { h3: string; content: string; keywords: string[]; }
+interface Section { h2: string; intro: string; h3s: H3Block[]; imageSuggestion?: ImageSuggestion; cta?: string; }
+interface SeoCheckItem { item: string; status: 'ok' | 'warn' | 'fail'; value: string; }
+interface InternalLink { anchor: string; targetPage: string; reason: string; }
 
 interface GeneratedContent {
-    targetUrl: string;
-    businessType: string;
-    primaryKeyword: string;
-    secondaryKeywords: string[];
-    titleTag: string;
-    metaDescription: string;
-    h1: string;
-    intro: string;
-    sections: Section[];
-    conclusionH2: string;
-    conclusionContent: string;
+    targetUrl: string; businessType: string; primaryKeyword: string;
+    secondaryKeywords: string[]; titleTag: string; metaDescription: string;
+    h1: string; intro: string; sections: Section[];
+    conclusionH2: string; conclusionContent: string;
     ctaSection: { heading: string; text: string; buttonText: string };
-    schemaMarkup: string;
-    internalLinkSuggestions: InternalLink[];
-    seoChecklist: SeoCheckItem[];
-    estimatedWordCount: number;
-    generatedAt: string;
-    model: string;
+    schemaMarkup: string; internalLinkSuggestions: InternalLink[];
+    seoChecklist: SeoCheckItem[]; estimatedWordCount: number;
+    generatedAt: string; model: string;
 }
 
-// ── Copy Button ───────────────────────────────────────────────────────
+/* ── Copy Button ─────────────────────────────────────────────────────── */
 function CopyBtn({ text, label = 'Copiar' }: { text: string; label?: string }) {
     const [copied, setCopied] = useState(false);
-    const handle = () => {
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
     return (
-        <button onClick={handle} style={{
-            background: copied ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.07)',
-            border: `1px solid ${copied ? 'rgba(52,211,153,0.35)' : 'rgba(255,255,255,0.12)'}`,
-            borderRadius: 7, padding: '4px 12px',
-            fontSize: '0.72rem', fontWeight: 700,
-            color: copied ? '#34D399' : 'rgba(255,255,255,0.55)',
-            cursor: 'pointer', fontFamily: 'inherit',
-            transition: 'all 0.2s', whiteSpace: 'nowrap', flexShrink: 0,
-        }}>
+        <button
+            onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+            style={{
+                background: copied ? T.greenDim : 'rgba(255,255,255,0.06)',
+                border: `1px solid ${copied ? T.greenBorder : T.border}`,
+                borderRadius: 8, padding: '5px 12px',
+                fontSize: '0.7rem', fontWeight: 700,
+                color: copied ? T.green : T.textSubtle,
+                cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
+                transition: 'all 0.2s', whiteSpace: 'nowrap', flexShrink: 0,
+            }}
+        >
             {copied ? '✓ Copiado' : label}
         </button>
     );
 }
 
-// ── Section label ─────────────────────────────────────────────────────
-function SectionLabel({ children }: { children: React.ReactNode }) {
+/* ── Section badge ───────────────────────────────────────────────────── */
+function Badge({ children }: { children: React.ReactNode }) {
     return (
         <div style={{
-            fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.1em',
-            textTransform: 'uppercase', color: '#7C3AED', marginBottom: 6,
+            fontSize: '0.63rem', fontWeight: 800, letterSpacing: '0.1em',
+            textTransform: 'uppercase', color: T.purple, marginBottom: 8,
+            display: 'flex', alignItems: 'center', gap: 6,
         }}>
             {children}
         </div>
     );
 }
 
-// ── Card wrapper ─────────────────────────────────────────────────────
-function Card({ children, accent }: { children: React.ReactNode; accent?: string }) {
+/* ── Image suggestion card ───────────────────────────────────────────── */
+function ImgCard({ img }: { img: ImageSuggestion }) {
+    const icons: Record<string, string> = { 'fotografía': '📷', 'infografía': '📊', 'captura': '🖥️', 'ilustración': '🎨', 'icono': '🔷' };
     return (
         <div style={{
-            background: 'rgba(255,255,255,0.025)',
-            border: `1px solid ${accent ?? 'rgba(255,255,255,0.07)'}`,
-            borderRadius: 14, padding: '20px 22px',
-            display: 'flex', flexDirection: 'column', gap: 10,
-        }}>
-            {children}
-        </div>
-    );
-}
-
-// ── Image card ────────────────────────────────────────────────────────
-function ImageCard({ img }: { img: ImageSuggestion }) {
-    const typeIcons: Record<string, string> = {
-        'fotografía': '📷', 'infografía': '📊', 'captura': '🖥️',
-        'ilustración': '🎨', 'icono': '🔷',
-    };
-    return (
-        <div style={{
-            background: 'rgba(124,58,237,0.06)',
-            border: '1px solid rgba(124,58,237,0.2)',
-            borderRadius: 12, padding: '14px 16px',
-            display: 'flex', gap: 12,
+            background: T.purpleDim, border: `1px solid ${T.purpleBorder}`,
+            borderRadius: 12, padding: '14px 16px', display: 'flex', gap: 12,
         }}>
             <div style={{
                 width: 44, height: 44, borderRadius: 10, flexShrink: 0,
-                background: 'rgba(124,58,237,0.15)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1.3rem',
+                background: 'rgba(139,92,246,0.22)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem',
             }}>
-                {typeIcons[img.type] ?? '🖼️'}
+                {icons[img.type] ?? '🖼️'}
             </div>
-            <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
-                    <div style={{ fontWeight: 700, fontSize: '0.85rem' }}>
-                        {img.type} · <span style={{ color: '#c084fc', fontWeight: 600 }}>{img.placement}</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.84rem', color: T.text }}>
+                        {img.type} · <span style={{ color: T.violet }}>{img.placement}</span>
                     </div>
                     <CopyBtn text={img.altText} label="Copiar alt" />
                 </div>
-                <div style={{ fontSize: '0.8rem', color: '#c084fc', marginBottom: 6, fontStyle: 'italic' }}>
-                    Alt: "{img.altText}"
+                <div style={{ fontSize: '0.78rem', color: T.violet, marginBottom: 5, fontStyle: 'italic' }}>
+                    alt="{img.altText}"
                 </div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                    <strong style={{ color: 'rgba(255,255,255,0.5)' }}>Qué mostrar:</strong> {img.description}
+                <div style={{ fontSize: '0.77rem', color: T.textMuted, lineHeight: 1.55 }}>
+                    <strong style={{ color: T.textSubtle }}>Visual: </strong>{img.description}
                 </div>
             </div>
         </div>
     );
 }
 
-// ── Content Renderer ──────────────────────────────────────────────────
+/* ── Content View ────────────────────────────────────────────────────── */
 function ContentView({ content }: { content: GeneratedContent }) {
     const [schemaOpen, setSchemaOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<'preview' | 'structured'>('preview');
+    const [tab, setTab] = useState<'preview' | 'code'>('preview');
 
     const date = new Date(content.generatedAt).toLocaleDateString('es-CL', {
         day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
     });
 
+    const h2count = content.sections?.length ?? 0;
+    const h3count = (content.sections ?? []).reduce((a, s) => a + (s.h3s?.length ?? 0), 0);
+    const imgcount = (content.sections ?? []).filter(s => s.imageSuggestion).length;
+
     return (
-        <>
-            {/* Navbar */}
-            <nav className="navbar">
-                <div className="navbar-logo">
-                    <div className="logo-icon">🔍</div>
-                    <span>DiagnósticoSEO</span>
-                </div>
-                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>← Inicio</a>
-                    <button
-                        onClick={() => window.print()}
-                        style={{
-                            background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)',
-                            borderRadius: 8, padding: '6px 14px', fontSize: '0.8rem', fontWeight: 600,
-                            color: '#c084fc', cursor: 'pointer', fontFamily: 'inherit',
-                        }}
-                    >
+        <div style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: 'Nunito,sans-serif' }}>
+
+            {/* ── NAVBAR ───────────────────────────────────── */}
+            <nav style={{
+                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 60,
+                padding: '0 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                background: 'rgba(8,13,24,0.92)', backdropFilter: 'blur(20px)',
+                borderBottom: `1px solid ${T.border}`,
+            }}>
+                <a href="/" style={{
+                    display: 'flex', alignItems: 'center', gap: 9,
+                    fontSize: '1.1rem', fontWeight: 900, letterSpacing: '-0.04em',
+                    color: T.purple, textDecoration: 'none',
+                }}>
+                    <div style={{
+                        width: 30, height: 30, background: T.purple, borderRadius: 6,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 15, color: 'white',
+                    }}>🔍</div>
+                    DiagnósticoSEO
+                </a>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                    <a href="/" style={{ fontSize: '0.8rem', color: T.textMuted, textDecoration: 'none' }}>← Inicio</a>
+                    <button onClick={() => window.print()} style={{
+                        background: T.purpleDim, border: `1px solid ${T.purpleBorder}`,
+                        borderRadius: 8, padding: '6px 14px', fontSize: '0.8rem', fontWeight: 700,
+                        color: T.purple, cursor: 'pointer', fontFamily: 'inherit',
+                    }}>
                         📄 Exportar PDF
                     </button>
                 </div>
             </nav>
 
-            <div style={{ maxWidth: 900, margin: '0 auto', padding: '90px 20px 100px' }}>
+            {/* ── MAIN ─────────────────────────────────────── */}
+            <div style={{ maxWidth: 920, margin: '0 auto', padding: '80px 20px 120px' }}>
 
-                {/* Header */}
+                {/* Header card */}
                 <div style={{
-                    background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(6,182,212,0.06))',
-                    border: '1px solid rgba(124,58,237,0.25)',
-                    borderRadius: 20, padding: '32px 28px', marginBottom: 32,
+                    background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(6,182,212,0.05))',
+                    border: `1px solid ${T.purpleBorder}`,
+                    borderRadius: 18, padding: '28px 26px', marginBottom: 28,
                     position: 'relative', overflow: 'hidden',
                 }}>
                     <div style={{
                         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                        background: 'linear-gradient(90deg, #7c3aed, #06b6d4)',
+                        background: 'linear-gradient(90deg, #8b5cf6, #06b6d4)'
                     }} />
-                    <div style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)',
-                        borderRadius: 20, padding: '4px 12px', fontSize: '0.75rem', fontWeight: 700,
-                        color: '#34D399', marginBottom: 14,
-                    }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#34D399', display: 'inline-block' }} />
+
+                    <div style={{ ...pill(T.greenDim, T.greenBorder, T.green), marginBottom: 14 }}>
+                        <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, display: 'inline-block', marginRight: 6 }} />
                         Generado con GPT-4o · Score objetivo 100/100
                     </div>
-                    <h1 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: 8, lineHeight: 1.2 }}>
+
+                    <h1 style={{ fontSize: 'clamp(1.3rem,3vw,1.8rem)', fontWeight: 900, marginBottom: 8, color: T.text }}>
                         Contenido SEO Optimizado
                     </h1>
-                    <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: 14 }}>
-                        Para: <a href={content.targetUrl} target="_blank" rel="noopener noreferrer"
-                            style={{ color: '#60A5FA' }}>{content.targetUrl}</a>
+                    <div style={{ fontSize: '0.82rem', color: T.textMuted, marginBottom: 14 }}>
+                        Para:&nbsp;
+                        <a href={content.targetUrl} target="_blank" rel="noopener noreferrer"
+                            style={{ color: T.blue, wordBreak: 'break-all' }}>
+                            {content.targetUrl}
+                        </a>
                     </div>
+
+                    {/* Stats pills */}
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '0.75rem', padding: '3px 10px', borderRadius: 20, background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)', color: '#c084fc', fontWeight: 600 }}>
-                            🏢 {content.businessType}
+                        <span style={pill(T.purpleDim, T.purpleBorder, T.violet)}>🏢 {content.businessType}</span>
+                        <span style={pill(T.blueDim, T.blueBorder, T.blue)}>🎯 {content.primaryKeyword}</span>
+                        <span style={pill(T.greenDim, T.greenBorder, T.green)}>📝 ~{content.estimatedWordCount?.toLocaleString()} palabras</span>
+                        <span style={pill('rgba(255,255,255,0.04)', T.border, T.textSubtle)}>
+                            {h2count} H2 · {h3count} H3 · {imgcount} imgs
                         </span>
-                        <span style={{ fontSize: '0.75rem', padding: '3px 10px', borderRadius: 20, background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)', color: '#93C5FD', fontWeight: 600 }}>
-                            🔑 {content.primaryKeyword}
-                        </span>
-                        <span style={{ fontSize: '0.75rem', padding: '3px 10px', borderRadius: 20, background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)', color: '#34D399', fontWeight: 600 }}>
-                            📝 ~{content.estimatedWordCount?.toLocaleString()} palabras
-                        </span>
-                        <span style={{ fontSize: '0.75rem', padding: '3px 10px', borderRadius: 20, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-muted)', fontWeight: 500 }}>
-                            📅 {date}
-                        </span>
+                        <span style={pill('rgba(255,255,255,0.04)', T.border, T.textSubtle)}>📅 {date}</span>
                     </div>
                 </div>
 
-                {/* Tabs */}
-                <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
-                    {[
-                        { id: 'preview' as const, label: '👁️ Vista Previa', desc: 'Como se verá en la web' },
-                        { id: 'structured' as const, label: '⚙️ Estructura Técnica', desc: 'Para implementar' },
-                    ].map(tab => (
-                        <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
-                            flex: 1,
-                            background: activeTab === tab.id
-                                ? 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.12))'
+                {/* Tab selector */}
+                <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
+                    {([
+                        { id: 'preview' as const, icon: '👁️', label: 'Vista Previa', sub: 'Como se verá en la web' },
+                        { id: 'code' as const, icon: '⚙️', label: 'HTML Listo', sub: 'Para copiar e implementar' },
+                    ]).map(t => (
+                        <button key={t.id} onClick={() => setTab(t.id)} style={{
+                            flex: 1, textAlign: 'left', cursor: 'pointer', fontFamily: 'inherit',
+                            padding: '13px 16px', borderRadius: 12, transition: 'all 0.2s',
+                            background: tab === t.id
+                                ? 'linear-gradient(135deg,rgba(139,92,246,0.18),rgba(6,182,212,0.09))'
                                 : 'rgba(255,255,255,0.03)',
-                            border: `1px solid ${activeTab === tab.id ? 'rgba(124,58,237,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                            borderRadius: 12, padding: '12px 16px', textAlign: 'left',
-                            cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.2s',
+                            border: `1.5px solid ${tab === t.id ? T.purpleBorder : T.border}`,
                         }}>
-                            <div style={{ fontWeight: 700, fontSize: '0.88rem', color: activeTab === tab.id ? '#c084fc' : 'var(--text-muted)' }}>
-                                {tab.label}
+                            <div style={{
+                                fontWeight: 800, fontSize: '0.88rem', marginBottom: 2,
+                                color: tab === t.id ? T.violet : T.textMuted
+                            }}>
+                                {t.icon} {t.label}
                             </div>
-                            <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', marginTop: 2 }}>{tab.desc}</div>
+                            <div style={{ fontSize: '0.71rem', color: T.textSubtle }}>{t.sub}</div>
                         </button>
                     ))}
                 </div>
 
-                {/* ── VISTA PREVIA ───────────────────────────────────── */}
-                {activeTab === 'preview' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {/* ── PREVIEW TAB ──────────────────────────────── */}
+                {tab === 'preview' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
 
                         {/* SEO Checklist */}
-                        {content.seoChecklist?.length > 0 && (
-                            <Card accent="rgba(52,211,153,0.2)">
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                                    <SectionLabel>✅ SEO Checklist — 100/100</SectionLabel>
-                                    <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#34D399' }}>
-                                        {content.seoChecklist.length}/{content.seoChecklist.length} ítems ✓
+                        {(content.seoChecklist?.length ?? 0) > 0 && (
+                            <div style={{ ...card, border: `1px solid ${T.greenBorder}` }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Badge>✅ SEO Checklist — 100 / 100</Badge>
+                                    <span style={{ fontSize: '0.78rem', fontWeight: 800, color: T.green }}>
+                                        {content.seoChecklist.length}/{content.seoChecklist.length} ✓
                                     </span>
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 6 }}>
-                                    {content.seoChecklist.map((item, i) => (
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(240px,1fr))', gap: 7 }}>
+                                    {content.seoChecklist.map((it, i) => (
                                         <div key={i} style={{
-                                            display: 'flex', gap: 8, alignItems: 'flex-start',
-                                            background: 'rgba(52,211,153,0.05)',
-                                            border: '1px solid rgba(52,211,153,0.15)',
-                                            borderRadius: 8, padding: '8px 12px',
+                                            display: 'flex', gap: 9, alignItems: 'flex-start',
+                                            background: T.greenDim, border: `1px solid rgba(52,211,153,0.15)`,
+                                            borderRadius: 9, padding: '9px 12px',
                                         }}>
-                                            <span style={{ color: '#34D399', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0 }}>✓</span>
+                                            <span style={{ color: T.green, fontWeight: 800, fontSize: '0.82rem', flexShrink: 0 }}>✓</span>
                                             <div>
-                                                <div style={{ fontSize: '0.78rem', fontWeight: 600 }}>{item.item}</div>
-                                                <div style={{ fontSize: '0.71rem', color: '#34D399', marginTop: 1 }}>{item.value}</div>
+                                                <div style={{ fontSize: '0.77rem', fontWeight: 700, color: T.text }}>{it.item}</div>
+                                                <div style={{ fontSize: '0.68rem', color: T.green, marginTop: 2 }}>{it.value}</div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                            </Card>
+                            </div>
                         )}
 
                         {/* Title + Meta */}
-                        <Card>
-                            <SectionLabel>🏷️ Title Tag & Meta Description</SectionLabel>
+                        <div style={card}>
+                            <Badge>🏷️ Title Tag &amp; Meta Description</Badge>
+
+                            {/* Title row */}
                             <div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>
-                                        TITLE TAG · {content.titleTag?.length ?? 0} chars
-                                    </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                                    <span style={{ fontSize: '0.72rem', color: T.textSubtle, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                                        Title · {content.titleTag?.length ?? 0} caracteres
+                                    </span>
                                     <CopyBtn text={content.titleTag} />
                                 </div>
                                 <div style={{
-                                    background: 'rgba(59,130,246,0.07)',
-                                    border: '1px solid rgba(59,130,246,0.2)',
-                                    borderRadius: 8, padding: '12px 14px',
-                                    fontSize: '1.05rem', fontWeight: 700, color: '#60A5FA',
-                                    lineHeight: 1.4,
+                                    background: T.blueDim, border: `1px solid ${T.blueBorder}`,
+                                    borderRadius: 9, padding: '12px 14px',
+                                    fontSize: '1.02rem', fontWeight: 800, color: T.blue, lineHeight: 1.35,
                                 }}>
                                     {content.titleTag}
                                 </div>
                             </div>
-                            <div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4, marginTop: 8 }}>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>
-                                        META DESCRIPTION · {content.metaDescription?.length ?? 0} chars
-                                    </div>
+
+                            {/* Meta row */}
+                            <div style={{ marginTop: 4 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                                    <span style={{ fontSize: '0.72rem', color: T.textSubtle, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                                        Meta Description · {content.metaDescription?.length ?? 0} caracteres
+                                    </span>
                                     <CopyBtn text={content.metaDescription} />
                                 </div>
                                 <div style={{
-                                    background: 'rgba(52,211,153,0.05)',
-                                    border: '1px solid rgba(52,211,153,0.15)',
-                                    borderRadius: 8, padding: '12px 14px',
-                                    fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6,
+                                    background: T.greenDim, border: `1px solid rgba(52,211,153,0.18)`,
+                                    borderRadius: 9, padding: '12px 14px',
+                                    fontSize: '0.88rem', color: T.textMuted, lineHeight: 1.6,
                                 }}>
                                     {content.metaDescription}
                                 </div>
                             </div>
+
                             {/* Google SERP Preview */}
-                            <div style={{ marginTop: 8 }}>
-                                <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', marginBottom: 6 }}>Vista previa en Google:</div>
+                            <div style={{ marginTop: 6 }}>
+                                <div style={{ fontSize: '0.7rem', color: T.textSubtle, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                                    Vista previa en Google
+                                </div>
                                 <div style={{
-                                    background: 'white', borderRadius: 10, padding: '14px 16px',
-                                    border: '1px solid #e0e0e0',
+                                    background: '#fff', borderRadius: 12, padding: '14px 18px',
+                                    boxShadow: '0 2px 12px rgba(0,0,0,0.18)', border: '1px solid #e0e0e0',
                                 }}>
-                                    <div style={{ fontSize: '0.75rem', color: '#202124', marginBottom: 2, fontFamily: 'arial, sans-serif' }}>
+                                    <div style={{ fontSize: '0.78rem', color: '#3c4043', fontFamily: 'arial,sans-serif', marginBottom: 3 }}>
                                         {content.targetUrl}
                                     </div>
-                                    <div style={{ fontSize: '1.1rem', color: '#1a0dab', fontFamily: 'arial, sans-serif', lineHeight: 1.3, marginBottom: 4 }}>
+                                    <div style={{ fontSize: '1.12rem', color: '#1a0dab', fontFamily: 'arial,sans-serif', lineHeight: 1.3, marginBottom: 4, fontWeight: 500 }}>
                                         {content.titleTag}
                                     </div>
-                                    <div style={{ fontSize: '0.85rem', color: '#4d5156', fontFamily: 'arial, sans-serif', lineHeight: 1.5, maxWidth: 560 }}>
+                                    <div style={{ fontSize: '0.85rem', color: '#4d5156', fontFamily: 'arial,sans-serif', lineHeight: 1.55, maxWidth: 560 }}>
                                         {content.metaDescription}
                                     </div>
                                 </div>
                             </div>
-                        </Card>
+                        </div>
 
                         {/* Keywords */}
-                        <Card>
-                            <SectionLabel>🔑 Estrategia de Keywords</SectionLabel>
+                        <div style={card}>
+                            <Badge>🔑 Estrategia de Keywords</Badge>
                             <div>
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: 6 }}>KEYWORD PRINCIPAL</div>
-                                <span style={{
-                                    fontSize: '0.95rem', fontWeight: 800, padding: '6px 16px', borderRadius: 20,
-                                    background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)',
-                                    color: '#93C5FD',
-                                }}>
+                                <div style={{ fontSize: '0.7rem', color: T.textSubtle, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                                    Keyword principal
+                                </div>
+                                <span style={{ ...pill(T.blueDim, T.blueBorder, T.blue), fontSize: '0.92rem', fontWeight: 900, padding: '6px 16px' }}>
                                     🎯 {content.primaryKeyword}
                                 </span>
                             </div>
-                            <div>
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: 6, marginTop: 8 }}>KEYWORDS SECUNDARIAS (LSI)</div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                                    {(content.secondaryKeywords ?? []).map((kw, i) => (
-                                        <span key={i} style={{
-                                            fontSize: '0.8rem', fontWeight: 600, padding: '4px 12px', borderRadius: 20,
-                                            background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.25)',
-                                            color: '#A78BFA',
-                                        }}>
-                                            {kw}
-                                        </span>
-                                    ))}
+                            {(content.secondaryKeywords?.length ?? 0) > 0 && (
+                                <div style={{ marginTop: 8 }}>
+                                    <div style={{ fontSize: '0.7rem', color: T.textSubtle, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                                        Keywords LSI / Secundarias
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+                                        {content.secondaryKeywords.map((kw, i) => (
+                                            <span key={i} style={pill(T.violetDim, T.violetBorder, T.violet)}>
+                                                {kw}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        </Card>
+                            )}
+                        </div>
 
                         {/* H1 */}
-                        <Card>
+                        <div style={card}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <SectionLabel>📌 H1 — Encabezado Principal</SectionLabel>
+                                <Badge>📌 H1 — Encabezado Principal</Badge>
                                 <CopyBtn text={content.h1} />
                             </div>
                             <div style={{
-                                fontSize: '1.6rem', fontWeight: 900, lineHeight: 1.2,
-                                background: 'linear-gradient(135deg, white, rgba(167,139,250,0.9))',
-                                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                                backgroundClip: 'text',
+                                fontSize: 'clamp(1.3rem,3vw,1.7rem)', fontWeight: 900, lineHeight: 1.2,
+                                background: `linear-gradient(135deg, ${T.text}, ${T.violet})`,
+                                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                             }}>
                                 {content.h1}
                             </div>
-                        </Card>
+                        </div>
 
                         {/* Intro */}
-                        <Card>
+                        <div style={card}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <SectionLabel>✍️ Párrafo de Introducción</SectionLabel>
+                                <Badge>✍️ Párrafo de Introducción</Badge>
                                 <CopyBtn text={content.intro} />
                             </div>
-                            <div style={{ fontSize: '0.92rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.85)' }}>
+                            <p style={{ fontSize: '0.91rem', lineHeight: 1.8, color: T.textMuted, margin: 0 }}>
                                 {content.intro}
-                            </div>
-                        </Card>
+                            </p>
+                        </div>
 
-                        {/* Sections H2 */}
+                        {/* H2 Sections */}
                         {(content.sections ?? []).map((section, si) => (
                             <div key={si} style={{
-                                background: 'rgba(255,255,255,0.02)',
-                                border: '1px solid rgba(255,255,255,0.07)',
+                                background: T.bgCard, border: `1px solid ${T.border}`,
                                 borderRadius: 16, overflow: 'hidden',
                             }}>
-                                {/* H2 header */}
+                                {/* H2 header bar */}
                                 <div style={{
-                                    padding: '18px 22px',
-                                    background: 'rgba(124,58,237,0.06)',
-                                    borderBottom: '1px solid rgba(255,255,255,0.06)',
-                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                    padding: '16px 22px',
+                                    background: 'linear-gradient(135deg,rgba(139,92,246,0.1),rgba(139,92,246,0.04))',
+                                    borderBottom: `1px solid ${T.border}`,
+                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8,
                                 }}>
                                     <div>
-                                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+                                        <div style={{
+                                            fontSize: '0.63rem', fontWeight: 800, color: T.purple,
+                                            textTransform: 'uppercase', letterSpacing: '0.09em', marginBottom: 4
+                                        }}>
                                             H2 · Sección {si + 1}
                                         </div>
-                                        <div style={{ fontSize: '1.15rem', fontWeight: 800 }}>{section.h2}</div>
+                                        <div style={{ fontSize: '1.1rem', fontWeight: 800, color: T.text }}>{section.h2}</div>
                                     </div>
                                     <CopyBtn text={section.h2} label="Copiar H2" />
                                 </div>
+
                                 <div style={{ padding: '18px 22px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                                    {/* Intro de sección */}
+
+                                    {/* Intro párrafo */}
                                     {section.intro && (
                                         <div style={{ display: 'flex', gap: 10, justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                            <div style={{ fontSize: '0.88rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.8)', flex: 1 }}>
+                                            <p style={{ fontSize: '0.87rem', lineHeight: 1.7, color: T.textMuted, flex: 1, margin: 0 }}>
                                                 {section.intro}
-                                            </div>
+                                            </p>
                                             <CopyBtn text={section.intro} />
                                         </div>
                                     )}
 
-                                    {/* H3s */}
+                                    {/* H3 blocks */}
                                     {(section.h3s ?? []).map((h3, hi) => (
                                         <div key={hi} style={{
-                                            background: 'rgba(255,255,255,0.02)',
-                                            border: '1px solid rgba(255,255,255,0.05)',
-                                            borderLeft: '3px solid rgba(124,58,237,0.5)',
+                                            background: 'rgba(255,255,255,0.025)',
+                                            border: `1px solid ${T.border}`,
+                                            borderLeft: `3px solid ${T.purple}`,
                                             borderRadius: '0 10px 10px 0',
                                             padding: '14px 16px',
                                         }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 7 }}>
                                                 <div>
-                                                    <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 3 }}>H3</div>
-                                                    <div style={{ fontSize: '0.98rem', fontWeight: 700 }}>{h3.h3}</div>
+                                                    <div style={{
+                                                        fontSize: '0.6rem', fontWeight: 800, color: T.violet,
+                                                        textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 3
+                                                    }}>H3</div>
+                                                    <div style={{ fontSize: '0.96rem', fontWeight: 800, color: T.text }}>{h3.h3}</div>
                                                 </div>
-                                                <CopyBtn text={`${h3.h3}\n\n${h3.content}`} label="Copiar" />
+                                                <CopyBtn text={`${h3.h3}\n\n${h3.content}`} />
                                             </div>
-                                            <div style={{ fontSize: '0.85rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.75)', marginBottom: 8 }}>
+                                            <p style={{ fontSize: '0.84rem', lineHeight: 1.75, color: T.textMuted, margin: '0 0 10px' }}>
                                                 {h3.content}
-                                            </div>
-                                            {h3.keywords?.length > 0 && (
+                                            </p>
+                                            {(h3.keywords?.length ?? 0) > 0 && (
                                                 <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                                                     {h3.keywords.map((kw, ki) => (
-                                                        <span key={ki} style={{
-                                                            fontSize: '0.65rem', padding: '1px 7px', borderRadius: 20,
-                                                            background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.2)',
-                                                            color: '#c4b5fd',
-                                                        }}>
+                                                        <span key={ki} style={pill(T.violetDim, T.violetBorder, T.violet)}>
                                                             🔑 {kw}
                                                         </span>
                                                     ))}
@@ -459,17 +470,15 @@ function ContentView({ content }: { content: GeneratedContent }) {
                                         </div>
                                     ))}
 
-                                    {/* Imagen sugerida */}
-                                    {section.imageSuggestion && (
-                                        <ImageCard img={section.imageSuggestion} />
-                                    )}
+                                    {/* Imagen */}
+                                    {section.imageSuggestion && <ImgCard img={section.imageSuggestion} />}
 
-                                    {/* CTA de sección */}
+                                    {/* CTA sección */}
                                     {section.cta && (
                                         <div style={{
-                                            background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.2)',
-                                            borderRadius: 8, padding: '10px 14px',
-                                            fontSize: '0.82rem', color: '#FBBF24', fontWeight: 600,
+                                            background: T.yellowDim, border: `1px solid ${T.yellowBorder}`,
+                                            borderRadius: 9, padding: '10px 14px',
+                                            fontSize: '0.82rem', color: T.yellow, fontWeight: 700,
                                         }}>
                                             🎯 CTA: {section.cta}
                                         </div>
@@ -480,143 +489,156 @@ function ContentView({ content }: { content: GeneratedContent }) {
 
                         {/* Conclusión */}
                         {content.conclusionH2 && (
-                            <Card>
+                            <div style={card}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <SectionLabel>🏁 H2 de Conclusión</SectionLabel>
+                                    <Badge>🏁 H2 de Conclusión</Badge>
                                     <CopyBtn text={`## ${content.conclusionH2}\n\n${content.conclusionContent}`} />
                                 </div>
-                                <div style={{ fontSize: '1.08rem', fontWeight: 800, marginBottom: 8 }}>{content.conclusionH2}</div>
-                                <div style={{ fontSize: '0.88rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.8)' }}>
+                                <div style={{ fontSize: '1.06rem', fontWeight: 800, color: T.text }}>{content.conclusionH2}</div>
+                                <p style={{ fontSize: '0.87rem', lineHeight: 1.75, color: T.textMuted, margin: 0 }}>
                                     {content.conclusionContent}
-                                </div>
-                            </Card>
+                                </p>
+                            </div>
                         )}
 
                         {/* CTA Block */}
                         {content.ctaSection && (
                             <div style={{
-                                background: 'linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.08))',
-                                border: '1px solid rgba(124,58,237,0.3)',
-                                borderRadius: 16, padding: '24px 22px',
-                                textAlign: 'center',
+                                background: 'linear-gradient(135deg,rgba(139,92,246,0.14),rgba(6,182,212,0.07))',
+                                border: `1px solid ${T.purpleBorder}`,
+                                borderRadius: 16, padding: '26px 24px', textAlign: 'center',
+                                position: 'relative', overflow: 'hidden',
                             }}>
-                                <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>
+                                <div style={{
+                                    position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+                                    background: 'linear-gradient(90deg,#8b5cf6,#06b6d4)'
+                                }} />
+                                <div style={{
+                                    fontSize: '0.63rem', fontWeight: 800, color: T.purple,
+                                    textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12
+                                }}>
                                     🚀 Bloque CTA Final
                                 </div>
-                                <div style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: 8 }}>{content.ctaSection.heading}</div>
-                                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 14, maxWidth: 480, margin: '0 auto 16px' }}>
-                                    {content.ctaSection.text}
+                                <div style={{ fontSize: '1.2rem', fontWeight: 900, marginBottom: 10, color: T.text }}>
+                                    {content.ctaSection.heading}
                                 </div>
+                                <p style={{ fontSize: '0.88rem', color: T.textMuted, maxWidth: 460, margin: '0 auto 18px', lineHeight: 1.6 }}>
+                                    {content.ctaSection.text}
+                                </p>
                                 <div style={{
                                     display: 'inline-block',
-                                    background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
-                                    color: 'white', borderRadius: 10, padding: '10px 28px',
-                                    fontSize: '0.95rem', fontWeight: 700,
+                                    background: 'linear-gradient(135deg,#8b5cf6,#06b6d4)',
+                                    color: 'white', borderRadius: 10, padding: '11px 28px',
+                                    fontSize: '0.95rem', fontWeight: 800, marginBottom: 14,
                                 }}>
                                     {content.ctaSection.buttonText}
                                 </div>
-                                <div style={{ marginTop: 12 }}>
-                                    <CopyBtn text={`${content.ctaSection.heading}\n${content.ctaSection.text}\n[${content.ctaSection.buttonText}]`} label="Copiar bloque CTA" />
+                                <div>
+                                    <CopyBtn
+                                        text={`${content.ctaSection.heading}\n${content.ctaSection.text}\n[${content.ctaSection.buttonText}]`}
+                                        label="Copiar bloque CTA"
+                                    />
                                 </div>
                             </div>
                         )}
 
-                        {/* Internal Links */}
-                        {content.internalLinkSuggestions?.length > 0 && (
-                            <Card>
-                                <SectionLabel>🔗 Sugerencias de Enlace Interno</SectionLabel>
+                        {/* Internal links */}
+                        {(content.internalLinkSuggestions?.length ?? 0) > 0 && (
+                            <div style={card}>
+                                <Badge>🔗 Sugerencias de Enlace Interno</Badge>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                                     {content.internalLinkSuggestions.map((link, i) => (
                                         <div key={i} style={{
                                             display: 'flex', gap: 12, alignItems: 'flex-start',
-                                            background: 'rgba(96,165,250,0.05)',
-                                            border: '1px solid rgba(96,165,250,0.15)',
-                                            borderRadius: 8, padding: '10px 14px',
+                                            background: T.blueDim, border: `1px solid ${T.blueBorder}`,
+                                            borderRadius: 9, padding: '11px 14px',
                                         }}>
-                                            <span style={{ color: '#60A5FA', fontSize: '0.85rem', fontWeight: 700, flexShrink: 0, minWidth: 18 }}>{i + 1}</span>
-                                            <div style={{ flex: 1 }}>
-                                                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 4 }}>
-                                                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#60A5FA' }}>
-                                                        {link.anchor}
-                                                    </span>
-                                                    <span style={{ fontSize: '0.72rem', color: 'var(--text-subtle)' }}>→</span>
-                                                    <span style={{ fontSize: '0.75rem', color: '#93C5FD', fontFamily: 'monospace' }}>
+                                            <span style={{ color: T.blue, fontWeight: 800, fontSize: '0.84rem', flexShrink: 0, minWidth: 18 }}>{i + 1}</span>
+                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                <div style={{ display: 'flex', gap: 7, alignItems: 'center', flexWrap: 'wrap', marginBottom: 4 }}>
+                                                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: T.blue }}>{link.anchor}</span>
+                                                    <span style={{ fontSize: '0.72rem', color: T.textSubtle }}>→</span>
+                                                    <code style={{ fontSize: '0.73rem', color: '#93C5FD', background: 'rgba(96,165,250,0.08)', padding: '1px 6px', borderRadius: 4 }}>
                                                         {link.targetPage}
-                                                    </span>
+                                                    </code>
                                                 </div>
-                                                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>{link.reason}</div>
+                                                <div style={{ fontSize: '0.75rem', color: T.textMuted, lineHeight: 1.4 }}>{link.reason}</div>
                                             </div>
                                             <CopyBtn text={`<a href="${link.targetPage}">${link.anchor}</a>`} label="HTML" />
                                         </div>
                                     ))}
                                 </div>
-                            </Card>
+                            </div>
                         )}
 
                         {/* Schema Markup */}
                         {content.schemaMarkup && (
-                            <Card>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <SectionLabel>🏗️ Schema Markup JSON-LD</SectionLabel>
+                            <div style={card}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                                    <Badge>🏗️ Schema Markup JSON-LD</Badge>
                                     <div style={{ display: 'flex', gap: 8 }}>
                                         <CopyBtn text={content.schemaMarkup} label="Copiar código" />
                                         <button onClick={() => setSchemaOpen(v => !v)} style={{
-                                            background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-                                            borderRadius: 7, padding: '4px 12px', fontSize: '0.72rem', fontWeight: 700,
-                                            color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'inherit',
+                                            background: 'rgba(255,255,255,0.06)', border: `1px solid ${T.border}`,
+                                            borderRadius: 8, padding: '5px 12px', fontSize: '0.7rem', fontWeight: 700,
+                                            color: T.textMuted, cursor: 'pointer', fontFamily: 'inherit',
                                         }}>
                                             {schemaOpen ? '▲ Ocultar' : '▼ Ver código'}
                                         </button>
                                     </div>
                                 </div>
-                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                                    Pega este código en el <code style={{ background: 'rgba(255,255,255,0.07)', padding: '1px 6px', borderRadius: 4 }}>&lt;head&gt;</code> de tu página para activar Rich Results en Google.
-                                </div>
+                                <p style={{ fontSize: '0.79rem', color: T.textMuted, margin: 0, lineHeight: 1.55 }}>
+                                    Pega este código en el <code style={{ background: 'rgba(255,255,255,0.08)', padding: '1px 6px', borderRadius: 4, color: T.violet }}>&lt;head&gt;</code> de tu página para activar Rich Results en Google.
+                                </p>
                                 {schemaOpen && (
                                     <pre style={{
-                                        background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)',
+                                        background: 'rgba(0,0,0,0.4)', border: `1px solid ${T.border}`,
                                         borderRadius: 10, padding: '14px 16px', overflowX: 'auto',
-                                        fontSize: '0.75rem', color: '#86EFAC', lineHeight: 1.6,
+                                        fontSize: '0.72rem', color: '#86EFAC', lineHeight: 1.65,
                                         fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+                                        marginTop: 4,
                                     }}>
                                         {content.schemaMarkup}
                                     </pre>
                                 )}
-                            </Card>
+                            </div>
                         )}
                     </div>
                 )}
 
-                {/* ── VISTA ESTRUCTURADA ─────────────────────────────── */}
-                {activeTab === 'structured' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                        <Card>
-                            <SectionLabel>📋 Estructura Completa para Implementar</SectionLabel>
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
-                                <CopyBtn text={[
-                                    `TITLE: ${content.titleTag}`,
-                                    `META: ${content.metaDescription}`,
-                                    `\nH1: ${content.h1}`,
-                                    `\n${content.intro}`,
+                {/* ── HTML TAB ─────────────────────────────────── */}
+                {tab === 'code' && (
+                    <div style={{ ...card }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                            <Badge>📋 HTML Completo — Listo para implementar</Badge>
+                            <CopyBtn
+                                text={[
+                                    `<title>${content.titleTag}</title>`,
+                                    `<meta name="description" content="${content.metaDescription}">`,
+                                    `\n<h1>${content.h1}</h1>`,
+                                    `<p>${content.intro}</p>`,
                                     ...(content.sections ?? []).flatMap(s => [
-                                        `\n## ${s.h2}`,
-                                        s.intro,
-                                        ...(s.h3s ?? []).flatMap(h => [`\n### ${h.h3}`, h.content]),
-                                        s.imageSuggestion ? `\n[IMAGEN: ${s.imageSuggestion.description}]\n[ALT: ${s.imageSuggestion.altText}]` : '',
+                                        `\n<h2>${s.h2}</h2>`,
+                                        `<p>${s.intro}</p>`,
+                                        ...(s.h3s ?? []).flatMap(h => [`\n<h3>${h.h3}</h3>`, `<p>${h.content}</p>`]),
+                                        s.imageSuggestion ? `\n<!-- IMG: ${s.imageSuggestion.type} -->\n<img src="imagen.jpg" alt="${s.imageSuggestion.altText}">` : '',
+                                        s.cta ? `<!-- CTA: ${s.cta} -->` : '',
                                     ]),
-                                    `\n## ${content.conclusionH2}`,
-                                    content.conclusionContent,
-                                ].filter(Boolean).join('\n')} label="📋 Copiar TODO" />
-                            </div>
-                            <div style={{ overflowX: 'auto' }}>
-                                <pre style={{
-                                    background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.07)',
-                                    borderRadius: 10, padding: '16px 18px',
-                                    fontSize: '0.78rem', color: 'rgba(255,255,255,0.8)',
-                                    lineHeight: 1.7, fontFamily: 'monospace',
-                                    whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-                                }}>
-                                    {`<title>${content.titleTag}</title>
+                                    `\n<h2>${content.conclusionH2 ?? ''}</h2>`,
+                                    `<p>${content.conclusionContent ?? ''}</p>`,
+                                ].filter(Boolean).join('\n')}
+                                label="📋 Copiar TODO"
+                            />
+                        </div>
+                        <pre style={{
+                            background: 'rgba(0,0,0,0.45)', border: `1px solid ${T.border}`,
+                            borderRadius: 10, padding: '18px',
+                            fontSize: '0.76rem', color: 'rgba(240,244,255,0.82)',
+                            lineHeight: 1.75, fontFamily: 'monospace',
+                            whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+                            overflowX: 'auto', marginTop: 4,
+                        }}>
+                            {`<title>${content.titleTag}</title>
 <meta name="description" content="${content.metaDescription}">
 
 <h1>${content.h1}</h1>
@@ -628,50 +650,48 @@ ${(s.h3s ?? []).map(h => `
 <h3>${h.h3}</h3>
 <p>${h.content}</p>`).join('')}
 ${s.imageSuggestion ? `
-<!-- IMAGEN: ${s.imageSuggestion.type} / ${s.imageSuggestion.placement} -->
+<!-- Imagen tipo ${s.imageSuggestion.type} (${s.imageSuggestion.placement}) -->
 <img src="imagen.jpg" alt="${s.imageSuggestion.altText}">
-<!-- Descripción visual: ${s.imageSuggestion.description} -->` : ''}
-${s.cta ? `<!-- CTA: ${s.cta} -->` : ''}`).join('')}
-
+<!-- Visual: ${s.imageSuggestion.description} -->` : ''}
+${s.cta ? `<!-- CTA: ${s.cta} -->` : ''}
+`).join('')}
 <h2>${content.conclusionH2 ?? ''}</h2>
 <p>${content.conclusionContent ?? ''}</p>`}
-                                </pre>
-                            </div>
-                        </Card>
+                        </pre>
                     </div>
                 )}
             </div>
 
-            {/* Footer bar */}
+            {/* ── STICKY FOOTER BAR ─────────────────────────── */}
             <div style={{
-                position: 'fixed', bottom: 0, left: 0, right: 0,
-                background: 'rgba(6,11,20,0.95)', backdropFilter: 'blur(20px)',
-                borderTop: '1px solid var(--border)', padding: '10px 20px',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, zIndex: 50,
+                position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 80,
+                background: 'rgba(8,13,24,0.97)', backdropFilter: 'blur(18px)',
+                borderTop: `1px solid ${T.border}`, padding: '10px 24px',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12,
             }}>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    🤖 GPT-4o · <strong style={{ color: '#34D399' }}>~{content.estimatedWordCount?.toLocaleString()} palabras</strong>
-                    · {content.sections?.length ?? 0} secciones H2
-                    · {(content.sections ?? []).reduce((a, s) => a + (s.h3s?.length ?? 0), 0)} H3s
+                <div style={{ fontSize: '0.77rem', color: T.textMuted, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                    <span>🤖 <strong style={{ color: T.green }}>GPT-4o</strong></span>
+                    <span>📝 <strong style={{ color: T.text }}>~{content.estimatedWordCount?.toLocaleString()}</strong> palabras</span>
+                    <span>{h2count} H2 · {h3count} H3 · {imgcount} imgs</span>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                     <button onClick={() => window.history.back()} style={{
-                        background: 'transparent', border: '1px solid rgba(255,255,255,0.15)',
-                        borderRadius: 8, padding: '7px 16px', fontSize: '0.82rem', fontWeight: 600,
-                        color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'inherit',
-                    }}>← Volver al reporte</button>
+                        background: 'transparent', border: `1px solid ${T.border}`,
+                        borderRadius: 8, padding: '7px 16px', fontSize: '0.82rem', fontWeight: 700,
+                        color: T.textMuted, cursor: 'pointer', fontFamily: 'inherit',
+                    }}>← Volver</button>
                     <button onClick={() => window.print()} style={{
-                        background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
-                        color: 'white', border: 'none', borderRadius: 8, padding: '7px 18px',
-                        fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                        background: 'linear-gradient(135deg,#8b5cf6,#06b6d4)',
+                        color: 'white', border: 'none', borderRadius: 8, padding: '7px 20px',
+                        fontSize: '0.82rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
                     }}>📄 PDF</button>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
-// ── Generator Form ────────────────────────────────────────────────────
+/* ── Generator / Loading Form ────────────────────────────────────────── */
 function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }) {
     const searchParams = useSearchParams();
     const url = searchParams.get('url') ?? '';
@@ -688,18 +708,13 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
     const [autoStarted, setAutoStarted] = useState(false);
 
     const generate = useCallback(async () => {
-        if (!url) { setError('URL no proporcionada. Vuelve al reporte.'); return; }
-        setError('');
-        setLoading(true);
+        if (!url) { setError('URL no proporcionada.'); return; }
+        setError(''); setLoading(true);
         try {
             const res = await fetch('/api/generate-content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    url,
-                    businessType,
-                    platform,
-                    country,
+                    url, businessType, platform, country,
                     topPageUrl: topPageUrl || url,
                     primaryKeyword: primaryKeyword.trim(),
                     secondaryKeywords: secondaryKeywords.split(',').map(k => k.trim()).filter(Boolean),
@@ -715,115 +730,152 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
         }
     }, [url, businessType, platform, country, topPageUrl, primaryKeyword, secondaryKeywords, onResult]);
 
-    // Auto-start si viene con todos los params
-    if (!autoStarted && url && !loading) {
-        setAutoStarted(true);
-        generate();
-    }
+    if (!autoStarted && url && !loading) { setAutoStarted(true); generate(); }
 
-    if (loading) {
-        return (
-            <div className="loading-page">
-                <div className="loading-icon">🤖</div>
-                <div className="loading-title">GPT-4o generando contenido…</div>
-                <p className="loading-subtitle">
-                    Analizando keywords, construyendo estructura H1/H2/H3, redactando contenido optimizado y generando schema markup.
-                    Esto toma 20–40 segundos.
-                </p>
-                <div className="loading-steps" style={{ maxWidth: 380 }}>
-                    {[
-                        'Analizando negocio y mercado objetivo…',
-                        'Definiendo keywords primarias y LSI…',
-                        'Construyendo estructura de encabezados…',
-                        'Redactando contenido por sección…',
-                        'Generando sugerencias de imágenes…',
-                        'Creando schema markup JSON-LD…',
-                    ].map((s, i) => (
-                        <div className="loading-step active" key={i} style={{ fontSize: '0.84rem' }}>
-                            <div className="step-indicator active" style={{ animation: 'spin 1s linear infinite' }}>◌</div>
-                            {s}
-                        </div>
-                    ))}
-                </div>
+    const steps = [
+        'Analizando negocio y mercado objetivo…',
+        'Definiendo keywords primarias y LSI…',
+        'Construyendo estructura H1/H2/H3…',
+        'Redactando contenido por sección…',
+        'Generando sugerencias de imágenes…',
+        'Creando schema markup JSON-LD…',
+    ];
+
+    /* Loading screen */
+    if (loading) return (
+        <div style={{
+            minHeight: '100vh', background: T.bg, display: 'flex',
+            flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            padding: '40px 24px', gap: 24, fontFamily: 'Nunito,sans-serif', color: T.text,
+        }}>
+            <div style={{ fontSize: '3rem' }}>🤖</div>
+            <div style={{ fontSize: '1.4rem', fontWeight: 900, textAlign: 'center' }}>GPT-4o generando contenido…</div>
+            <p style={{ fontSize: '0.88rem', color: T.textMuted, textAlign: 'center', maxWidth: 420, lineHeight: 1.6 }}>
+                Analizando keywords, construyendo estructura y redactando contenido optimizado.<br />
+                Esto toma unos <strong style={{ color: T.green }}>20–40 segundos</strong>.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: 360 }}>
+                {steps.map((s, i) => (
+                    <div key={i} style={{
+                        display: 'flex', gap: 11, alignItems: 'center',
+                        background: T.bgCard, border: `1px solid ${T.border}`,
+                        borderRadius: 10, padding: '10px 14px',
+                        fontSize: '0.84rem', color: T.textMuted,
+                    }}>
+                        <span style={{
+                            width: 22, height: 22, borderRadius: '50%',
+                            background: T.purpleDim, border: `1.5px solid ${T.purpleBorder}`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: '0.7rem', color: T.purple, fontWeight: 800, flexShrink: 0,
+                            animation: 'spin 1.4s linear infinite',
+                        }}>◌</span>
+                        {s}
+                    </div>
+                ))}
             </div>
-        );
-    }
+        </div>
+    );
 
+    /* Form screen */
     return (
-        <div style={{ maxWidth: 620, margin: '0 auto', padding: '100px 20px 60px' }}>
-            <nav className="navbar">
-                <div className="navbar-logo"><div className="logo-icon">🔍</div><span>DiagnósticoSEO</span></div>
-                <a href="/" style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>← Inicio</a>
+        <div style={{ minHeight: '100vh', background: T.bg, fontFamily: 'Nunito,sans-serif', color: T.text }}>
+            {/* mini navbar */}
+            <nav style={{
+                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 58,
+                padding: '0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                background: 'rgba(8,13,24,0.95)', backdropFilter: 'blur(18px)',
+                borderBottom: `1px solid ${T.border}`,
+            }}>
+                <a href="/" style={{
+                    display: 'flex', alignItems: 'center', gap: 9,
+                    fontWeight: 900, fontSize: '1.05rem', color: T.purple, textDecoration: 'none'
+                }}>
+                    <div style={{
+                        width: 28, height: 28, background: T.purple, borderRadius: 6,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: 'white'
+                    }}>🔍</div>
+                    DiagnósticoSEO
+                </a>
+                <a href="/" style={{ fontSize: '0.8rem', color: T.textMuted, textDecoration: 'none' }}>← Inicio</a>
             </nav>
 
-            <div style={{
-                background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
-                borderRadius: 20, padding: '32px 28px',
-                position: 'relative', overflow: 'hidden',
-            }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #7c3aed, #06b6d4)' }} />
-                <div style={{ fontSize: '1.6rem', marginBottom: 8 }}>🤖</div>
-                <h1 style={{ fontSize: '1.4rem', fontWeight: 900, marginBottom: 6 }}>Generador de Contenido SEO</h1>
-                <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: 24 }}>
-                    GPT-4o generará el contenido completo (H1-H3, textos, imágenes, schema) optimizado para alcanzar 100/100 en SEO.
-                </p>
-
-                {url && (
+            <div style={{ maxWidth: 600, margin: '0 auto', padding: '90px 20px 60px' }}>
+                <div style={{
+                    ...card,
+                    border: `1px solid ${T.purpleBorder}`,
+                    position: 'relative', overflow: 'hidden',
+                }}>
                     <div style={{
-                        background: 'rgba(59,130,246,0.07)', border: '1px solid rgba(59,130,246,0.2)',
-                        borderRadius: 10, padding: '10px 14px', marginBottom: 20, fontSize: '0.82rem',
-                    }}>
-                        🌐 URL a optimizar: <strong style={{ color: '#60A5FA', wordBreak: 'break-all' }}>{topPageUrl || url}</strong>
-                    </div>
-                )}
+                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+                        background: 'linear-gradient(90deg,#8b5cf6,#06b6d4)'
+                    }} />
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                    <div>
-                        <label style={{ display: 'block', fontWeight: 600, fontSize: '0.86rem', marginBottom: 6 }}>
-                            🎯 Keyword principal <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(opcional, GPT la detecta automáticamente)</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="ej: taller mecánico santiago"
-                            value={primaryKeyword}
-                            onChange={e => setPrimaryKeyword(e.target.value)}
-                            style={{
-                                width: '100%', boxSizing: 'border-box',
-                                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                                borderRadius: 10, padding: '11px 14px', color: 'var(--text)',
-                                fontSize: '0.9rem', fontFamily: 'inherit',
-                            }}
-                        />
-                    </div>
-                    <div>
-                        <label style={{ display: 'block', fontWeight: 600, fontSize: '0.86rem', marginBottom: 6 }}>
-                            📋 Keywords secundarias <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(separadas por coma)</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="ej: servicio auto, cambio aceite, diagnóstico motor"
-                            value={secondaryKeywords}
-                            onChange={e => setSecondaryKeywords(e.target.value)}
-                            style={{
-                                width: '100%', boxSizing: 'border-box',
-                                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                                borderRadius: 10, padding: '11px 14px', color: 'var(--text)',
-                                fontSize: '0.9rem', fontFamily: 'inherit',
-                            }}
-                        />
-                    </div>
+                    <div style={{ fontSize: '2rem', marginBottom: 4 }}>🤖</div>
+                    <h1 style={{ fontSize: '1.4rem', fontWeight: 900, color: T.text, marginBottom: 6 }}>
+                        Generador de Contenido SEO
+                    </h1>
+                    <p style={{ fontSize: '0.87rem', color: T.textMuted, lineHeight: 1.6, marginBottom: 20 }}>
+                        GPT-4o generará el H1, H2, H3, textos, imágenes, schema y CTA optimizados para <strong style={{ color: T.green }}>100/100</strong> en SEO.
+                    </p>
 
-                    {error && <div className="error-msg">⚠️ {error}</div>}
+                    {url && (
+                        <div style={{
+                            background: T.blueDim, border: `1px solid ${T.blueBorder}`,
+                            borderRadius: 9, padding: '10px 14px', marginBottom: 16, fontSize: '0.82rem', color: T.textMuted,
+                        }}>
+                            🌐 URL: <strong style={{ color: T.blue, wordBreak: 'break-all' }}>{topPageUrl || url}</strong>
+                        </div>
+                    )}
+
+                    <label style={{ display: 'block', fontWeight: 700, fontSize: '0.84rem', marginBottom: 5, color: T.text }}>
+                        🎯 Keyword principal <span style={{ color: T.textSubtle, fontWeight: 400 }}>(opcional)</span>
+                    </label>
+                    <input
+                        type="text" value={primaryKeyword}
+                        placeholder="ej: taller mecánico santiago"
+                        onChange={e => setPrimaryKeyword(e.target.value)}
+                        style={{
+                            width: '100%', boxSizing: 'border-box',
+                            background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`,
+                            borderRadius: 9, padding: '11px 14px', color: T.text,
+                            fontSize: '0.9rem', fontFamily: 'inherit', marginBottom: 14, outline: 'none',
+                        }}
+                    />
+
+                    <label style={{ display: 'block', fontWeight: 700, fontSize: '0.84rem', marginBottom: 5, color: T.text }}>
+                        📋 Keywords secundarias <span style={{ color: T.textSubtle, fontWeight: 400 }}>(separadas por coma)</span>
+                    </label>
+                    <input
+                        type="text" value={secondaryKeywords}
+                        placeholder="ej: servicio auto, cambio aceite"
+                        onChange={e => setSecondaryKeywords(e.target.value)}
+                        style={{
+                            width: '100%', boxSizing: 'border-box',
+                            background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`,
+                            borderRadius: 9, padding: '11px 14px', color: T.text,
+                            fontSize: '0.9rem', fontFamily: 'inherit', marginBottom: 18, outline: 'none',
+                        }}
+                    />
+
+                    {error && (
+                        <div style={{
+                            background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)',
+                            borderRadius: 9, padding: '10px 14px', fontSize: '0.83rem',
+                            color: T.red, marginBottom: 14,
+                        }}>
+                            ⚠️ {error}
+                        </div>
+                    )}
 
                     <button onClick={generate} style={{
-                        background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
-                        color: 'white', border: 'none', borderRadius: 12, padding: '14px',
-                        fontSize: '1rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-                        boxShadow: '0 6px 24px rgba(124,58,237,0.35)',
+                        width: '100%', background: 'linear-gradient(135deg,#8b5cf6,#06b6d4)',
+                        color: 'white', border: 'none', borderRadius: 11, padding: '14px',
+                        fontSize: '1rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
+                        boxShadow: '0 6px 24px rgba(139,92,246,0.35)',
                     }}>
                         🤖 Generar Contenido con GPT-4o
                     </button>
-                    <p style={{ textAlign: 'center', fontSize: '0.76rem', color: 'var(--text-subtle)', margin: 0 }}>
+                    <p style={{ textAlign: 'center', fontSize: '0.74rem', color: T.textSubtle, marginTop: 8 }}>
                         ~20–40 segundos · GPT-4o · Score objetivo 100/100
                     </p>
                 </div>
@@ -832,17 +884,21 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
     );
 }
 
-// ── Inner ─────────────────────────────────────────────────────────────
+/* ── Inner ────────────────────────────────────────────────────────────── */
 function ContentInner() {
     const [result, setResult] = useState<GeneratedContent | null>(null);
     if (result) return <ContentView content={result} />;
     return <GeneratorForm onResult={setResult} />;
 }
 
-// ── Page Export ────────────────────────────────────────────────────────
+/* ── Page Export ──────────────────────────────────────────────────────── */
 export default function ContentPage() {
     return (
-        <Suspense fallback={<div className="loading-page"><div className="loading-icon">🤖</div><div className="loading-title">Cargando…</div></div>}>
+        <Suspense fallback={
+            <div style={{ minHeight: '100vh', background: '#080d18', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f0f4ff', fontFamily: 'Nunito,sans-serif', fontSize: '1.2rem', gap: 12 }}>
+                <span style={{ fontSize: '2rem' }}>🤖</span> Cargando…
+            </div>
+        }>
             <ContentInner />
         </Suspense>
     );
