@@ -95,6 +95,15 @@ export default function DashboardPage() {
     const [revoking, setRevoking] = useState<string | null>(null);
     const [creating, setCreating] = useState(false);
     const [newLabel, setNewLabel] = useState('');
+    const [paying, setPaying] = useState<string | null>(null);
+
+    // Detectar ?upgraded=1 al volver de MercadoPago
+    const upgraded = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('upgraded') === '1'
+        : false;
+    const upgradedPlan = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('plan') ?? ''
+        : '';
 
     /* Load keys for email */
     const loadKeys = useCallback(async (em: string) => {
@@ -128,6 +137,22 @@ export default function DashboardPage() {
         } catch (e) { setError(e instanceof Error ? e.message : 'Error'); }
         finally { setCreating(false); }
     }, [email, newLabel, loadKeys]);
+
+    /* Buy plan — redirect to MercadoPago */
+    const buyPlan = useCallback(async (planId: string, keyId?: string) => {
+        setPaying(planId); setError('');
+        try {
+            const res = await fetch('/api/create-plan-preference', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, plan: planId, keyId: keyId ?? '' }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error ?? 'Error al crear pago');
+            window.location.href = data.checkoutUrl;
+        } catch (e) { setError(e instanceof Error ? e.message : 'Error'); }
+        finally { setPaying(null); }
+    }, [email]);
 
     /* Revoke key */
     const revokeKey = useCallback(async (id: string) => {
@@ -214,6 +239,25 @@ export default function DashboardPage() {
                     </div>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+                        {/* Banner upgrade exitoso */}
+                        {upgraded && (
+                            <div style={{
+                                background: T.greenDim, border: `1px solid ${T.greenBorder}`,
+                                borderRadius: 14, padding: '16px 22px',
+                                display: 'flex', alignItems: 'center', gap: 14,
+                            }}>
+                                <span style={{ fontSize: '1.6rem' }}>🎉</span>
+                                <div>
+                                    <div style={{ fontWeight: 800, color: T.green, marginBottom: 3 }}>
+                                        ¡Pago aprobado! Tu plan fue actualizado
+                                    </div>
+                                    <div style={{ fontSize: '0.82rem', color: T.textMuted }}>
+                                        Tu API key ya tiene acceso al plan {upgradedPlan.toUpperCase()}. Puede tardar unos segundos en reflejarse.
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         {/* User info bar */}
                         <div style={{
@@ -395,10 +439,24 @@ export default function DashboardPage() {
                                                     </li>
                                                 ))}
                                             </ul>
-                                            {!isYours && (
-                                                <div style={{ marginTop: 14, fontSize: '0.75rem', color: T.textSubtle, textAlign: 'center' }}>
-                                                    Contacta a <a href="mailto:hola@diagnosticoseo.com" style={{ color: T.purple }}>hola@diagnosticoseo.com</a> para cambiar plan
-                                                </div>
+                                            {!isYours && p.priceMontly > 0 && (
+                                                <button
+                                                    onClick={() => buyPlan(p.id, activeKeys[0]?.id)}
+                                                    disabled={paying === p.id || !email}
+                                                    style={{
+                                                        marginTop: 14, width: '100%', fontFamily: 'inherit',
+                                                        background: p.id === 'agency'
+                                                            ? 'linear-gradient(135deg,#f59e0b,#fbbf24)'
+                                                            : 'linear-gradient(135deg,#3b82f6,#60a5fa)',
+                                                        color: '#000', border: 'none', borderRadius: 9,
+                                                        padding: '10px 0', fontSize: '0.84rem', fontWeight: 900,
+                                                        cursor: paying === p.id ? 'not-allowed' : 'pointer',
+                                                        opacity: paying === p.id ? 0.7 : 1,
+                                                        transition: 'all 0.2s',
+                                                    }}
+                                                >
+                                                    {paying === p.id ? '⏳ Redirigiendo…' : `💳 Contratar ${p.name} — $${p.priceMontly}/mes`}
+                                                </button>
                                             )}
                                         </div>
                                     );
