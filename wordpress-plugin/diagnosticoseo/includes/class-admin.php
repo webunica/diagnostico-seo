@@ -46,7 +46,7 @@ class DSEO_Admin {
     public static function sanitize_settings( array $input ): array {
         return [
             'api_key'  => sanitize_text_field( $input['api_key'] ?? '' ),
-            'base_url' => esc_url_raw( rtrim( $input['base_url'] ?? 'https://diagnosticoseo.vercel.app', '/' ) ),
+            'base_url' => esc_url_raw( rtrim( $input['base_url'] ?? 'https://diagnostico-seo.vercel.app', '/' ) ),
         ];
     }
 

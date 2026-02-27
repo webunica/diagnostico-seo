@@ -12,7 +12,7 @@ class DSEO_API {
     public function __construct() {
         $opts           = get_option( DSEO_OPTION_KEY, [] );
         $this->api_key  = $opts['api_key']  ?? '';
-        $this->base_url = rtrim( $opts['base_url'] ?? 'https://diagnosticoseo.vercel.app', '/' );
+        $this->base_url = rtrim( $opts['base_url'] ?? 'https://diagnostico-seo.vercel.app', '/' );
     }
 
     /* ── Helpers ──────────────────────────────────────────────────── */

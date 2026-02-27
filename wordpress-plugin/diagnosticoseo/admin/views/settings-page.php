@@ -43,7 +43,7 @@
                     <input type="url" id="dseo_base_url"
                            name="<?php echo esc_attr( DSEO_OPTION_KEY ); ?>[base_url]"
                            value="<?php echo esc_url( $base ); ?>"
-                           placeholder="https://diagnosticoseo.vercel.app" />
+                           placeholder="https://diagnostico-seo.vercel.app" />
                     <p class="dseo-hint">No modificar a menos que uses una instancia propia.</p>
                 </div>
 

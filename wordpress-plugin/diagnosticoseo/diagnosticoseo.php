@@ -35,7 +35,7 @@ register_activation_hook( __FILE__, function() {
     if ( ! get_option( DSEO_OPTION_KEY ) ) {
         update_option( DSEO_OPTION_KEY, [
             'api_key'  => '',
-            'base_url' => 'https://diagnosticoseo.vercel.app',
+            'base_url' => 'https://diagnostico-seo.vercel.app',
         ] );
     }
 } );
