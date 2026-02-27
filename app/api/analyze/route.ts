@@ -169,6 +169,7 @@ Responde SOLO con un JSON válido (sin markdown, sin texto adicional):
   "score": <número entero 0-100>,
   "businessType": "<tipo de negocio en español>",
   "platform": "<plataforma>",
+  "country": "<país estimado del negocio basado en URL, contenido e idioma>",
   "summary": "<resumen ejecutivo 2-3 oraciones>",
   "sections": {
     "technical": {
@@ -225,10 +226,46 @@ Responde SOLO con un JSON válido (sin markdown, sin texto adicional):
     "length": ${seo.descriptionLength},
     "status": "<good|warning|critical>",
     "recommendation": "<meta description recomendada>"
-  }
+  },
+  "keywordAnalysis": {
+    "currentKeywords": [
+      {
+        "keyword": "<keyword que el sitio parece estar apuntando ahora>",
+        "source": "<dónde aparece: title|h1|meta|contenido|url>",
+        "relevance": "<alta|media|baja>",
+        "assessment": "<breve evaluación de si está bien optimizada o no>"
+      }
+    ],
+    "missedKeywords": [
+      {
+        "keyword": "<keyword de alto potencial que el sitio NO está aprovechando>",
+        "monthlyVolume": "<estimado: ej. 500-2.000/mes>",
+        "intent": "<informacional|comercial|transaccional|local>",
+        "opportunity": "<por qué es una oportunidad concreta para este negocio>"
+      }
+    ],
+    "topicGaps": ["<tema o cluster de contenido completamente ausente que los competidores probablemente cubren>"]
+  },
+  "competitors": [
+    {
+      "name": "<nombre del competidor o sitio web>",
+      "url": "<URL estimada del competidor, ej: competidor.cl>",
+      "type": "<directo|indirecto>",
+      "reason": "<por qué es competidor de este negocio específico>",
+      "estimatedStrengths": "<qué probablemente hacen mejor en SEO y presencia digital>",
+      "opportunity": "<cómo este sitio podría superarlos o diferenciarse en SEO>"
+    }
+  ]
 }
 
-Reglas: score global pondera technical(25%)+onpage(20%)+content(25%)+schema(10%)+images(10%)+performance_estimada(10%). Mínimo 2 issues por sección relevante. Mínimo 3 quick wins. Mínimo 5 items en actionPlan. Todo en español. Sé específico y accionable.`;
+Reglas:
+- score global pondera technical(25%)+onpage(20%)+content(25%)+schema(10%)+images(10%)+performance_estimada(10%).
+- Mínimo 2 issues por sección relevante. Mínimo 3 quick wins. Mínimo 5 items en actionPlan.
+- keywordAnalysis.currentKeywords: entre 5 y 8 keywords reales detectadas en el HTML/meta.
+- keywordAnalysis.missedKeywords: entre 5 y 8 oportunidades reales basadas en el tipo de negocio y país detectado.
+- keywordAnalysis.topicGaps: entre 3 y 5 gaps de contenido.
+- competitors: exactamente 5 competidores. Deben ser REALES y específicos del mercado/nicho/país detectado. No inventes nombres. Si el negocio es local a Chile, los competidores deben ser del mercado chileno o hispanohablante relevante. Incluye tanto competidores directos (mismo nicho) como plataformas/directorios que aparecen arriba en búsquedas del mismo sector.
+- Todo en español. Sé específico y accionable.`;
 }
 
 // ── Verificar pago (MercadoPago o cupón) ─────────────────────────────
@@ -281,7 +318,7 @@ export async function POST(req: NextRequest) {
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
         const completion = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
-            max_tokens: 4096,
+            max_tokens: 6000,
             temperature: 0.3,
             response_format: { type: 'json_object' }, // ← fuerza JSON válido
             messages: [

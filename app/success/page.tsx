@@ -40,10 +40,40 @@ interface MetaAnalysis {
     recommendation: string;
 }
 
+interface CurrentKeyword {
+    keyword: string;
+    source: string;
+    relevance: 'alta' | 'media' | 'baja';
+    assessment: string;
+}
+
+interface MissedKeyword {
+    keyword: string;
+    monthlyVolume: string;
+    intent: 'informacional' | 'comercial' | 'transaccional' | 'local';
+    opportunity: string;
+}
+
+interface KeywordAnalysis {
+    currentKeywords: CurrentKeyword[];
+    missedKeywords: MissedKeyword[];
+    topicGaps: string[];
+}
+
+interface Competitor {
+    name: string;
+    url: string;
+    type: 'directo' | 'indirecto';
+    reason: string;
+    estimatedStrengths: string;
+    opportunity: string;
+}
+
 interface Report {
     score: number;
     businessType: string;
     platform: string;
+    country?: string;
     summary: string;
     analyzedUrl: string;
     analyzedAt: string;
@@ -59,6 +89,8 @@ interface Report {
     actionPlan: ActionItem[];
     titleAnalysis: MetaAnalysis;
     descriptionAnalysis: MetaAnalysis;
+    keywordAnalysis?: KeywordAnalysis;
+    competitors?: Competitor[];
 }
 
 // ── Modal content types ───────────────────────────────────────────────
@@ -776,10 +808,189 @@ function ReportView({ report }: { report: Report }) {
                     </div>
                 )}
 
+                {/* ── KEYWORD ANALYSIS ────────────────────────── */}
+                {report.keywordAnalysis && (
+                    <div className="report-section">
+                        <div className="report-section-header">
+                            <div className="report-section-title">🔑 Análisis de Palabras Clave</div>
+                        </div>
+                        <div className="report-section-body">
+
+                            {/* Keywords actuales */}
+                            {report.keywordAnalysis.currentKeywords?.length > 0 && (
+                                <div style={{ marginBottom: 28 }}>
+                                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 }}>
+                                        📍 Keywords que el sitio está apuntando actualmente
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                        {report.keywordAnalysis.currentKeywords.map((kw, i) => {
+                                            const relColor = kw.relevance === 'alta' ? '#34D399' : kw.relevance === 'media' ? '#FCD34D' : '#F87171';
+                                            return (
+                                                <div key={i} style={{
+                                                    display: 'flex', gap: 12, alignItems: 'flex-start',
+                                                    background: 'rgba(255,255,255,0.02)',
+                                                    border: '1px solid rgba(255,255,255,0.06)',
+                                                    borderRadius: 10, padding: '12px 16px',
+                                                }}>
+                                                    <div style={{
+                                                        flexShrink: 0, padding: '3px 10px', borderRadius: 20,
+                                                        fontSize: '0.7rem', fontWeight: 700,
+                                                        background: `${relColor}15`, color: relColor,
+                                                        border: `1px solid ${relColor}30`, whiteSpace: 'nowrap',
+                                                        alignSelf: 'center',
+                                                    }}>
+                                                        {kw.relevance === 'alta' ? '●●●' : kw.relevance === 'media' ? '●●○' : '●○○'} {kw.relevance}
+                                                    </div>
+                                                    <div style={{ flex: 1 }}>
+                                                        <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 3 }}>{kw.keyword}</div>
+                                                        <div style={{ display: 'flex', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
+                                                            <span style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', background: 'rgba(255,255,255,0.05)', padding: '1px 8px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.08)' }}>
+                                                                📜 {kw.source}
+                                                            </span>
+                                                        </div>
+                                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{kw.assessment}</div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Keywords perdidas / oportunidades */}
+                            {report.keywordAnalysis.missedKeywords?.length > 0 && (
+                                <div style={{ marginBottom: 28 }}>
+                                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#FB923C', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 }}>
+                                        🚀 Oportunidades de keywords NO aprovechadas
+                                    </div>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
+                                        {report.keywordAnalysis.missedKeywords.map((kw, i) => {
+                                            const intentColors: Record<string, string> = {
+                                                informacional: '#60A5FA', comercial: '#A78BFA',
+                                                transaccional: '#34D399', local: '#FBBF24',
+                                            };
+                                            const ic = intentColors[kw.intent] ?? '#60A5FA';
+                                            return (
+                                                <div key={i} style={{
+                                                    background: 'rgba(251,146,60,0.04)',
+                                                    border: '1px solid rgba(251,146,60,0.2)',
+                                                    borderRadius: 12, padding: '14px 16px',
+                                                    display: 'flex', flexDirection: 'column', gap: 8,
+                                                }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+                                                        <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{kw.keyword}</div>
+                                                        <span style={{ fontSize: '0.68rem', fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${ic}15`, color: ic, border: `1px solid ${ic}30`, whiteSpace: 'nowrap' }}>
+                                                            {kw.intent}
+                                                        </span>
+                                                    </div>
+                                                    <div style={{ fontSize: '0.75rem', color: '#FB923C', fontWeight: 600 }}>📊 {kw.monthlyVolume}</div>
+                                                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{kw.opportunity}</div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Topic gaps */}
+                            {report.keywordAnalysis.topicGaps?.length > 0 && (
+                                <div>
+                                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#F87171', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>
+                                        🕳️ Vacíos de contenido (Topic Gaps)
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                                        {report.keywordAnalysis.topicGaps.map((gap, i) => (
+                                            <span key={i} style={{
+                                                fontSize: '0.82rem', padding: '6px 14px', borderRadius: 20,
+                                                background: 'rgba(239,68,68,0.07)',
+                                                border: '1px solid rgba(239,68,68,0.2)',
+                                                color: '#FCA5A5',
+                                            }}>
+                                                ✗ {gap}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* ── COMPETITORS ─────────────────────────────────── */}
+                {report.competitors && report.competitors.length > 0 && (
+                    <div className="report-section">
+                        <div className="report-section-header">
+                            <div className="report-section-title">⚔️ Análisis de Competencia</div>
+                            <span className="section-score-pill warning">{report.competitors.length} competidores</span>
+                        </div>
+                        <div className="report-section-body">
+                            <p className="section-summary" style={{ marginBottom: 20 }}>
+                                Competidores estimados por IA basados en el nicho, tipo de negocio y mercado detectado. Úsalos como referencia para tu estrategia SEO.
+                            </p>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                                {report.competitors.map((comp, i) => (
+                                    <div key={i} style={{
+                                        background: 'rgba(255,255,255,0.02)',
+                                        border: `1px solid ${comp.type === 'directo' ? 'rgba(239,68,68,0.2)' : 'rgba(245,158,11,0.2)'}`,
+                                        borderRadius: 12, padding: '16px 20px',
+                                        display: 'flex', gap: 16, alignItems: 'flex-start',
+                                    }}>
+                                        {/* Número */}
+                                        <div style={{
+                                            width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
+                                            background: comp.type === 'directo' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)',
+                                            border: `1.5px solid ${comp.type === 'directo' ? 'rgba(239,68,68,0.3)' : 'rgba(245,158,11,0.3)'}`,
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            fontSize: '0.85rem', fontWeight: 800,
+                                            color: comp.type === 'directo' ? '#FCA5A5' : '#FCD34D',
+                                        }}>
+                                            {i + 1}
+                                        </div>
+                                        <div style={{ flex: 1, minWidth: 0 }}>
+                                            {/* Header */}
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
+                                                <div>
+                                                    <div style={{ fontWeight: 800, fontSize: '1rem' }}>{comp.name}</div>
+                                                    <a href={`https://${comp.url.replace(/^https?:\/\//, '')}`} target="_blank" rel="noopener noreferrer"
+                                                        style={{ fontSize: '0.75rem', color: '#60A5FA', textDecoration: 'none' }}>↗ {comp.url}</a>
+                                                </div>
+                                                <span style={{
+                                                    fontSize: '0.7rem', fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+                                                    background: comp.type === 'directo' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)',
+                                                    border: `1px solid ${comp.type === 'directo' ? 'rgba(239,68,68,0.3)' : 'rgba(245,158,11,0.3)'}`,
+                                                    color: comp.type === 'directo' ? '#FCA5A5' : '#FCD34D',
+                                                    whiteSpace: 'nowrap',
+                                                }}>
+                                                    {comp.type === 'directo' ? '⚔️ Directo' : '🔀 Indirecto'}
+                                                </span>
+                                            </div>
+                                            {/* Razón */}
+                                            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: 10, lineHeight: 1.5 }}>
+                                                {comp.reason}
+                                            </div>
+                                            {/* Fortalezas y oportunidad */}
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                                                <div style={{ background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 8, padding: '10px 12px' }}>
+                                                    <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#FCA5A5', marginBottom: 4 }}>💪 Sus fortalezas</div>
+                                                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{comp.estimatedStrengths}</div>
+                                                </div>
+                                                <div style={{ background: 'rgba(52,211,153,0.05)', border: '1px solid rgba(52,211,153,0.15)', borderRadius: 8, padding: '10px 12px' }}>
+                                                    <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#34D399', marginBottom: 4 }}>🎯 Tu oportunidad</div>
+                                                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{comp.opportunity}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* CTA footer */}
                 <div style={{ textAlign: 'center', padding: '20px 0 60px' }}>
                     <p style={{ color: 'var(--text-subtle)', fontSize: '0.82rem' }}>
-                        Reporte generado por DiagnósticoSEO.com · Potenciado por ChatGPT (GPT-4o)
+                        Reporte generado por DiagnósticoSEO.com · Potenciado por ChatGPT (GPT-4o-mini)
                     </p>
                 </div>
             </div>
