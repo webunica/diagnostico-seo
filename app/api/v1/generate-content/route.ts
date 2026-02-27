@@ -12,7 +12,7 @@ import OpenAI from 'openai';
 export async function POST(req: NextRequest) {
     // ── 1. Auth ───────────────────────────────────────────────────────
     const rawKey = req.headers.get('X-API-Key') ?? req.headers.get('x-api-key') ?? '';
-    const authResult = validateAndConsume(rawKey);
+    const authResult = await validateAndConsume(rawKey);
 
     if (!authResult.ok) {
         return NextResponse.json(
