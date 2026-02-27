@@ -2,7 +2,10 @@
 /**
  * Vista del Meta Box en el editor de posts/páginas.
  *
- * Variables disponibles (inyectadas desde DSEO_Metabox::render):
+ * IMPORTANTE: Todos los <button> deben tener type="button"
+ * porque están dentro del form de WordPress. Sin eso, el
+ * navegador los trata como type="submit" y recarga la página.
+ *
  * @var WP_Post $post
  * @var string  $post_url
  * @var string  $saved_keyword
@@ -14,11 +17,12 @@ defined( 'ABSPATH' ) || exit;
 
 $opts    = get_option( DSEO_OPTION_KEY, [] );
 $has_key = ! empty( $opts['api_key'] );
-// NOTA: no llamar wp_localize_script aquí — ya se hizo en admin_enqueue_scripts
-// El objeto DSEO ya contiene ajax_url, nonce, post_url y post_id correctos.
+// wp_localize_script ya se ejecutó en admin_enqueue_scripts con post_url y post_id correctos.
 ?>
 
-<div class="dseo-metabox" id="dseo-metabox" data-post-url="<?php echo esc_url( $post_url ); ?>" data-post-id="<?php echo esc_attr( $post->ID ); ?>">
+<div class="dseo-metabox" id="dseo-metabox"
+     data-post-url="<?php echo esc_url( $post_url ); ?>"
+     data-post-id="<?php echo esc_attr( $post->ID ); ?>">
 
     <?php if ( ! $has_key ) : ?>
     <div class="dseo-notice dseo-notice-warn">
@@ -27,12 +31,12 @@ $has_key = ! empty( $opts['api_key'] );
     </div>
     <?php endif; ?>
 
-    <!-- Tabs -->
+    <!-- Tabs: type="button" es OBLIGATORIO dentro de un <form> -->
     <div class="dseo-tabs">
-        <button class="dseo-tab dseo-tab-active" data-tab="analyze">🔍 Analizar SEO</button>
-        <button class="dseo-tab" data-tab="generate">✨ Generar Contenido</button>
+        <button type="button" class="dseo-tab dseo-tab-active" data-tab="analyze">🔍 Analizar SEO</button>
+        <button type="button" class="dseo-tab" data-tab="generate">✨ Generar Contenido</button>
         <?php if ( $saved_score ) : ?>
-        <button class="dseo-tab" data-tab="results">📊 Último Resultado</button>
+        <button type="button" class="dseo-tab" data-tab="results">📊 Último Resultado</button>
         <?php endif; ?>
     </div>
 
@@ -40,16 +44,20 @@ $has_key = ! empty( $opts['api_key'] );
     <div class="dseo-tab-content" data-content="analyze">
         <div class="dseo-row">
             <div class="dseo-field-group">
-                <label>URL a analizar</label>
-                <input type="url" id="dseo-analyze-url" value="<?php echo esc_url( $post_url ); ?>" placeholder="https://…" />
+                <label for="dseo-analyze-url">URL a analizar</label>
+                <input type="url" id="dseo-analyze-url"
+                       value="<?php echo esc_url( $post_url ); ?>"
+                       placeholder="https://…" />
             </div>
-            <button type="button" id="dseo-analyze-btn" class="dseo-btn dseo-btn-primary" <?php disabled( ! $has_key ); ?>>
+            <button type="button" id="dseo-analyze-btn"
+                    class="dseo-btn dseo-btn-primary"
+                    <?php disabled( ! $has_key ); ?>>
                 🔍 Analizar
             </button>
         </div>
 
         <div id="dseo-analyze-result" style="display:none;">
-            <!-- Score -->
+            <!-- Score circular -->
             <div class="dseo-score-wrap">
                 <div class="dseo-score-circle">
                     <svg viewBox="0 0 120 120" class="dseo-score-svg">
@@ -65,7 +73,7 @@ $has_key = ! empty( $opts['api_key'] );
                 </div>
             </div>
 
-            <!-- Sections scores -->
+            <!-- Secciones técnico / on-page / contenido -->
             <div class="dseo-sections" id="dseo-sections"></div>
 
             <!-- Quick wins -->
@@ -74,7 +82,7 @@ $has_key = ! empty( $opts['api_key'] );
                 <div id="dseo-quick-wins"></div>
             </div>
 
-            <!-- Competitors -->
+            <!-- Competidores -->
             <div id="dseo-competitors-wrap" style="display:none;">
                 <div class="dseo-section-title">🏆 Competidores detectados</div>
                 <div id="dseo-competitors"></div>
@@ -91,19 +99,22 @@ $has_key = ! empty( $opts['api_key'] );
     <!-- Tab: Generate -->
     <div class="dseo-tab-content" data-content="generate" style="display:none;">
         <div class="dseo-alert dseo-alert-info">
-            ✨ Genera H1, H2, H3, párrafos, imágenes y schema markup optimizados. <strong>Requiere plan Pro / Agency.</strong>
+            ✨ Genera H1, H2, H3, párrafos, imágenes y schema markup optimizados.
+            <strong>Requiere plan Pro / Agency.</strong>
         </div>
 
         <div class="dseo-row">
             <div class="dseo-field-group" style="flex:2">
-                <label>Keyword principal</label>
-                <input type="text" id="dseo-keyword" value="<?php echo esc_attr( $saved_keyword ); ?>"
+                <label for="dseo-keyword">Keyword principal</label>
+                <input type="text" id="dseo-keyword"
+                       value="<?php echo esc_attr( $saved_keyword ); ?>"
                        placeholder="ej: taller mecánico santiago" />
+                <!-- Hidden para que WP guarde la keyword al hacer Save -->
                 <input type="hidden" name="dseo_primary_keyword" id="dseo-keyword-hidden"
                        value="<?php echo esc_attr( $saved_keyword ); ?>" />
             </div>
             <div class="dseo-field-group">
-                <label>País</label>
+                <label for="dseo-country">País</label>
                 <select id="dseo-country">
                     <option value="Chile">Chile</option>
                     <option value="Argentina">Argentina</option>
@@ -115,7 +126,9 @@ $has_key = ! empty( $opts['api_key'] );
             </div>
         </div>
 
-        <button type="button" id="dseo-generate-btn" class="dseo-btn dseo-btn-success" <?php disabled( ! $has_key ); ?>>
+        <button type="button" id="dseo-generate-btn"
+                class="dseo-btn dseo-btn-success"
+                <?php disabled( ! $has_key ); ?>>
             ✨ Generar Contenido SEO
         </button>
 
@@ -137,48 +150,48 @@ $has_key = ! empty( $opts['api_key'] );
             <div class="dseo-generated-block">
                 <div class="dseo-gen-label">Title Tag</div>
                 <div class="dseo-gen-content" id="gen-title"></div>
-                <button class="dseo-copy-btn" data-target="gen-title">📋 Copiar</button>
+                <button type="button" class="dseo-copy-btn" data-target="gen-title">📋 Copiar</button>
             </div>
             <div class="dseo-generated-block">
                 <div class="dseo-gen-label">Meta Description</div>
                 <div class="dseo-gen-content" id="gen-meta"></div>
-                <button class="dseo-copy-btn" data-target="gen-meta">📋 Copiar</button>
+                <button type="button" class="dseo-copy-btn" data-target="gen-meta">📋 Copiar</button>
             </div>
             <div class="dseo-generated-block">
                 <div class="dseo-gen-label">H1</div>
                 <div class="dseo-gen-content" id="gen-h1"></div>
-                <button class="dseo-copy-btn" data-target="gen-h1">📋 Copiar</button>
+                <button type="button" class="dseo-copy-btn" data-target="gen-h1">📋 Copiar</button>
             </div>
             <div class="dseo-generated-block">
                 <div class="dseo-gen-label">Intro</div>
                 <div class="dseo-gen-content" id="gen-intro"></div>
-                <button class="dseo-copy-btn" data-target="gen-intro">📋 Copiar</button>
+                <button type="button" class="dseo-copy-btn" data-target="gen-intro">📋 Copiar</button>
             </div>
 
-            <!-- H2 Sections -->
+            <!-- Secciones H2 → H3 -->
             <div class="dseo-gen-label" style="margin-top:16px">Secciones H2 → H3</div>
             <div id="gen-sections"></div>
 
-            <!-- Schema -->
+            <!-- Schema Markup -->
             <div class="dseo-generated-block">
                 <div class="dseo-gen-label">Schema Markup (JSON-LD)</div>
                 <pre class="dseo-gen-code" id="gen-schema"></pre>
-                <button class="dseo-copy-btn" data-target="gen-schema">📋 Copiar JSON-LD</button>
+                <button type="button" class="dseo-copy-btn" data-target="gen-schema">📋 Copiar JSON-LD</button>
             </div>
 
-            <!-- Word count -->
+            <!-- Stats -->
             <div class="dseo-gen-stats" id="gen-stats"></div>
         </div>
     </div>
 
-    <!-- Tab: Last Result -->
+    <!-- Tab: Último Resultado guardado -->
     <?php if ( $saved_score ) : ?>
     <div class="dseo-tab-content" data-content="results" style="display:none;">
         <div class="dseo-notice dseo-notice-info">
             📅 Último análisis: <strong><?php echo esc_html( $analysis_date ); ?></strong>
         </div>
         <div class="dseo-saved-score">
-            <div class="dseo-saved-score-num" style="color:<?php echo intval($saved_score) >= 70 ? '#10b981' : ( intval($saved_score) >= 40 ? '#f59e0b' : '#ef4444' ); ?>">
+            <div class="dseo-saved-score-num" style="color:<?php echo intval( $saved_score ) >= 70 ? '#10b981' : ( intval( $saved_score ) >= 40 ? '#f59e0b' : '#ef4444' ); ?>">
                 <?php echo esc_html( $saved_score ); ?>/100
             </div>
             <div>Score guardado del último análisis</div>
