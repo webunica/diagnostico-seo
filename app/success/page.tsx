@@ -1105,6 +1105,85 @@ function ReportView({ report }: { report: Report }) {
                     </div>
                 )}
 
+                {/* ── GENERADOR DE CONTENIDO SEO ──────────────────────────────── */}
+                <div style={{
+                    background: 'linear-gradient(135deg, rgba(124,58,237,0.14), rgba(6,182,212,0.07))',
+                    border: '1px solid rgba(124,58,237,0.32)',
+                    borderRadius: 20, padding: '30px 28px',
+                    position: 'relative', overflow: 'hidden',
+                    textAlign: 'center',
+                }}>
+                    <div style={{
+                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+                        background: 'linear-gradient(90deg, #7c3aed, #06b6d4)',
+                    }} />
+                    <div style={{ fontSize: '2.2rem', marginBottom: 10 }}>🤖</div>
+                    <div style={{ fontSize: '1.3rem', fontWeight: 900, marginBottom: 8 }}>
+                        Genera el contenido optimizado para llegar al 100%
+                    </div>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', maxWidth: 480, margin: '0 auto 20px', lineHeight: 1.6 }}>
+                        GPT-4o redactará el H1, H2, H3, párrafos, sugerencias de imágenes con alt text, schema markup y enlaces internos — todo diseñado para alcanzar un score SEO de <strong style={{ color: '#34D399' }}>100/100</strong>.
+                    </p>
+                    <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
+                        {[
+                            '✅ H1 · H2 · H3 optimizados',
+                            '🖼️ Sugerencias de imágenes + alt text',
+                            '🏗️ Schema Markup JSON-LD',
+                            '🔗 Enlaces internos sugeridos',
+                            '📋 SEO Checklist 100/100',
+                            '📄 Export a PDF',
+                        ].map((f, i) => (
+                            <span key={i} style={{
+                                fontSize: '0.75rem', padding: '4px 12px', borderRadius: 20,
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                color: 'rgba(255,255,255,0.6)', fontWeight: 600,
+                            }}>{f}</span>
+                        ))}
+                    </div>
+                    {/* Botones por URL */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 480, margin: '0 auto' }}>
+                        {/* Homepage */}
+                        <a
+                            href={`/content?url=${encodeURIComponent(report.analyzedUrl)}&bt=${encodeURIComponent(report.businessType)}&country=${encodeURIComponent((report as unknown as Record<string, string>).country ?? 'Chile')}&kw=${encodeURIComponent(report.keywordAnalysis?.currentKeywords?.[0]?.keyword ?? '')}`}
+                            style={{
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                                background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+                                color: 'white', borderRadius: 12, padding: '13px 24px',
+                                fontSize: '0.96rem', fontWeight: 700, textDecoration: 'none',
+                                boxShadow: '0 6px 28px rgba(124,58,237,0.4)',
+                                transition: 'opacity 0.2s',
+                            }}
+                        >
+                            🤖 Generar contenido para Homepage
+                            <span style={{ fontSize: '0.72rem', opacity: 0.7 }}>{report.analyzedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+                        </a>
+                        {/* Top Pages */}
+                        {report.topPages && report.topPages.slice(0, 5).map((page, i) => (
+                            <a
+                                key={i}
+                                href={`/content?url=${encodeURIComponent(report.analyzedUrl)}&pageUrl=${encodeURIComponent(page.url)}&bt=${encodeURIComponent(report.businessType)}&country=${encodeURIComponent((report as unknown as Record<string, string>).country ?? 'Chile')}&kw=${encodeURIComponent(page.targetKeywords?.[0] ?? '')}`}
+                                style={{
+                                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
+                                    background: 'rgba(124,58,237,0.08)',
+                                    border: '1px solid rgba(124,58,237,0.25)',
+                                    color: '#c084fc', borderRadius: 10, padding: '11px 18px',
+                                    fontSize: '0.84rem', fontWeight: 600, textDecoration: 'none',
+                                    transition: 'background 0.2s',
+                                }}
+                            >
+                                <span>📄 Generar contenido para página #{i + 1}</span>
+                                <span style={{ fontSize: '0.7rem', opacity: 0.65, maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    {page.url.replace(/^https?:\/\//, '')}
+                                </span>
+                            </a>
+                        ))}
+                    </div>
+                    <p style={{ fontSize: '0.73rem', color: 'var(--text-subtle)', marginTop: 16 }}>
+                        Usa GPT-4o · ~20–40 segundos · Incluido en tu reporte
+                    </p>
+                </div>
+
                 {/* CTA footer */}
                 <div style={{ textAlign: 'center', padding: '20px 0 60px' }}>
                     <p style={{ color: 'var(--text-subtle)', fontSize: '0.82rem' }}>
