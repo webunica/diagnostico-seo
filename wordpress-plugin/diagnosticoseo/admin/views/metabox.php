@@ -14,13 +14,8 @@ defined( 'ABSPATH' ) || exit;
 
 $opts    = get_option( DSEO_OPTION_KEY, [] );
 $has_key = ! empty( $opts['api_key'] );
-
-wp_localize_script( 'dseo-admin', 'DSEO', [
-    'ajax_url' => admin_url( 'admin-ajax.php' ),
-    'nonce'    => wp_create_nonce( 'dseo_nonce' ),
-    'post_url' => $post_url,
-    'post_id'  => $post->ID,
-] );
+// NOTA: no llamar wp_localize_script aquí — ya se hizo en admin_enqueue_scripts
+// El objeto DSEO ya contiene ajax_url, nonce, post_url y post_id correctos.
 ?>
 
 <div class="dseo-metabox" id="dseo-metabox" data-post-url="<?php echo esc_url( $post_url ); ?>" data-post-id="<?php echo esc_attr( $post->ID ); ?>">

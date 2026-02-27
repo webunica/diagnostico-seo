@@ -69,13 +69,25 @@ class DSEO_Admin {
             DSEO_PLUGIN_URL . 'admin/js/admin.js',
             [ 'jquery' ],
             DSEO_VERSION,
-            true
+            true  // Load in footer AFTER the DOM is ready
         );
+
+        // Resolve post URL/ID here (not inside render callback which is too late)
+        $post_id  = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
+        $post_url = '';
+        if ( $post_id ) {
+            $post_url = get_permalink( $post_id ) ?: '';
+        }
+        if ( ! $post_url ) {
+            $post_url = trailingslashit( get_site_url() );
+        }
 
         wp_localize_script( 'dseo-admin', 'DSEO', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( 'dseo_nonce' ),
-            'post_url' => '',
+            'post_url' => $post_url,
+            'post_id'  => $post_id,
+            'timeout'  => 90000, // 90 s in ms for jQuery AJAX
         ] );
     }
 
@@ -124,6 +136,11 @@ class DSEO_Admin {
     /* ── AJAX: generate ───────────────────────────────────────────── */
 
     public static function ajax_generate(): void {
+        // GPT-4o puede tardar 30-60 seg — extender PHP timeout
+        if ( function_exists( 'set_time_limit' ) ) {
+            set_time_limit( 120 );
+        }
+
         check_ajax_referer( 'dseo_nonce', 'nonce' );
         if ( ! current_user_can( 'edit_posts' ) ) wp_send_json_error( 'Sin permisos', 403 );
 
@@ -143,9 +160,9 @@ class DSEO_Admin {
         // Guardar resultado en post meta si se envió post_id
         $post_id = intval( $_POST['post_id'] ?? 0 );
         if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
-            update_post_meta( $post_id, '_dseo_last_analysis',    wp_json_encode( $result ) );
-            update_post_meta( $post_id, '_dseo_analysis_date',    current_time( 'mysql' ) );
-            update_post_meta( $post_id, '_dseo_primary_keyword',  $keyword );
+            update_post_meta( $post_id, '_dseo_last_analysis',   wp_json_encode( $result ) );
+            update_post_meta( $post_id, '_dseo_analysis_date',   current_time( 'mysql' ) );
+            update_post_meta( $post_id, '_dseo_primary_keyword', $keyword );
         }
 
         wp_send_json_success( $result );
