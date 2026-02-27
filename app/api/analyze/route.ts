@@ -86,6 +86,66 @@ function extractSEO(html: string) {
     };
 }
 
+// ── Parsear URLs del sitemap XML ────────────────────────────────────
+function parseSitemapUrls(sitemapXml: string, origin: string, limit = 10): string[] {
+    const urls: string[] = [];
+    const re = /<loc>([^<]+)<\/loc>/gi;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(sitemapXml)) !== null && urls.length < limit) {
+        const href = m[1].trim();
+        if (
+            (href.startsWith(origin) || href.startsWith('/')) &&
+            !href.match(/\.(jpg|jpeg|png|gif|webp|svg|pdf|xml|zip|css|js)(\?.*)?$/i)
+        ) {
+            const abs = href.startsWith('http') ? href : `${origin}${href}`;
+            if (!urls.includes(abs)) urls.push(abs);
+        }
+    }
+    return urls;
+}
+
+// ── Datos SEO básicos de una página interna ──────────────────────────
+interface InternalPage {
+    url: string;
+    status: number;
+    title: string | null;
+    h1: string | null;
+    description: string | null;
+    wordCount: number;
+    hasSchema: boolean;
+    imgNoAlt: number;
+    imgTotal: number;
+    canonical: string | null;
+}
+
+async function fetchInternalPages(urls: string[]): Promise<InternalPage[]> {
+    const results = await Promise.allSettled(
+        urls.map(async (pageUrl): Promise<InternalPage> => {
+            const r = await safeFetch(pageUrl, 10000);
+            if (!r) return { url: pageUrl, status: -1, title: null, h1: null, description: null, wordCount: 0, hasSchema: false, imgNoAlt: 0, imgTotal: 0, canonical: null };
+            const html = await r.text();
+            const get = (pat: RegExp) => html.match(pat)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? null;
+            return {
+                url: pageUrl,
+                status: r.status,
+                title: get(/<title[^>]*>([\s\S]*?)<\/title>/i),
+                h1: get(/<h1[^>]*>([\s\S]*?)<\/h1>/i),
+                description: get(/<meta[^>]+name=["']description["'][^>]+content=["']([\s\S]*?)["']/i)
+                    ?? get(/<meta[^>]+content=["']([\s\S]*?)["'][^>]+name=["']description["']/i),
+                wordCount: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').length,
+                hasSchema: html.includes('application/ld+json'),
+                imgTotal: (html.match(/<img[^>]*>/gi) ?? []).length,
+                imgNoAlt: (html.match(/<img(?![^>]*\balt=)[^>]*>/gi) ?? []).length,
+                canonical: get(/<link[^>]+rel=["']canonical["'][^>]+href=["']([\s\S]*?)["']/i),
+            };
+        })
+    );
+    return results
+        .filter((r): r is PromiseFulfilledResult<InternalPage> => r.status === 'fulfilled')
+        .map(r => r.value)
+        .filter(p => p.status >= 200 && p.status < 400);
+}
+
 // ── Recopilador de datos ───────────────────────────────────────────────
 async function gatherData(url: string) {
     const normalized = /^https?:\/\//i.test(url) ? url : `https://${url}`;
@@ -113,7 +173,39 @@ async function gatherData(url: string) {
     if (rResp?.ok) data.robotsTxt = await rResp.text();
 
     const sResp = await safeFetch(`${origin}/sitemap.xml`);
-    if (sResp?.ok) data.sitemapXml = (await sResp.text()).substring(0, 3000);
+    let sitemapRaw = '';
+    if (sResp?.ok) {
+        sitemapRaw = await sResp.text();
+        data.sitemapXml = sitemapRaw.substring(0, 3000);
+    }
+
+    // ── Crawl de páginas internas (sitemap → hasta 8 URLs) ────────────
+    let internalUrls: string[] = sitemapRaw
+        ? parseSitemapUrls(sitemapRaw, origin, 10)
+        : [];
+
+    // Fallback: extraer links del HTML de la homepage
+    if (internalUrls.length === 0) {
+        const linkRe = /href=["']([^"'#?]+)["']/gi;
+        let lm: RegExpExecArray | null;
+        const homeHtml = String(data.html);
+        while ((lm = linkRe.exec(homeHtml)) !== null && internalUrls.length < 10) {
+            const href = lm[1].trim();
+            if (href.startsWith('/') && href.length > 1 && !href.match(/\.(jpg|jpeg|png|gif|webp|svg|pdf|xml|zip|css|js)(\?.*)?$/i)) {
+                const abs = `${origin}${href}`;
+                if (!internalUrls.includes(abs)) internalUrls.push(abs);
+            }
+        }
+    }
+
+    // Excluir homepage y limitar a 8
+    internalUrls = internalUrls
+        .filter(u => u.replace(/\/$/, '') !== origin.replace(/\/$/, ''))
+        .slice(0, 8);
+
+    data.internalPages = internalUrls.length > 0
+        ? await fetchInternalPages(internalUrls)
+        : [];
 
     return data;
 }
@@ -158,6 +250,20 @@ ${pageData.robotsTxt ? `robots.txt:\n${String(pageData.robotsTxt).substring(0, 8
 
 SITEMAP:
 ${pageData.sitemapXml ? `Sitemap:\n${String(pageData.sitemapXml).substring(0, 600)}` : 'Sitemap: NO ENCONTRADO'}
+
+PÁGINAS INTERNAS ANALIZADAS (datos SEO reales de cada URL):
+${(() => {
+            const pages = (pageData.internalPages as InternalPage[] | undefined) ?? [];
+            if (pages.length === 0) return 'No se encontraron páginas internas (sin sitemap ni links detectados).';
+            return pages.map((p, i) => [
+                `[${i + 1}] URL: ${p.url}`,
+                `    Title: ${p.title ?? 'Sin title'}`,
+                `    H1: ${p.h1 ?? 'Sin H1'}`,
+                `    Meta desc: ${p.description ? p.description.substring(0, 100) : 'Sin descripción'}`,
+                `    Palabras: ${p.wordCount} | Schema: ${p.hasSchema} | Imgs sin alt: ${p.imgNoAlt}/${p.imgTotal}`,
+                `    Canonical: ${p.canonical ?? 'No definido'}`,
+            ].join('\n')).join('\n\n');
+        })()}
 
 HTML (primeros 5000 chars):
 ${String(pageData.html).substring(0, 5000)}
@@ -255,6 +361,18 @@ Responde SOLO con un JSON válido (sin markdown, sin texto adicional):
       "estimatedStrengths": "<qué probablemente hacen mejor en SEO y presencia digital>",
       "opportunity": "<cómo este sitio podría superarlos o diferenciarse en SEO>"
     }
+  ],
+  "topPages": [
+    {
+      "url": "<URL completa de la página interna analizada>",
+      "title": "<title tag real de esa página>",
+      "targetKeywords": ["<keyword principal que esta URL apunta>", "<keyword secundaria>"],
+      "rankingPotential": "<alto|medio|bajo>",
+      "estimatedPosition": "<Top 3|Top 10|Top 20|Top 50|No rankea>",
+      "rankingStrengths": "<qué tiene bien esta página para rankear (title, contenido, schema, etc.)>",
+      "rankingWeaknesses": "<qué le falta para posicionar mejor>",
+      "improvement": "<acción concreta y prioritaria para mejorar su ranking>"
+    }
   ]
 }
 
@@ -265,6 +383,7 @@ Reglas:
 - keywordAnalysis.missedKeywords: entre 5 y 8 oportunidades reales basadas en el tipo de negocio y país detectado.
 - keywordAnalysis.topicGaps: entre 3 y 5 gaps de contenido.
 - competitors: exactamente 5 competidores. Deben ser REALES y específicos del mercado/nicho/país detectado. No inventes nombres. Si el negocio es local a Chile, los competidores deben ser del mercado chileno o hispanohablante relevante. Incluye tanto competidores directos (mismo nicho) como plataformas/directorios que aparecen arriba en búsquedas del mismo sector.
+- topPages: incluye una entrada por CADA página interna analizada proporcionada en "PÁGINAS INTERNAS ANALIZADAS". Si no hay páginas internas, incluye al menos la homepage como entrada con su URL real. Usa los datos SEO reales provistos (title, H1, meta) para determinar las keywords objetivo y el potencial de ranking. El campo estimatedPosition debe reflejar una estimación honesta.
 - Todo en español. Sé específico y accionable.`;
 }
 

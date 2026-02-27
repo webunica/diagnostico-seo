@@ -91,6 +91,18 @@ interface Report {
     descriptionAnalysis: MetaAnalysis;
     keywordAnalysis?: KeywordAnalysis;
     competitors?: Competitor[];
+    topPages?: TopPage[];
+}
+
+interface TopPage {
+    url: string;
+    title: string;
+    targetKeywords: string[];
+    rankingPotential: 'alto' | 'medio' | 'bajo';
+    estimatedPosition: string;
+    rankingStrengths: string;
+    rankingWeaknesses: string;
+    improvement: string;
 }
 
 // ── Modal content types ───────────────────────────────────────────────
@@ -982,6 +994,112 @@ function ReportView({ report }: { report: Report }) {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ── TOP PAGES RANKING ───────────────────────────────── */}
+                {report.topPages && report.topPages.length > 0 && (
+                    <div className="report-section">
+                        <div className="report-section-header">
+                            <div className="report-section-title">📊 Ranking de URLs — Potencial de Posicionamiento</div>
+                            <span className="section-score-pill good">{report.topPages.length} páginas</span>
+                        </div>
+                        <div className="report-section-body">
+                            <p className="section-summary" style={{ marginBottom: 20 }}>
+                                Análisis de las páginas internas del sitio: keywords objetivo, posición estimada en Google y acciones para subir en los rankings.
+                            </p>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                                {report.topPages.map((page, i) => {
+                                    const potentialColors = { alto: '#34D399', medio: '#FCD34D', bajo: '#F87171' };
+                                    const positionBg: Record<string, string> = {
+                                        'Top 3': 'rgba(52,211,153,0.12)', 'Top 10': 'rgba(52,211,153,0.07)',
+                                        'Top 20': 'rgba(252,211,77,0.07)', 'Top 50': 'rgba(248,113,113,0.07)',
+                                        'No rankea': 'rgba(248,113,113,0.12)',
+                                    };
+                                    const pc = potentialColors[page.rankingPotential] ?? '#60A5FA';
+                                    const posKey = Object.keys(positionBg).find(k => (page.estimatedPosition ?? '').includes(k.replace('Top ', ''))) ?? 'Top 50';
+                                    return (
+                                        <div key={i} style={{
+                                            background: positionBg[posKey] ?? 'rgba(255,255,255,0.02)',
+                                            border: `1px solid ${pc}25`,
+                                            borderRadius: 14, padding: '18px 20px',
+                                            position: 'relative', overflow: 'hidden',
+                                        }}>
+                                            {/* Barra lateral de color según potencial */}
+                                            <div style={{
+                                                position: 'absolute', left: 0, top: 0, bottom: 0, width: 4,
+                                                background: pc, borderRadius: '4px 0 0 4px',
+                                            }} />
+                                            <div style={{ paddingLeft: 12 }}>
+                                                {/* Header: URL + posición */}
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap', marginBottom: 10 }}>
+                                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                                        <a
+                                                            href={page.url}
+                                                            target="_blank" rel="noopener noreferrer"
+                                                            style={{ fontSize: '0.82rem', color: '#60A5FA', textDecoration: 'none', wordBreak: 'break-all', display: 'block', marginBottom: 3 }}
+                                                        >
+                                                            ↗ {page.url}
+                                                        </a>
+                                                        <div style={{ fontWeight: 700, fontSize: '0.95rem', wordBreak: 'break-word' }}>
+                                                            {page.title || <em style={{ color: 'var(--text-subtle)' }}>Sin title tag</em>}
+                                                        </div>
+                                                    </div>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, flexShrink: 0 }}>
+                                                        <span style={{
+                                                            fontSize: '0.72rem', fontWeight: 800, padding: '4px 12px', borderRadius: 20,
+                                                            background: `${pc}18`, color: pc, border: `1px solid ${pc}35`,
+                                                        }}>
+                                                            {page.estimatedPosition}
+                                                        </span>
+                                                        <span style={{
+                                                            fontSize: '0.68rem', fontWeight: 600, padding: '2px 8px', borderRadius: 20,
+                                                            background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)',
+                                                            border: '1px solid rgba(255,255,255,0.08)',
+                                                        }}>
+                                                            Potencial: {page.rankingPotential}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Keywords objetivo */}
+                                                {page.targetKeywords?.length > 0 && (
+                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
+                                                        {page.targetKeywords.map((kw, ki) => (
+                                                            <span key={ki} style={{
+                                                                fontSize: '0.75rem', fontWeight: 600,
+                                                                padding: '3px 10px', borderRadius: 20,
+                                                                background: 'rgba(59,130,246,0.1)',
+                                                                border: '1px solid rgba(59,130,246,0.25)',
+                                                                color: '#93C5FD',
+                                                            }}>
+                                                                🔑 {kw}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {/* Fortalezas y debilidades + mejora */}
+                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8 }}>
+                                                    <div style={{ background: 'rgba(52,211,153,0.05)', border: '1px solid rgba(52,211,153,0.15)', borderRadius: 8, padding: '10px 12px' }}>
+                                                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#34D399', marginBottom: 4 }}>✅ Fortalezas SEO</div>
+                                                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{page.rankingStrengths}</div>
+                                                    </div>
+                                                    <div style={{ background: 'rgba(248,113,113,0.05)', border: '1px solid rgba(248,113,113,0.15)', borderRadius: 8, padding: '10px 12px' }}>
+                                                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#FCA5A5', marginBottom: 4 }}>⚠️ Debilidades</div>
+                                                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{page.rankingWeaknesses}</div>
+                                                    </div>
+                                                    <div style={{ background: 'rgba(251,191,36,0.05)', border: '1px solid rgba(251,191,36,0.15)', borderRadius: 8, padding: '10px 12px', gridColumn: 'span 2' }}>
+                                                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#FBBF24', marginBottom: 4 }}>🚀 Acción prioritaria</div>
+                                                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{page.improvement}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
