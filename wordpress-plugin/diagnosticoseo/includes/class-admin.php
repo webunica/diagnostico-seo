@@ -7,15 +7,15 @@ defined( 'ABSPATH' ) || exit;
 class DSEO_Admin {
 
     public static function init() {
-        add_action( 'admin_menu',               [ __CLASS__, 'add_menu' ] );
-        add_action( 'admin_init',               [ __CLASS__, 'register_settings' ] );
-        add_action( 'admin_enqueue_scripts',    [ __CLASS__, 'enqueue' ] );
-        add_action( 'wp_dashboard_setup',       [ __CLASS__, 'dashboard_widget' ] );
+        add_action( 'admin_menu',               array( 'DSEO_Admin', 'add_menu' ) );
+        add_action( 'admin_init',               array( 'DSEO_Admin', 'register_settings' ) );
+        add_action( 'admin_enqueue_scripts',    array( 'DSEO_Admin', 'enqueue' ) );
+        add_action( 'wp_dashboard_setup',       array( 'DSEO_Admin', 'dashboard_widget' ) );
 
         // AJAX handlers (logged-in users)
-        add_action( 'wp_ajax_dseo_analyze',          [ __CLASS__, 'ajax_analyze' ] );
-        add_action( 'wp_ajax_dseo_generate',         [ __CLASS__, 'ajax_generate' ] );
-        add_action( 'wp_ajax_dseo_test_connection',  [ __CLASS__, 'ajax_test_connection' ] );
+        add_action( 'wp_ajax_dseo_analyze',          array( 'DSEO_Admin', 'ajax_analyze' ) );
+        add_action( 'wp_ajax_dseo_generate',         array( 'DSEO_Admin', 'ajax_generate' ) );
+        add_action( 'wp_ajax_dseo_test_connection',  array( 'DSEO_Admin', 'ajax_test_connection' ) );
     }
 
     public static function add_menu() {
@@ -24,7 +24,7 @@ class DSEO_Admin {
             'DiagnosticoSEO',
             'manage_options',
             'diagnosticoseo',
-            [ __CLASS__, 'settings_page' ]
+            array( 'DSEO_Admin', 'settings_page' )
         );
     }
 
@@ -32,35 +32,37 @@ class DSEO_Admin {
         register_setting(
             'diagnosticoseo_group',
             DSEO_OPTION_KEY,
-            [
-                'sanitize_callback' => [ __CLASS__, 'sanitize_settings' ],
-                'default'           => [ 'api_key' => '', 'base_url' => 'https://diagnostico-seo.vercel.app' ],
-            ]
+            array(
+                'sanitize_callback' => array( 'DSEO_Admin', 'sanitize_settings' ),
+                'default'           => array( 'api_key' => '', 'base_url' => 'https://diagnostico-seo.vercel.app' ),
+            )
         );
     }
 
     public static function sanitize_settings( $input ) {
-        return [
-            'api_key'  => sanitize_text_field( $input['api_key'] ?? '' ),
-            'base_url' => esc_url_raw( rtrim( $input['base_url'] ?? 'https://diagnostico-seo.vercel.app', '/' ) ),
-        ];
+        $api_key = isset( $input['api_key'] ) ? $input['api_key'] : '';
+        $base_url = isset( $input['base_url'] ) ? $input['base_url'] : 'https://diagnostico-seo.vercel.app';
+        return array(
+            'api_key'  => sanitize_text_field( $api_key ),
+            'base_url' => esc_url_raw( rtrim( $base_url, '/' ) ),
+        );
     }
 
     public static function enqueue( $hook ) {
-        $allowed = [ 'settings_page_diagnosticoseo', 'post.php', 'post-new.php', 'index.php' ];
+        $allowed = array( 'settings_page_diagnosticoseo', 'post.php', 'post-new.php', 'index.php' );
         if ( ! in_array( $hook, $allowed, true ) ) return;
 
         wp_enqueue_style(
             'dseo-admin',
             DSEO_PLUGIN_URL . 'admin/css/admin.css',
-            [],
+            array(),
             DSEO_VERSION
         );
 
         wp_enqueue_script(
             'dseo-admin',
             DSEO_PLUGIN_URL . 'admin/js/admin.js',
-            [ 'jquery' ],
+            array( 'jquery' ),
             DSEO_VERSION,
             true
         );
@@ -68,19 +70,19 @@ class DSEO_Admin {
         $post_id  = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
         $post_url = '';
         if ( $post_id ) {
-            $post_url = get_permalink( $post_id ) ?: '';
+            $post_url = get_permalink( $post_id );
         }
         if ( ! $post_url ) {
             $post_url = trailingslashit( get_site_url() );
         }
 
-        wp_localize_script( 'dseo-admin', 'DSEO', [
+        wp_localize_script( 'dseo-admin', 'DSEO', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( 'dseo_nonce' ),
             'post_url' => $post_url,
             'post_id'  => $post_id,
             'timeout'  => 90000,
-        ] );
+        ) );
     }
 
     public static function settings_page() {
@@ -91,12 +93,12 @@ class DSEO_Admin {
         wp_add_dashboard_widget(
             'dseo_dashboard_widget',
             'DiagnosticoSEO - Acceso Rapido',
-            [ __CLASS__, 'dashboard_widget_html' ]
+            array( 'DSEO_Admin', 'dashboard_widget_html' )
         );
     }
 
     public static function dashboard_widget_html() {
-        $opts    = get_option( DSEO_OPTION_KEY, [] );
+        $opts    = get_option( DSEO_OPTION_KEY, array() );
         $has_key = ! empty( $opts['api_key'] );
         $site    = get_site_url();
         require_once DSEO_PLUGIN_DIR . 'admin/views/dashboard-widget.php';
@@ -106,7 +108,7 @@ class DSEO_Admin {
         check_ajax_referer( 'dseo_nonce', 'nonce' );
         if ( ! current_user_can( 'edit_posts' ) ) wp_send_json_error( 'Sin permisos', 403 );
 
-        $url = esc_url_raw( sanitize_text_field( $_POST['url'] ?? '' ) );
+        $url = isset( $_POST['url'] ) ? esc_url_raw( sanitize_text_field( $_POST['url'] ) ) : '';
         if ( ! $url ) wp_send_json_error( 'URL requerida' );
 
         $api    = new DSEO_API();
@@ -127,9 +129,9 @@ class DSEO_Admin {
         check_ajax_referer( 'dseo_nonce', 'nonce' );
         if ( ! current_user_can( 'edit_posts' ) ) wp_send_json_error( 'Sin permisos', 403 );
 
-        $url     = esc_url_raw( sanitize_text_field( $_POST['url']     ?? '' ) );
-        $keyword = sanitize_text_field( $_POST['keyword'] ?? '' );
-        $country = sanitize_text_field( $_POST['country'] ?? 'Chile' );
+        $url     = isset( $_POST['url'] ) ? esc_url_raw( sanitize_text_field( $_POST['url'] ) ) : '';
+        $keyword = isset( $_POST['keyword'] ) ? sanitize_text_field( $_POST['keyword'] ) : '';
+        $country = isset( $_POST['country'] ) ? sanitize_text_field( $_POST['country'] ) : 'Chile';
 
         if ( ! $url ) wp_send_json_error( 'URL requerida' );
 
@@ -140,7 +142,7 @@ class DSEO_Admin {
             wp_send_json_error( $result['error'] );
         }
 
-        $post_id = intval( $_POST['post_id'] ?? 0 );
+        $post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
         if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
             update_post_meta( $post_id, '_dseo_generated_content', wp_json_encode( $result ) );
             update_post_meta( $post_id, '_dseo_primary_keyword',   $keyword );
