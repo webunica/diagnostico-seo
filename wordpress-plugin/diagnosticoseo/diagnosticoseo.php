@@ -3,7 +3,7 @@
  * Plugin Name:       DiagnósticoSEO
  * Plugin URI:        https://diagnosticoseo.com
  * Description:       Analiza y genera contenido SEO optimizado directamente desde el editor de WordPress. Powered by GPT-4o.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            DiagnósticoSEO
  * Author URI:        https://diagnosticoseo.com
  * License:           GPL v2 or later
@@ -14,7 +14,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DSEO_VERSION',   '1.0.3' );
+define( 'DSEO_VERSION',   '1.0.4' );
 define( 'DSEO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DSEO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'DSEO_OPTION_KEY', 'diagnosticoseo_settings' );

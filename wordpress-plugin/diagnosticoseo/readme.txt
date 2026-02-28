@@ -4,7 +4,7 @@ Tags:              seo, content, gpt, ai, analysis
 Requires at least: 6.0
 Tested up to:      6.7
 Requires PHP:      8.0
-Stable tag:        1.0.3
+Stable tag:        1.0.4
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,11 @@ En espaÃ±ol por defecto, con soporte para mÃºltiples paÃ­ses (Chile, Argen
 * InserciÃ³n automÃ¡tica en Gutenberg y editor clÃ¡sico.
 * Panel de configuraciÃ³n con test de conexiÃ³n.
 * Widget de dashboard.
+
+= 1.0.4 =
+* Nueva función: Gestión de Schema Markup (JSON-LD) directamente en el editor.
+* El plugin ahora inyecta automáticamente el código JSON-LD en el head del frontend.
+* Botón "Aplicar" en los resultados generados para mover el Schema al editor con un clic.
 
 = 1.0.3 =
 * Fix: Botones en metabox ya no recargan la página (agregado type="button").

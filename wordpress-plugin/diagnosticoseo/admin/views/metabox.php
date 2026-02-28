@@ -35,6 +35,7 @@ $has_key = ! empty( $opts['api_key'] );
     <div class="dseo-tabs">
         <button type="button" class="dseo-tab dseo-tab-active" data-tab="analyze">🔍 Analizar SEO</button>
         <button type="button" class="dseo-tab" data-tab="generate">✨ Generar Contenido</button>
+        <button type="button" class="dseo-tab" data-tab="schema">🗂️ Schema Markup</button>
         <?php if ( $saved_score ) : ?>
         <button type="button" class="dseo-tab" data-tab="results">📊 Último Resultado</button>
         <?php endif; ?>
@@ -182,6 +183,22 @@ $has_key = ! empty( $opts['api_key'] );
             <!-- Stats -->
             <div class="dseo-gen-stats" id="gen-stats"></div>
         </div>
+    </div>
+
+    <!-- Tab: Schema -->
+    <div class="dseo-tab-content" data-content="schema" style="display:none;">
+        <div class="dseo-alert dseo-alert-success">
+            🗂️ Pega aquí el código JSON-LD de Schema Markup. El plugin lo inyectará automáticamente en el <code>&lt;head&gt;</code> de esta página.
+        </div>
+        <div class="dseo-field-group">
+            <label for="dseo-schema-editor">Código JSON-LD</label>
+            <textarea name="dseo_schema" id="dseo-schema-editor" rows="10" 
+                      class="dseo-textarea-code" 
+                      placeholder='{ "@context": "https://schema.org", ... }'><?php echo esc_textarea( $saved_schema ); ?></textarea>
+        </div>
+        <p class="dseo-hint">
+            Puedes generar este código en la pestaña "Generar Contenido" y pegarlo aquí, o pegarlo manualmente desde otra fuente.
+        </p>
     </div>
 
     <!-- Tab: Último Resultado guardado -->

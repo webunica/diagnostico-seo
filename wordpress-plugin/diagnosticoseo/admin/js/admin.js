@@ -257,6 +257,10 @@
         $('#gen-h1').text(data.h1 || '');
         $('#gen-intro').text(data.intro || '');
         $('#gen-schema').text(data.schemaMarkup || '');
+        // Add Apply button if not present
+        if (!$('#gen-schema-apply').length) {
+            $('<button type="button" id="gen-schema-apply" class="dseo-btn dseo-btn-ghost" style="margin-left:10px; padding: 4px 10px; vertical-align: middle;">📥 Aplicar a Editor</button>').insertAfter('#dseo-generate-result .dseo-copy-btn[data-target="gen-schema"]');
+        }
 
         var sections = data.sections || [];
         var secHTML = '';
@@ -359,6 +363,19 @@
             setTimeout(function () { $btn.text('ðŸ“‹ Copiar'); }, 2000);
         }
     });
+
+    /* ── Apply Schema to Editor ──────────────────────────────────── */
+    $(document).on('click', '#gen-schema-apply', function () {
+        var code = $('#gen-schema').text().trim();
+        if (!code) return;
+
+        $('#dseo-schema-editor').val(code);
+        alert('✅ Schema aplicado a la pestaña "Schema Markup". Recuerda guardar el post para activar los cambios.');
+
+        // Switch al tab de schema para mostrar el resultado
+        $('.dseo-tab[data-tab="schema"]').trigger('click');
+    });
+
 
     /* â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     function escHtml(str) {
