@@ -2,28 +2,28 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Cliente HTTP para la API de DiagnósticoSEO.
+ * Cliente HTTP para la API de DiagnosticoSEO.
  */
 class DSEO_API {
 
-    private string $api_key;
-    private string $base_url;
+    private $api_key;
+    private $base_url;
 
     public function __construct() {
         $opts           = get_option( DSEO_OPTION_KEY, [] );
-        $this->api_key  = $opts['api_key']  ?? '';
-        $this->base_url = rtrim( $opts['base_url'] ?? 'https://diagnostico-seo.vercel.app', '/' );
+        $this->api_key  = isset($opts['api_key']) ? $opts['api_key'] : '';
+        $this->base_url = rtrim( isset($opts['base_url']) ? $opts['base_url'] : 'https://diagnostico-seo.vercel.app', '/' );
     }
 
-    /* ── Helpers ──────────────────────────────────────────────────── */
+    /* -- Helpers ---------------------------------------------------- */
 
-    private function has_key(): bool {
+    private function has_key() {
         return ! empty( $this->api_key );
     }
 
-    private function request( string $endpoint, array $body ): array {
+    private function request( $endpoint, $body ) {
         if ( ! $this->has_key() ) {
-            return [ 'error' => 'API key no configurada. Ve a Ajustes → DiagnósticoSEO.' ];
+            return [ 'error' => 'API key no configurada. Ve a Ajustes -> DiagnosticoSEO.' ];
         }
 
         $response = wp_remote_post(
@@ -47,27 +47,27 @@ class DSEO_API {
 
         if ( $code !== 200 ) {
             return [
-                'error'  => $data['error'] ?? "Error HTTP {$code}",
+                'error'  => isset($data['error']) ? $data['error'] : "Error HTTP {$code}",
                 'status' => $code,
             ];
         }
 
-        return $data ?? [];
+        return $data ? $data : [];
     }
 
-    /* ── Public methods ───────────────────────────────────────────── */
+    /* -- Public methods --------------------------------------------- */
 
     /**
      * Analiza una URL.
      */
-    public function analyze( string $url ): array {
+    public function analyze( $url ) {
         return $this->request( '/api/v1/analyze', [ 'url' => $url ] );
     }
 
     /**
      * Genera contenido SEO completo para una URL.
      */
-    public function generate_content( string $url, string $primary_keyword = '', string $country = 'Chile' ): array {
+    public function generate_content( $url, $primary_keyword = '', $country = 'Chile' ) {
         return $this->request( '/api/v1/generate-content', [
             'url'            => $url,
             'primaryKeyword' => $primary_keyword,
@@ -78,11 +78,15 @@ class DSEO_API {
     /**
      * Verifica que la API key funciona.
      */
-    public function ping(): array {
+    public function ping() {
         $result = $this->request( '/api/v1/analyze', [ 'url' => 'https://example.com' ] );
-        if ( isset( $result['error'] ) && str_contains( $result['error'], 'API key' ) ) {
+        if ( isset( $result['error'] ) && strpos( $result['error'], 'API key' ) !== false ) {
             return [ 'ok' => false, 'error' => $result['error'] ];
         }
-        return [ 'ok' => true, 'plan' => $result['meta']['plan'] ?? 'unknown' ];
+        $plan = 'unknown';
+        if (isset($result['meta']['plan'])) {
+            $plan = $result['meta']['plan'];
+        }
+        return [ 'ok' => true, 'plan' => $plan ];
     }
 }
