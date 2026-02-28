@@ -14,7 +14,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DSEO_VERSION',   '1.1.0' );
+define( 'DSEO_VERSION',   '1.1.1' );
 define( 'DSEO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DSEO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'DSEO_OPTION_KEY', 'diagnosticoseo_settings' );

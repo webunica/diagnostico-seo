@@ -7,11 +7,11 @@ defined( 'ABSPATH' ) || exit;
 class DSEO_Elementor {
 
     public static function init(): void {
-        // Solo cargar si Elementor está activo
-        if ( ! did_action( 'elementor/loaded' ) ) {
-            return;
-        }
+        // Esperamos a que Elementor esté cargado para enganchar nuestros registros
+        add_action( 'elementor/init', [ __CLASS__, 'on_elementor_init' ] );
+    }
 
+    public static function on_elementor_init(): void {
         add_action( 'elementor/widgets/register', [ __CLASS__, 'register_widgets' ] );
         add_action( 'elementor/elements/categories_registered', [ __CLASS__, 'add_widget_category' ] );
         add_action( 'elementor/editor/after_enqueue_scripts', [ __CLASS__, 'enqueue_editor_scripts' ] );
