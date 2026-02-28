@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Panel de administración + ajustes + AJAX handlers.
+ * Panel de administraciÃ³n + ajustes + AJAX handlers.
  */
 class DSEO_Admin {
 
@@ -18,19 +18,19 @@ class DSEO_Admin {
         add_action( 'wp_ajax_dseo_test_connection',  [ __CLASS__, 'ajax_test_connection' ] );
     }
 
-    /* ── Menu ─────────────────────────────────────────────────────── */
+    /* â”€â”€ Menu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function add_menu(): void {
         add_options_page(
-            'DiagnósticoSEO',
-            '🔍 DiagnósticoSEO',
+            'DiagnÃ³sticoSEO',
+            'ðŸ” DiagnÃ³sticoSEO',
             'manage_options',
             'diagnosticoseo',
             [ __CLASS__, 'settings_page' ]
         );
     }
 
-    /* ── Settings ─────────────────────────────────────────────────── */
+    /* â”€â”€ Settings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function register_settings(): void {
         register_setting(
@@ -38,7 +38,7 @@ class DSEO_Admin {
             DSEO_OPTION_KEY,
             [
                 'sanitize_callback' => [ __CLASS__, 'sanitize_settings' ],
-                'default'           => [ 'api_key' => '', 'base_url' => 'https://diagnosticoseo.vercel.app' ],
+                'default'           => [ 'api_key' => '', 'base_url' => 'https://diagnostico-seo.vercel.app' ],
             ]
         );
     }
@@ -50,7 +50,7 @@ class DSEO_Admin {
         ];
     }
 
-    /* ── Enqueue ──────────────────────────────────────────────────── */
+    /* â”€â”€ Enqueue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function enqueue( string $hook ): void {
         // Load on settings page and all post edit screens
@@ -91,18 +91,18 @@ class DSEO_Admin {
         ] );
     }
 
-    /* ── Settings page view ───────────────────────────────────────── */
+    /* â”€â”€ Settings page view â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function settings_page(): void {
         require_once DSEO_PLUGIN_DIR . 'admin/views/settings-page.php';
     }
 
-    /* ── Dashboard widget ─────────────────────────────────────────── */
+    /* â”€â”€ Dashboard widget â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function dashboard_widget(): void {
         wp_add_dashboard_widget(
             'dseo_dashboard_widget',
-            '🔍 DiagnósticoSEO — Acceso Rápido',
+            'ðŸ” DiagnÃ³sticoSEO â€” Acceso RÃ¡pido',
             [ __CLASS__, 'dashboard_widget_html' ]
         );
     }
@@ -114,7 +114,7 @@ class DSEO_Admin {
         require_once DSEO_PLUGIN_DIR . 'admin/views/dashboard-widget.php';
     }
 
-    /* ── AJAX: analyze ────────────────────────────────────────────── */
+    /* â”€â”€ AJAX: analyze â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function ajax_analyze(): void {
         check_ajax_referer( 'dseo_nonce', 'nonce' );
@@ -133,10 +133,10 @@ class DSEO_Admin {
         wp_send_json_success( $result );
     }
 
-    /* ── AJAX: generate ───────────────────────────────────────────── */
+    /* â”€â”€ AJAX: generate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function ajax_generate(): void {
-        // GPT-4o puede tardar 30-60 seg — extender PHP timeout
+        // GPT-4o puede tardar 30-60 seg â€” extender PHP timeout
         if ( function_exists( 'set_time_limit' ) ) {
             set_time_limit( 120 );
         }
@@ -157,7 +157,7 @@ class DSEO_Admin {
             wp_send_json_error( $result['error'] );
         }
 
-        // Guardar resultado en post meta si se envió post_id
+        // Guardar resultado en post meta si se enviÃ³ post_id
         $post_id = intval( $_POST['post_id'] ?? 0 );
         if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
             update_post_meta( $post_id, '_dseo_last_analysis',   wp_json_encode( $result ) );
@@ -168,7 +168,7 @@ class DSEO_Admin {
         wp_send_json_success( $result );
     }
 
-    /* ── AJAX: test connection ────────────────────────────────────── */
+    /* â”€â”€ AJAX: test connection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
     public static function ajax_test_connection(): void {
         check_ajax_referer( 'dseo_nonce', 'nonce' );
@@ -179,3 +179,4 @@ class DSEO_Admin {
         wp_send_json( $result );
     }
 }
+

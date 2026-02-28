@@ -1,13 +1,13 @@
-/* global DSEO, jQuery */
+﻿/* global DSEO, jQuery */
 (function ($) {
     'use strict';
 
     /*
-     * Safeguard: si DSEO no está definido (wp_localize_script fallido)
+     * Safeguard: si DSEO no estÃ¡ definido (wp_localize_script fallido)
      * abortar silenciosamente para no romper el admin de WP.
      */
     if (typeof DSEO === 'undefined') {
-        console.error('[DiagnósticoSEO] Objeto DSEO no encontrado. Revisa la configuración del plugin.');
+        console.error('[DiagnÃ³sticoSEO] Objeto DSEO no encontrado. Revisa la configuraciÃ³n del plugin.');
         return;
     }
 
@@ -15,7 +15,7 @@
     var isAnalyzing = false;
     var isGenerating = false;
 
-    /* ── Tabs ─────────────────────────────────────────────────────── */
+    /* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $(document).on('click', '.dseo-tab', function () {
         var tab = $(this).data('tab');
         $(this).siblings().removeClass('dseo-tab-active');
@@ -24,24 +24,24 @@
         $('[data-content="' + tab + '"]').show();
     });
 
-    /* ── Toggle API key visibility ───────────────────────────────── */
+    /* â”€â”€ Toggle API key visibility â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $('#dseo-toggle-key').on('click', function () {
         var inp = $('#dseo_api_key');
         if (inp.attr('type') === 'password') {
             inp.attr('type', 'text');
-            $(this).text('🔒 Ocultar');
+            $(this).text('ðŸ”’ Ocultar');
         } else {
             inp.attr('type', 'password');
-            $(this).text('👁 Mostrar');
+            $(this).text('ðŸ‘ Mostrar');
         }
     });
 
-    /* ── Test connection ─────────────────────────────────────────── */
+    /* â”€â”€ Test connection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $('#dseo-test-btn').on('click', function () {
         var $btn = $(this);
         var $res = $('#dseo-test-result');
 
-        $btn.prop('disabled', true).text('Probando…');
+        $btn.prop('disabled', true).text('Probandoâ€¦');
         $res.hide();
 
         $.ajax({
@@ -54,30 +54,30 @@
             },
         }).done(function (resp) {
             if (resp.ok) {
-                $res.html('<div class="dseo-notice dseo-notice-success">✅ Conexión exitosa — Plan: <strong>' + resp.plan + '</strong></div>');
+                $res.html('<div class="dseo-notice dseo-notice-success">âœ… ConexiÃ³n exitosa â€” Plan: <strong>' + resp.plan + '</strong></div>');
             } else {
-                $res.html('<div class="dseo-notice dseo-notice-error">❌ ' + (resp.error || 'Error desconocido') + '</div>');
+                $res.html('<div class="dseo-notice dseo-notice-error">âŒ ' + (resp.error || 'Error desconocido') + '</div>');
             }
             $res.show();
         }).fail(function (xhr, status) {
-            var msg = status === 'timeout' ? 'Timeout. Verifica tu URL base.' : 'Error de conexión.';
-            $res.html('<div class="dseo-notice dseo-notice-error">❌ ' + msg + '</div>').show();
+            var msg = status === 'timeout' ? 'Timeout. Verifica tu URL base.' : 'Error de conexiÃ³n.';
+            $res.html('<div class="dseo-notice dseo-notice-error">âŒ ' + msg + '</div>').show();
         }).always(function () {
-            $btn.prop('disabled', false).text('🔌 Probar conexión');
+            $btn.prop('disabled', false).text('ðŸ”Œ Probar conexiÃ³n');
         });
     });
 
-    /* ── Analyze ─────────────────────────────────────────────────── */
+    /* â”€â”€ Analyze â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $('#dseo-analyze-btn').on('click', function () {
         if (isAnalyzing) { return; } // Prevenir doble-clic
 
         var url = $('#dseo-analyze-url').val().trim();
-        if (!url) { alert('Ingresa una URL válida.'); return; }
+        if (!url) { alert('Ingresa una URL vÃ¡lida.'); return; }
 
         isAnalyzing = true;
         $('#dseo-analyze-result, #dseo-analyze-error').hide();
         $('#dseo-analyze-loading').show();
-        $(this).prop('disabled', true).text('Analizando…');
+        $(this).prop('disabled', true).text('Analizandoâ€¦');
 
         $.ajax({
             url: DSEO.ajax_url,
@@ -97,13 +97,13 @@
             $('#dseo-analyze-result').show();
         }).fail(function (xhr, status) {
             var msg = status === 'timeout'
-                ? 'Timeout (90 seg): el análisis tardó demasiado. Intenta de nuevo.'
-                : 'Error de conexión (' + status + '). Intenta de nuevo.';
+                ? 'Timeout (90 seg): el anÃ¡lisis tardÃ³ demasiado. Intenta de nuevo.'
+                : 'Error de conexiÃ³n (' + status + '). Intenta de nuevo.';
             $('#dseo-analyze-error').text(msg).show();
         }).always(function () {
             isAnalyzing = false;
             $('#dseo-analyze-loading').hide();
-            $('#dseo-analyze-btn').prop('disabled', false).text('🔍 Analizar');
+            $('#dseo-analyze-btn').prop('disabled', false).text('ðŸ” Analizar');
         });
     });
 
@@ -124,13 +124,13 @@
 
         $('#dseo-score-business').text(data.businessType || '');
         if (data.meta) {
-            $('#dseo-score-plan').text('Plan: ' + data.meta.plan + ' · ' + data.meta.requestsRemaining + ' req restantes');
+            $('#dseo-score-plan').text('Plan: ' + data.meta.plan + ' Â· ' + data.meta.requestsRemaining + ' req restantes');
         }
 
         // Section scores + issues
         var sections = data.sections || {};
         var sectHTML = '';
-        var sectionLabels = { technical: '⚙️ Técnico', onpage: '📝 On-Page', content: '📄 Contenido' };
+        var sectionLabels = { technical: 'âš™ï¸ TÃ©cnico', onpage: 'ðŸ“ On-Page', content: 'ðŸ“„ Contenido' };
 
         Object.keys(sectionLabels).forEach(function (key) {
             var sec = sections[key] || {};
@@ -160,7 +160,7 @@
         if (qw.length) {
             var qwHTML = '';
             qw.slice(0, 3).forEach(function (w) {
-                qwHTML += '<div class="dseo-qw"><strong>⚡ ' + escHtml(w.title) + '</strong>';
+                qwHTML += '<div class="dseo-qw"><strong>âš¡ ' + escHtml(w.title) + '</strong>';
                 if (w.steps) {
                     qwHTML += '<ul>';
                     w.steps.forEach(function (s) { qwHTML += '<li>' + escHtml(s) + '</li>'; });
@@ -181,7 +181,7 @@
                 compHTML += '<strong>' + escHtml(c.name || '') + '</strong> ';
                 compHTML += '<a href="' + escHtml(c.url || '#') + '" target="_blank" rel="noopener">' + escHtml(c.url || '') + '</a>';
                 if (c.opportunity) {
-                    compHTML += '<p class="dseo-comp-opp">💡 ' + escHtml(c.opportunity) + '</p>';
+                    compHTML += '<p class="dseo-comp-opp">ðŸ’¡ ' + escHtml(c.opportunity) + '</p>';
                 }
                 compHTML += '</div>';
             });
@@ -190,7 +190,7 @@
         }
     }
 
-    /* ── Generate content ────────────────────────────────────────── */
+    /* â”€â”€ Generate content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $('#dseo-generate-btn').on('click', function () {
         if (isGenerating) { return; } // Prevenir doble-clic / requests paralelos
 
@@ -198,7 +198,7 @@
         var country = $('#dseo-country').val();
         /*
          * Leer URL del metabox data-attribute como fallback por si DSEO.post_url
-         * no se resolvió correctamente (post nuevo sin permalink todavía).
+         * no se resolviÃ³ correctamente (post nuevo sin permalink todavÃ­a).
          */
         var url = DSEO.post_url || $('#dseo-metabox').data('post-url') || '';
 
@@ -211,12 +211,12 @@
         isGenerating = true;
         $('#dseo-generate-result, #dseo-generate-error').hide();
         $('#dseo-generate-loading').show();
-        $(this).prop('disabled', true).text('⏳ Generando… (20-40 seg)');
+        $(this).prop('disabled', true).text('â³ Generandoâ€¦ (20-40 seg)');
 
         $.ajax({
             url: DSEO.ajax_url,
             method: 'POST',
-            timeout: DSEO.timeout || 90000, // 90 segundos — GPT-4o necesita tiempo
+            timeout: DSEO.timeout || 90000, // 90 segundos â€” GPT-4o necesita tiempo
             data: {
                 action: 'dseo_generate',
                 nonce: DSEO.nonce,
@@ -228,9 +228,9 @@
         }).done(function (resp) {
             if (!resp.success) {
                 var errMsg = resp.data || 'Error desconocido';
-                // Añadir contexto útil si el error es de plan
+                // AÃ±adir contexto Ãºtil si el error es de plan
                 if (errMsg.indexOf('Pro') !== -1 || errMsg.indexOf('Agency') !== -1 || errMsg.indexOf('plan') !== -1) {
-                    errMsg += ' → Actualiza en diagnosticoseo.vercel.app/dashboard';
+                    errMsg += ' â†’ Actualiza en diagnostico-seo.vercel.app/dashboard';
                 }
                 $('#dseo-generate-error').text('Error: ' + errMsg).show();
                 return;
@@ -241,13 +241,13 @@
             $('html, body').animate({ scrollTop: $('#dseo-generate-result').offset().top - 60 }, 500);
         }).fail(function (xhr, status) {
             var msg = status === 'timeout'
-                ? '⏱ Timeout (90 seg): GPT-4o tardó demasiado. Intenta de nuevo.'
-                : 'Error de conexión (' + status + '). Revisa tu conexión e intenta de nuevo.';
+                ? 'â± Timeout (90 seg): GPT-4o tardÃ³ demasiado. Intenta de nuevo.'
+                : 'Error de conexiÃ³n (' + status + '). Revisa tu conexiÃ³n e intenta de nuevo.';
             $('#dseo-generate-error').text(msg).show();
         }).always(function () {
             isGenerating = false;
             $('#dseo-generate-loading').hide();
-            $('#dseo-generate-btn').prop('disabled', false).text('✨ Generar Contenido SEO');
+            $('#dseo-generate-btn').prop('disabled', false).text('âœ¨ Generar Contenido SEO');
         });
     });
 
@@ -270,7 +270,7 @@
             });
             if (sec.imageSuggestion) {
                 var img = sec.imageSuggestion;
-                secHTML += '<div class="dseo-gen-image-tip">🖼️ <strong>Imagen sugerida:</strong> ' + escHtml(img.description || '') + ' — Alt: <em>' + escHtml(img.altText || '') + '</em></div>';
+                secHTML += '<div class="dseo-gen-image-tip">ðŸ–¼ï¸ <strong>Imagen sugerida:</strong> ' + escHtml(img.description || '') + ' â€” Alt: <em>' + escHtml(img.altText || '') + '</em></div>';
             }
             if (sec.cta) { secHTML += '<div class="dseo-gen-cta">CTA: ' + escHtml(sec.cta) + '</div>'; }
             secHTML += '</div>';
@@ -278,11 +278,11 @@
         $('#gen-sections').html(secHTML);
 
         if (data.estimatedWordCount) {
-            $('#gen-stats').html('📊 <strong>' + data.estimatedWordCount + '</strong> palabras estimadas · Generado con <em>' + (data.model || 'gpt-4o') + '</em>');
+            $('#gen-stats').html('ðŸ“Š <strong>' + data.estimatedWordCount + '</strong> palabras estimadas Â· Generado con <em>' + (data.model || 'gpt-4o') + '</em>');
         }
     }
 
-    /* ── Insert into Gutenberg / Classic Editor ──────────────────── */
+    /* â”€â”€ Insert into Gutenberg / Classic Editor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $(document).on('click', '#dseo-insert-all', function () {
         var h1 = $('#gen-h1').text().trim();
         var intro = $('#gen-intro').text().trim();
@@ -312,7 +312,7 @@
             });
 
             dispatch('core/block-editor').insertBlocks(blocks);
-            alert('✅ Contenido insertado en el editor de bloques.');
+            alert('âœ… Contenido insertado en el editor de bloques.');
             return;
         }
 
@@ -326,14 +326,14 @@
                 s.par.forEach(function (p) { if (p) { html += '<p>' + p + '</p>'; } });
             });
             tinyMCE.activeEditor.setContent(html);
-            alert('✅ Contenido insertado en el editor clásico.');
+            alert('âœ… Contenido insertado en el editor clÃ¡sico.');
             return;
         }
 
-        alert('⚠️ Copia el contenido manualmente desde los bloques de arriba.');
+        alert('âš ï¸ Copia el contenido manualmente desde los bloques de arriba.');
     });
 
-    /* ── Copy buttons ────────────────────────────────────────────── */
+    /* â”€â”€ Copy buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $(document).on('click', '.dseo-copy-btn', function () {
         var target = $(this).data('target');
         var $el = $('#' + target);
@@ -342,9 +342,9 @@
 
         if (navigator.clipboard) {
             navigator.clipboard.writeText(text).then(function () {
-                $btn.text('✅ Copiado').prop('disabled', true);
+                $btn.text('âœ… Copiado').prop('disabled', true);
                 setTimeout(function () {
-                    $btn.text('📋 Copiar').prop('disabled', false);
+                    $btn.text('ðŸ“‹ Copiar').prop('disabled', false);
                 }, 2000);
             });
         } else {
@@ -355,12 +355,12 @@
             ta.select();
             document.execCommand('copy');
             document.body.removeChild(ta);
-            $btn.text('✅ Copiado');
-            setTimeout(function () { $btn.text('📋 Copiar'); }, 2000);
+            $btn.text('âœ… Copiado');
+            setTimeout(function () { $btn.text('ðŸ“‹ Copiar'); }, 2000);
         }
     });
 
-    /* ── Helpers ─────────────────────────────────────────────────── */
+    /* â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     function escHtml(str) {
         return String(str)
             .replace(/&/g, '&amp;')
@@ -370,3 +370,4 @@
     }
 
 })(jQuery);
+
