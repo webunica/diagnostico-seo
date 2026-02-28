@@ -4,7 +4,7 @@ Tags:              seo, content, gpt, ai, analysis
 Requires at least: 6.0
 Tested up to:      6.7
 Requires PHP:      8.0
-Stable tag:        1.0.4
+Stable tag:        1.1.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,11 @@ En espaÃ±ol por defecto, con soporte para mÃºltiples paÃ­ses (Chile, Argen
 * InserciÃ³n automÃ¡tica en Gutenberg y editor clÃ¡sico.
 * Panel de configuraciÃ³n con test de conexiÃ³n.
 * Widget de dashboard.
+
+= 1.1.0 =
+* Nueva integración: Soporte oficial para Elementor Pro.
+* Incluye Widget "SEO AI Generator" para generar contenido directamente desde el editor visual de Elementor.
+* Sincronización de scripts en el editor de Elementor para una experiencia fluida.
 
 = 1.0.4 =
 * Nueva función: Gestión de Schema Markup (JSON-LD) directamente en el editor.
