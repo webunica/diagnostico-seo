@@ -8,9 +8,9 @@
     <?php settings_errors(); ?>
 
     <?php
-    $opts    = get_option( DSEO_OPTION_KEY, [] );
-    $api_key = $opts['api_key']  ?? '';
-    $base    = $opts['base_url'] ?? 'https://diagnostico-seo.vercel.app';
+    $opts    = get_option( DSEO_OPTION_KEY, array() );
+    $api_key = isset($opts['api_key']) ? $opts['api_key'] : '';
+    $base    = isset($opts['base_url']) ? $opts['base_url'] : 'https://diagnostico-seo.vercel.app';
     ?>
 
     <div class="dseo-settings-grid">

@@ -15,7 +15,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$opts    = get_option( DSEO_OPTION_KEY, [] );
+$opts    = get_option( DSEO_OPTION_KEY, array() );
 $has_key = ! empty( $opts['api_key'] );
 // wp_localize_script ya se ejecutó en admin_enqueue_scripts con post_url y post_id correctos.
 ?>
