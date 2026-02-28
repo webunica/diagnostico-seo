@@ -22,7 +22,8 @@ $has_key = ! empty( $opts['api_key'] );
 
 <div class="dseo-metabox" id="dseo-metabox"
      data-post-url="<?php echo esc_url( $post_url ); ?>"
-     data-post-id="<?php echo esc_attr( $post->ID ); ?>">
+     data-post-id="<?php echo esc_attr( $post->ID ); ?>"
+     data-last-generated='<?php echo esc_attr( $last_generated ); ?>'>
 
     <?php if ( ! $has_key ) : ?>
     <div class="dseo-notice dseo-notice-warn">
@@ -144,6 +145,9 @@ $has_key = ! empty( $opts['api_key'] );
                 <div class="dseo-result-title">✅ Contenido generado</div>
                 <button type="button" id="dseo-insert-all" class="dseo-btn dseo-btn-primary">
                     📋 Insertar en el Editor
+                </button>
+                <button type="button" id="dseo-copy-all-html" class="dseo-btn dseo-btn-ghost">
+                    🔤 Copiar todo (HTML)
                 </button>
             </div>
 

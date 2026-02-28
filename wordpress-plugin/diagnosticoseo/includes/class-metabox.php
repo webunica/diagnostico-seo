@@ -35,6 +35,7 @@ class DSEO_Metabox {
         $analysis_date  = get_post_meta( $post->ID, '_dseo_analysis_date',   true );
         $saved_keyword  = get_post_meta( $post->ID, '_dseo_primary_keyword', true );
         $saved_schema   = get_post_meta( $post->ID, '_dseo_schema',          true );
+        $last_generated = get_post_meta( $post->ID, '_dseo_generated_content', true );
         $saved_score    = '';
 
         if ( $last_analysis ) {

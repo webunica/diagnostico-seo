@@ -4,7 +4,7 @@ Tags:              seo, content, gpt, ai, analysis
 Requires at least: 6.0
 Tested up to:      6.7
 Requires PHP:      8.0
-Stable tag:        1.1.0
+Stable tag:        1.1.2
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,12 @@ En espaÃ±ol por defecto, con soporte para mÃºltiples paÃ­ses (Chile, Argen
 * InserciÃ³n automÃ¡tica en Gutenberg y editor clÃ¡sico.
 * Panel de configuraciÃ³n con test de conexiÃ³n.
 * Widget de dashboard.
+
+= 1.1.2 =
+* Mejora: Los resultados de generación ahora se guardan automáticamente (ya no se pierden al recargar).
+* Mejora: Botón "Copiar todo (HTML)" añadido para compatibilidad total con Elementor, Divi y otros builders.
+* Fix: Se corrigió el registro de widgets en Elementor Pro (ahora visible en el panel).
+* Fix: El botón "Insertar en el Editor" ahora tiene fallback y mensajes claros si no detecta Gutenberg.
 
 = 1.1.0 =
 * Nueva integración: Soporte oficial para Elementor Pro.

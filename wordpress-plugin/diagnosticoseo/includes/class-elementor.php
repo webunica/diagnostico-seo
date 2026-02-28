@@ -7,11 +7,6 @@ defined( 'ABSPATH' ) || exit;
 class DSEO_Elementor {
 
     public static function init(): void {
-        // Esperamos a que Elementor esté cargado para enganchar nuestros registros
-        add_action( 'elementor/init', [ __CLASS__, 'on_elementor_init' ] );
-    }
-
-    public static function on_elementor_init(): void {
         add_action( 'elementor/widgets/register', [ __CLASS__, 'register_widgets' ] );
         add_action( 'elementor/elements/categories_registered', [ __CLASS__, 'add_widget_category' ] );
         add_action( 'elementor/editor/after_enqueue_scripts', [ __CLASS__, 'enqueue_editor_scripts' ] );
@@ -25,7 +20,7 @@ class DSEO_Elementor {
             'diagnosticoseo',
             [
                 'title' => esc_html__( 'DiagnósticoSEO', 'diagnosticoseo' ),
-                'icon'  => 'fa fa-search',
+                'icon'  => 'eicon-search', // Better Elementor icon
             ]
         );
     }
@@ -55,7 +50,7 @@ class DSEO_Elementor {
 
         wp_localize_script( 'dseo-admin-js', 'DSEO', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'nonce'    => wp_create_nonce( 'dseo_ajax_nonce' ),
+            'nonce'    => wp_create_nonce( 'dseo_nonce' ), // Fix: must match dseo_nonce
             'post_id'  => get_the_ID(),
             'post_url' => get_permalink( get_the_ID() ),
             'timeout'  => 90000,

@@ -46,9 +46,12 @@ class DSEO_SEO_Widget extends \Elementor\Widget_Base {
     protected function render(): void {
         $opts    = get_option( 'diagnosticoseo_settings', [] );
         $has_key = ! empty( $opts['api_key'] );
-        $saved_keyword = get_post_meta( get_the_ID(), '_dseo_primary_keyword', true );
+        $saved_keyword  = get_post_meta( get_the_ID(), '_dseo_primary_keyword', true );
+        $last_generated = get_post_meta( get_the_ID(), '_dseo_generated_content', true );
         ?>
-        <div class="dseo-elementor-widget dseo-metabox">
+        <div class="dseo-elementor-widget dseo-metabox" 
+             id="dseo-metabox" 
+             data-last-generated='<?php echo esc_attr( $last_generated ); ?>'>
             <?php if ( ! $has_key ) : ?>
                 <div class="dseo-notice dseo-notice-warn">
                     ⚠️ API key no configurada. Ve a Ajustes → DiagnósticoSEO.
@@ -75,7 +78,10 @@ class DSEO_SEO_Widget extends \Elementor\Widget_Base {
                     <div id="dseo-generate-error" style="display:none; margin-top:10px;" class="dseo-notice dseo-notice-error"></div>
 
                     <div id="dseo-generate-result" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
-                        <div style="font-weight:800; margin-bottom:10px;">✅ Listo</div>
+                        <div style="font-weight:800; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                            ✅ Listo
+                            <button type="button" id="dseo-copy-all-html" class="dseo-btn dseo-btn-ghost" style="padding:4px 8px; font-size:11px;">🔤 Copiar HTML</button>
+                        </div>
                         <div id="gen-h1" style="font-weight:700; color:#333; margin-bottom:5px;"></div>
                         <div id="gen-intro" style="font-size:14px; color:#666; margin-bottom:15px;"></div>
                         

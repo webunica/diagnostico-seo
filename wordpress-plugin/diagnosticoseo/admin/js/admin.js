@@ -15,6 +15,30 @@
     var isAnalyzing = false;
     var isGenerating = false;
 
+    /* ── Restore State ───────────────────────────────────────────── */
+    function restoreState() {
+        var $box = $('#dseo-metabox');
+        var lastGen = $box.data('last-generated');
+        if (lastGen) {
+            try {
+                // Si es un string (desde el data-attribute), parsear
+                var data = typeof lastGen === 'string' ? JSON.parse(lastGen) : lastGen;
+                if (data && data.titleTag) {
+                    renderGenerated(data);
+                    $('#dseo-generate-result').show();
+                    // Switch a la pestaña de generar sugerida si hay contenido
+                    $('[data-tab="generate"]').trigger('click');
+                }
+            } catch (e) {
+                console.error('[DiagnósticoSEO] Error al restaurar contenido generado:', e);
+            }
+        }
+    }
+
+    $(function () {
+        restoreState();
+    });
+
     /* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     $(document).on('click', '.dseo-tab', function () {
         var tab = $(this).data('tab');
@@ -300,24 +324,28 @@
         });
 
         // Gutenberg (Block Editor)
-        if (typeof wp !== 'undefined' && wp.blocks && wp.data) {
-            var createBlock = wp.blocks.createBlock;
-            var dispatch = wp.data.dispatch;
-            var blocks = [];
+        if (typeof wp !== 'undefined' && wp.blocks && wp.data && wp.data.dispatch('core/block-editor')) {
+            try {
+                var createBlock = wp.blocks.createBlock;
+                var dispatch = wp.data.dispatch;
+                var blocks = [];
 
-            if (h1) { blocks.push(createBlock('core/heading', { level: 1, content: h1 })); }
-            if (intro) { blocks.push(createBlock('core/paragraph', { content: intro })); }
+                if (h1) { blocks.push(createBlock('core/heading', { level: 1, content: h1 })); }
+                if (intro) { blocks.push(createBlock('core/paragraph', { content: intro })); }
 
-            secs.forEach(function (s) {
-                if (s.h2) { blocks.push(createBlock('core/heading', { level: 2, content: s.h2 })); }
-                s.par.forEach(function (p) {
-                    if (p) { blocks.push(createBlock('core/paragraph', { content: p })); }
+                secs.forEach(function (s) {
+                    if (s.h2) { blocks.push(createBlock('core/heading', { level: 2, content: s.h2 })); }
+                    s.par.forEach(function (p) {
+                        if (p) { blocks.push(createBlock('core/paragraph', { content: p })); }
+                    });
                 });
-            });
 
-            dispatch('core/block-editor').insertBlocks(blocks);
-            alert('âœ… Contenido insertado en el editor de bloques.');
-            return;
+                dispatch('core/block-editor').insertBlocks(blocks);
+                alert('✅ Contenido insertado satisfactoriamente.');
+                return;
+            } catch (e) {
+                console.error('[DiagnósticoSEO] Fallo al insertar bloques:', e);
+            }
         }
 
         // Classic Editor (TinyMCE)
@@ -329,12 +357,12 @@
                 if (s.h2) { html += '<h2>' + s.h2 + '</h2>'; }
                 s.par.forEach(function (p) { if (p) { html += '<p>' + p + '</p>'; } });
             });
-            tinyMCE.activeEditor.setContent(html);
-            alert('âœ… Contenido insertado en el editor clÃ¡sico.');
+            tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
+            alert('✅ Contenido insertado en el editor clásico.');
             return;
         }
 
-        alert('âš ï¸ Copia el contenido manualmente desde los bloques de arriba.');
+        alert('⚠️ Nota: No detectamos un editor compatible (Gutenberg/Classic) activo. Si usas Elementor o Divi, por favor usa el botón "Copiar todo (HTML)" y pega el resultado manualmente.');
     });
 
     /* â”€â”€ Copy buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -374,6 +402,44 @@
 
         // Switch al tab de schema para mostrar el resultado
         $('.dseo-tab[data-tab="schema"]').trigger('click');
+    });
+
+    /* ── Copy all as HTML (For Elementor/Builders) ────────────────── */
+    $(document).on('click', '#dseo-copy-all-html', function () {
+        var h1 = $('#gen-h1').text().trim();
+        var intro = $('#gen-intro').text().trim();
+        var html = '';
+
+        if (h1) html += '<h1>' + h1 + '</h1>\n';
+        if (intro) html += '<p>' + intro + '</p>\n';
+
+        $('.dseo-gen-section').each(function () {
+            var h2 = $(this).find('.dseo-gen-h2').text().trim();
+            if (h2) html += '<h2>' + h2 + '</h2>\n';
+
+            $(this).find('.dseo-gen-para').each(function () {
+                var p = $(this).text().trim();
+                if (p) html += '<p>' + p + '</p>\n';
+            });
+        });
+
+        // Use standard copy logic
+        var $btn = $(this);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(html).then(function () {
+                $btn.text('✅ ¡Copiado HTML!').prop('disabled', true);
+                setTimeout(function () { $btn.text('🔤 Copiar todo (HTML)').prop('disabled', false); }, 2000);
+            });
+        } else {
+            var ta = document.createElement('textarea');
+            ta.value = html;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            $btn.text('✅ ¡Copiado HTML!');
+            setTimeout(function () { $btn.text('🔤 Copiar todo (HTML)'); }, 2000);
+        }
     });
 
 

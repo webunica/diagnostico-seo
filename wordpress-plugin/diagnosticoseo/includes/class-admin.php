@@ -157,12 +157,12 @@ class DSEO_Admin {
             wp_send_json_error( $result['error'] );
         }
 
-        // Guardar resultado en post meta si se enviÃ³ post_id
+        // Guardar resultado en post meta si se envió post_id
         $post_id = intval( $_POST['post_id'] ?? 0 );
         if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
-            update_post_meta( $post_id, '_dseo_last_analysis',   wp_json_encode( $result ) );
-            update_post_meta( $post_id, '_dseo_analysis_date',   current_time( 'mysql' ) );
-            update_post_meta( $post_id, '_dseo_primary_keyword', $keyword );
+            // Guardamos el JSON de generación por separado para no pisar el análisis
+            update_post_meta( $post_id, '_dseo_generated_content', wp_json_encode( $result ) );
+            update_post_meta( $post_id, '_dseo_primary_keyword',   $keyword );
         }
 
         wp_send_json_success( $result );
