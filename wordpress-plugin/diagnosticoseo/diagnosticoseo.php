@@ -14,25 +14,31 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DSEO_VERSION',   '1.1.2' );
+define( 'DSEO_VERSION',   '1.1.3' );
 define( 'DSEO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DSEO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'DSEO_OPTION_KEY', 'diagnosticoseo_settings' );
 
-/* ── Autoload classes ─────────────────────────────────────────────── */
+// Load classes
 require_once DSEO_PLUGIN_DIR . 'includes/class-api.php';
 require_once DSEO_PLUGIN_DIR . 'includes/class-admin.php';
 require_once DSEO_PLUGIN_DIR . 'includes/class-metabox.php';
 require_once DSEO_PLUGIN_DIR . 'includes/class-elementor.php';
 
-/* ── Boot ─────────────────────────────────────────────────────────── */
+// Boot
 add_action( 'plugins_loaded', function() {
-    DSEO_Admin::init();
-    DSEO_Metabox::init();
-    DSEO_Elementor::init();
+    if ( class_exists( 'DSEO_Admin' ) ) {
+        DSEO_Admin::init();
+    }
+    if ( class_exists( 'DSEO_Metabox' ) ) {
+        DSEO_Metabox::init();
+    }
+    if ( class_exists( 'DSEO_Elementor' ) ) {
+        DSEO_Elementor::init();
+    }
 } );
 
-/* ── Activation hook ──────────────────────────────────────────────── */
+// Activation hook
 register_activation_hook( __FILE__, function() {
     if ( ! get_option( DSEO_OPTION_KEY ) ) {
         update_option( DSEO_OPTION_KEY, [

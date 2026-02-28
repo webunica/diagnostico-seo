@@ -3,30 +3,31 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Widget de DiagnósticoSEO para Elementor.
+ * Este archivo solo se carga si Elementor está activo.
  */
 class DSEO_SEO_Widget extends \Elementor\Widget_Base {
 
-    public function get_name(): string {
+    public function get_name() {
         return 'dseo_seo_generator';
     }
 
-    public function get_title(): string {
-        return esc_html__( 'SEO AI Generator', 'diagnosticoseo' );
+    public function get_title() {
+        return 'SEO AI Generator';
     }
 
-    public function get_icon(): string {
+    public function get_icon() {
         return 'eicon-ai';
     }
 
-    public function get_categories(): array {
+    public function get_categories() {
         return [ 'diagnosticoseo' ];
     }
 
-    protected function register_controls(): void {
+    protected function register_controls() {
         $this->start_controls_section(
             'section_content',
             [
-                'label' => esc_html__( 'Configuración', 'diagnosticoseo' ),
+                'label' => 'Configuracion',
             ]
         );
 
@@ -43,18 +44,19 @@ class DSEO_SEO_Widget extends \Elementor\Widget_Base {
         $this->end_controls_section();
     }
 
-    protected function render(): void {
+    protected function render() {
         $opts    = get_option( 'diagnosticoseo_settings', [] );
         $has_key = ! empty( $opts['api_key'] );
-        $saved_keyword  = get_post_meta( get_the_ID(), '_dseo_primary_keyword', true );
-        $last_generated = get_post_meta( get_the_ID(), '_dseo_generated_content', true );
+        $post_id = get_the_ID();
+        $saved_keyword  = get_post_meta( $post_id, '_dseo_primary_keyword', true );
+        $last_generated = get_post_meta( $post_id, '_dseo_generated_content', true );
         ?>
         <div class="dseo-elementor-widget dseo-metabox" 
              id="dseo-metabox" 
              data-last-generated='<?php echo esc_attr( $last_generated ); ?>'>
             <?php if ( ! $has_key ) : ?>
                 <div class="dseo-notice dseo-notice-warn">
-                    ⚠️ API key no configurada. Ve a Ajustes → DiagnósticoSEO.
+                    ⚠️ API key no configurada. Ve a Ajustes -> DiagnosticoSEO.
                 </div>
             <?php else : ?>
                 <div class="dseo-card" style="border:none; box-shadow:none; padding:0;">
@@ -66,7 +68,7 @@ class DSEO_SEO_Widget extends \Elementor\Widget_Base {
                                placeholder="ej: diseño web profesional">
                     </div>
 
-                    <button type="button" id="dseo-generate-btn" class="elementor-button elementor-size-md elementor-button-primary" style="width:100%; background-image: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                    <button type="button" id="dseo-generate-btn" class="elementor-button elementor-size-md elementor-button-primary" style="width:100%; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color:white; border:none; border-radius:3px; padding:12px; cursor:pointer;">
                         ✨ Generar Contenido AI
                     </button>
 

@@ -2,11 +2,11 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Panel de administraciÃ³n + ajustes + AJAX handlers.
+ * Panel de administracion + ajustes + AJAX handlers.
  */
 class DSEO_Admin {
 
-    public static function init(): void {
+    public static function init() {
         add_action( 'admin_menu',               [ __CLASS__, 'add_menu' ] );
         add_action( 'admin_init',               [ __CLASS__, 'register_settings' ] );
         add_action( 'admin_enqueue_scripts',    [ __CLASS__, 'enqueue' ] );
@@ -18,21 +18,17 @@ class DSEO_Admin {
         add_action( 'wp_ajax_dseo_test_connection',  [ __CLASS__, 'ajax_test_connection' ] );
     }
 
-    /* â”€â”€ Menu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function add_menu(): void {
+    public static function add_menu() {
         add_options_page(
-            'DiagnÃ³sticoSEO',
-            'ðŸ” DiagnÃ³sticoSEO',
+            'DiagnosticoSEO',
+            'DiagnosticoSEO',
             'manage_options',
             'diagnosticoseo',
             [ __CLASS__, 'settings_page' ]
         );
     }
 
-    /* â”€â”€ Settings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function register_settings(): void {
+    public static function register_settings() {
         register_setting(
             'diagnosticoseo_group',
             DSEO_OPTION_KEY,
@@ -43,17 +39,14 @@ class DSEO_Admin {
         );
     }
 
-    public static function sanitize_settings( array $input ): array {
+    public static function sanitize_settings( $input ) {
         return [
             'api_key'  => sanitize_text_field( $input['api_key'] ?? '' ),
             'base_url' => esc_url_raw( rtrim( $input['base_url'] ?? 'https://diagnostico-seo.vercel.app', '/' ) ),
         ];
     }
 
-    /* â”€â”€ Enqueue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function enqueue( string $hook ): void {
-        // Load on settings page and all post edit screens
+    public static function enqueue( $hook ) {
         $allowed = [ 'settings_page_diagnosticoseo', 'post.php', 'post-new.php', 'index.php' ];
         if ( ! in_array( $hook, $allowed, true ) ) return;
 
@@ -69,10 +62,9 @@ class DSEO_Admin {
             DSEO_PLUGIN_URL . 'admin/js/admin.js',
             [ 'jquery' ],
             DSEO_VERSION,
-            true  // Load in footer AFTER the DOM is ready
+            true
         );
 
-        // Resolve post URL/ID here (not inside render callback which is too late)
         $post_id  = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
         $post_url = '';
         if ( $post_id ) {
@@ -87,36 +79,30 @@ class DSEO_Admin {
             'nonce'    => wp_create_nonce( 'dseo_nonce' ),
             'post_url' => $post_url,
             'post_id'  => $post_id,
-            'timeout'  => 90000, // 90 s in ms for jQuery AJAX
+            'timeout'  => 90000,
         ] );
     }
 
-    /* â”€â”€ Settings page view â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function settings_page(): void {
+    public static function settings_page() {
         require_once DSEO_PLUGIN_DIR . 'admin/views/settings-page.php';
     }
 
-    /* â”€â”€ Dashboard widget â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function dashboard_widget(): void {
+    public static function dashboard_widget() {
         wp_add_dashboard_widget(
             'dseo_dashboard_widget',
-            'ðŸ” DiagnÃ³sticoSEO â€” Acceso RÃ¡pido',
+            'DiagnosticoSEO - Acceso Rapido',
             [ __CLASS__, 'dashboard_widget_html' ]
         );
     }
 
-    public static function dashboard_widget_html(): void {
+    public static function dashboard_widget_html() {
         $opts    = get_option( DSEO_OPTION_KEY, [] );
         $has_key = ! empty( $opts['api_key'] );
         $site    = get_site_url();
         require_once DSEO_PLUGIN_DIR . 'admin/views/dashboard-widget.php';
     }
 
-    /* â”€â”€ AJAX: analyze â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function ajax_analyze(): void {
+    public static function ajax_analyze() {
         check_ajax_referer( 'dseo_nonce', 'nonce' );
         if ( ! current_user_can( 'edit_posts' ) ) wp_send_json_error( 'Sin permisos', 403 );
 
@@ -133,10 +119,7 @@ class DSEO_Admin {
         wp_send_json_success( $result );
     }
 
-    /* â”€â”€ AJAX: generate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function ajax_generate(): void {
-        // GPT-4o puede tardar 30-60 seg â€” extender PHP timeout
+    public static function ajax_generate() {
         if ( function_exists( 'set_time_limit' ) ) {
             set_time_limit( 120 );
         }
@@ -157,10 +140,8 @@ class DSEO_Admin {
             wp_send_json_error( $result['error'] );
         }
 
-        // Guardar resultado en post meta si se envió post_id
         $post_id = intval( $_POST['post_id'] ?? 0 );
         if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
-            // Guardamos el JSON de generación por separado para no pisar el análisis
             update_post_meta( $post_id, '_dseo_generated_content', wp_json_encode( $result ) );
             update_post_meta( $post_id, '_dseo_primary_keyword',   $keyword );
         }
@@ -168,9 +149,7 @@ class DSEO_Admin {
         wp_send_json_success( $result );
     }
 
-    /* â”€â”€ AJAX: test connection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-    public static function ajax_test_connection(): void {
+    public static function ajax_test_connection() {
         check_ajax_referer( 'dseo_nonce', 'nonce' );
         if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error( 'Sin permisos', 403 );
 
@@ -179,4 +158,3 @@ class DSEO_Admin {
         wp_send_json( $result );
     }
 }
-
