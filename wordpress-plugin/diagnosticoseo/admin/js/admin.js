@@ -522,5 +522,58 @@
             .replace(/"/g, '&quot;');
     }
 
+    /* ── Standalone Product Optimizer ──────────────────────────── */
+    $('#dseo-btn-generate-product-standalone').on('click', function () {
+        var name = $('#dseo-product-name').val().trim();
+        var kws = $('#dseo-product-keywords').val().trim();
+        var cty = $('#dseo-product-country').val();
+
+        if (!name) { alert('Nombre de producto requerido'); return; }
+
+        var $btn = $(this);
+        $btn.prop('disabled', true).text('⌛ Generando...');
+        $('#dseo-product-loader').show();
+        $('#dseo-product-error, #dseo-product-results-card').hide();
+
+        $.ajax({
+            url: DSEO.ajax_url,
+            method: 'POST',
+            timeout: DSEO.timeout || 90000,
+            data: {
+                action: 'dseo_generate_product',
+                nonce: DSEO.nonce,
+                productName: name,
+                keywords: kws,
+                country: cty
+            }
+        }).done(function (resp) {
+            if (!resp.success) {
+                $('#dseo-product-error').text('Error: ' + (resp.data || 'Error desconocido')).show();
+                return;
+            }
+            var data = resp.data;
+            $('#dseo-res-name').text(data.productName || '');
+            $('#dseo-res-short').text(data.shortDescription || '');
+            $('#dseo-res-long').text(data.longDescription || '');
+
+            var specsHTML = '';
+            if (data.technicalSpecs && data.technicalSpecs.length) {
+                specsHTML += '<div class="dseo-specs-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+                data.technicalSpecs.forEach(function (s) {
+                    specsHTML += '<div style="border-bottom:1px solid #eee;padding:5px 0;"><strong>' + escHtml(s.label) + ':</strong> ' + escHtml(s.value) + '</div>';
+                });
+                specsHTML += '</div>';
+            }
+            $('#dseo-res-specs').html(specsHTML);
+
+            $('#dseo-product-results-card').fadeIn();
+        }).fail(function () {
+            $('#dseo-product-error').text('Error de conexión. Revisa tu API key.').show();
+        }).always(function () {
+            $btn.prop('disabled', false).text('✨ Generar Ficha con IA');
+            $('#dseo-product-loader').hide();
+        });
+    });
+
 })(jQuery);
 

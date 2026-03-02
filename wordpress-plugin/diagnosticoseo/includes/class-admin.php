@@ -20,12 +20,32 @@ class DSEO_Admin {
     }
 
     public static function add_menu() {
-        add_options_page(
+        add_menu_page(
             'SEO Diagnostico',
             'SEO Diagnostico',
             'manage_options',
             'diagnosticoseo',
+            array( 'DSEO_Admin', 'settings_page' ),
+            'dashicons-chart-line',
+            30
+        );
+
+        add_submenu_page(
+            'diagnosticoseo',
+            'Ajustes',
+            'Ajustes',
+            'manage_options',
+            'diagnosticoseo',
             array( 'DSEO_Admin', 'settings_page' )
+        );
+
+        add_submenu_page(
+            'diagnosticoseo',
+            'Optimizador de Productos',
+            'Optimizador de Productos',
+            'manage_options',
+            'dseo-product-optimizer',
+            array( 'DSEO_Admin', 'product_optimizer_page' )
         );
     }
 
@@ -88,6 +108,10 @@ class DSEO_Admin {
 
     public static function settings_page() {
         require_once DSEO_PLUGIN_DIR . 'admin/views/settings-page.php';
+    }
+
+    public static function product_optimizer_page() {
+        require_once DSEO_PLUGIN_DIR . 'admin/views/product-optimizer.php';
     }
 
     public static function dashboard_widget() {

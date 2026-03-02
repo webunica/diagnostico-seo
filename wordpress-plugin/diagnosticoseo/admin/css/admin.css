@@ -651,6 +651,31 @@
     letter-spacing: -2px;
 }
 
+/* Utilities for Product Optimizer */
+.dseo-btn-full {
+    width: 100%;
+}
+
+.dseo-copyable-box {
+    background: #fdfdfd;
+    border: 2px solid var(--dseo-primary);
+    padding: 14px;
+    border-radius: var(--dseo-radius);
+    font-weight: 500;
+    color: var(--dseo-text);
+    position: relative;
+    box-shadow: 4px 4px 0px var(--dseo-primary);
+}
+
+.dseo-scrollable-box {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.dseo-result-section {
+    margin-bottom: 24px;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .dseo-settings-grid {
