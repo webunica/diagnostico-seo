@@ -11,7 +11,7 @@ class DSEO_SEO_Widget extends \Elementor\Widget_Base {
     }
 
     public function get_title() {
-        return 'SEO AI Generator';
+        return 'SEO AI Diagnostico';
     }
 
     public function get_icon() {
@@ -67,7 +67,7 @@ class DSEO_SEO_Widget extends \Elementor\Widget_Base {
                                placeholder="ej: diseño web profesional">
                     </div>
 
-                    <button type="button" id="dseo-generate-btn" class="elementor-button elementor-size-md elementor-button-primary" style="width:100%; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color:white; border:none; border-radius:3px; padding:12px; cursor:pointer;">
+                    <button type="button" id="dseo-generate-btn" class="elementor-button elementor-size-md elementor-button-primary" style="width:100%; background: #3200C1; color:white; border:none; border-radius:4px; padding:12px; cursor:pointer; font-weight:800; border: 2px solid #37FFDB; text-transform:uppercase;">
                         Generar Contenido AI
                     </button>
 

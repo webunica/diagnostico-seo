@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name:       DiagnosticoSEO
+ * Plugin Name:       SEO Diagnostico
  * Plugin URI:        https://diagnosticoseo.com
  * Description:       Analiza y genera contenido SEO optimizado directamente desde el editor de WordPress.
  * Version:           1.1.6
- * Author:            DiagnosticoSEO
+ * Author:            SEO Diagnostico
  * Author URI:        https://diagnosticoseo.com
  * License:           GPL v2 or later
  * Text Domain:       diagnosticoseo

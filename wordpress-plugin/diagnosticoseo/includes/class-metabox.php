@@ -18,7 +18,7 @@ class DSEO_Metabox {
         foreach ( $post_types as $type ) {
             add_meta_box(
                 'dseo_metabox',
-                'DiagnosticoSEO - Analisis y Contenido',
+                'SEO Diagnostico',
                 array( 'DSEO_Metabox', 'render' ),
                 $type,
                 'normal',

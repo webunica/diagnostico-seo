@@ -20,8 +20,8 @@ class DSEO_Admin {
 
     public static function add_menu() {
         add_options_page(
-            'DiagnosticoSEO',
-            'DiagnosticoSEO',
+            'SEO Diagnostico',
+            'SEO Diagnostico',
             'manage_options',
             'diagnosticoseo',
             array( 'DSEO_Admin', 'settings_page' )
@@ -92,7 +92,7 @@ class DSEO_Admin {
     public static function dashboard_widget() {
         wp_add_dashboard_widget(
             'dseo_dashboard_widget',
-            'DiagnosticoSEO - Acceso Rapido',
+            'SEO Diagnostico - Acceso Rápido',
             array( 'DSEO_Admin', 'dashboard_widget_html' )
         );
     }
