@@ -282,27 +282,29 @@ export default function KeywordsPage() {
 
             {/* Hero */}
             <section style={{
-                paddingTop: 90,
-                background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,105,0,0.2) 0%, transparent 65%), #0F172A',
-                borderBottom: '1px solid rgba(255,255,255,0.06)',
+                paddingTop: 110,
+                paddingBottom: 60,
+                textAlign: 'center',
+                background: 'radial-gradient(circle at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 70%), #FFFFFF',
+                borderBottom: '1px solid rgba(0,0,0,0.06)',
             }}>
-                <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px 24px 52px', textAlign: 'center' }}>
+                <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: 'rgba(255,105,0,0.1)', border: '1px solid rgba(255,105,0,0.3)',
-                        borderRadius: 20, padding: '5px 14px', fontSize: '0.72rem', fontWeight: 800,
-                        color: '#FF8C5A', marginBottom: 20, textTransform: 'uppercase', letterSpacing: '0.05em'
+                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.15)',
+                        borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
+                        color: '#C2410C', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.05em'
                     }}>
                         <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#059669', animation: 'pulse 2s infinite', display: 'inline-block' }} />
                         Potenciado por Llama 3.3 (Groq) · 100% Gratis
                     </div>
 
-                    <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.7rem)', fontWeight: 900, marginBottom: 14, lineHeight: 1.15, letterSpacing: '-0.02em', color: 'white' }}>
+                    <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 900, marginBottom: 16, lineHeight: 1.1, color: '#101820', letterSpacing: '-0.02em' }}>
                         Investigación de{' '}
-                        <span style={{ color: '#FF8C5A' }}>Palabras Clave</span>
+                        <span style={{ color: '#C2410C' }}>Palabras Clave</span>
                         {' '}con IA
                     </h1>
-                    <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.85)', maxWidth: 540, margin: '0 auto', lineHeight: 1.6 }}>
+                    <p style={{ fontSize: '1.1rem', color: '#52525B', maxWidth: 600, margin: '0 auto', lineHeight: 1.6, fontWeight: 500 }}>
                         Describe tu negocio y obtén 35–45 keywords estratégicas en segundos:
                         head terms, long-tail, preguntas, intención de compra y SEO local.
                     </p>
@@ -314,13 +316,14 @@ export default function KeywordsPage() {
 
                 {/* Form Card */}
                 <div style={{
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: 16, padding: '28px 28px',
+                    background: '#FFFFFF',
+                    border: '1px solid rgba(0,0,0,0.1)',
+                    borderRadius: 16, padding: '32px',
                     marginBottom: 36, position: 'relative', overflow: 'hidden',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.06)'
                 }}>
                     <div style={{
-                        position: 'absolute', top: 0, left: 0, right: 0, height: 2,
+                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
                         background: '#C2410C',
                     }} />
 
@@ -329,7 +332,7 @@ export default function KeywordsPage() {
 
                             {/* Email */}
                             <div>
-                                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
+                                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
                                     📧 Tu Correo Electrónico *
                                 </label>
                                 <input
@@ -340,10 +343,10 @@ export default function KeywordsPage() {
                                     disabled={loading}
                                     style={{
                                         width: '100%', boxSizing: 'border-box',
-                                        background: 'rgba(255,255,255,0.05)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        background: '#FFFFFF',
+                                        border: '1px solid rgba(0,0,0,0.15)',
                                         borderRadius: 10, padding: '12px 14px',
-                                        color: 'white', fontSize: '0.92rem',
+                                        color: '#101820', fontSize: '0.92rem',
                                         fontFamily: 'inherit',
                                     }}
                                 />
@@ -351,7 +354,7 @@ export default function KeywordsPage() {
 
                             {/* Descripción */}
                             <div>
-                                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
+                                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
                                     🏢 Describe tu negocio, producto o servicio *
                                 </label>
                                 <textarea
@@ -362,16 +365,16 @@ export default function KeywordsPage() {
                                     disabled={loading}
                                     style={{
                                         width: '100%', boxSizing: 'border-box',
-                                        background: 'rgba(255,255,255,0.05)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        background: '#FFFFFF',
+                                        border: '1px solid rgba(0,0,0,0.15)',
                                         borderRadius: 10, padding: '12px 14px',
-                                        color: 'white', fontSize: '0.92rem',
+                                        color: '#101820', fontSize: '0.92rem',
                                         fontFamily: 'inherit', resize: 'vertical',
                                         lineHeight: 1.5,
                                         transition: 'border-color 0.2s',
                                     }}
                                 />
-                                <div style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>
+                                <div style={{ fontSize: '0.74rem', color: '#71717A', marginTop: 4 }}>
                                     {description.length}/500 chars — más detalle = mejores resultados
                                 </div>
                             </div>
@@ -379,7 +382,7 @@ export default function KeywordsPage() {
                             {/* País + Enfoque */}
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                                 <div>
-                                    <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
+                                    <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
                                         🌎 País / Mercado objetivo
                                     </label>
                                     <select
@@ -388,19 +391,19 @@ export default function KeywordsPage() {
                                         disabled={loading}
                                         style={{
                                             width: '100%', boxSizing: 'border-box',
-                                            background: 'rgba(255,255,255,0.05)',
-                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            background: '#FFFFFF',
+                                            border: '1px solid rgba(0,0,0,0.15)',
                                             borderRadius: 10, padding: '11px 14px',
-                                            color: 'white', fontSize: '0.9rem',
+                                            color: '#101820', fontSize: '0.9rem',
                                             fontFamily: 'inherit', cursor: 'pointer',
                                         }}
                                     >
-                                        {COUNTRIES.map(c => <option key={c} value={c} style={{ background: '#0f172a' }}>{c}</option>)}
+                                        {COUNTRIES.map(c => <option key={c} value={c} style={{ background: 'white', color: '#101820' }}>{c}</option>)}
                                     </select>
                                 </div>
 
                                 <div>
-                                    <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
+                                    <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
                                         🎯 Enfoque de keywords
                                     </label>
                                     <select
@@ -409,14 +412,14 @@ export default function KeywordsPage() {
                                         disabled={loading}
                                         style={{
                                             width: '100%', boxSizing: 'border-box',
-                                            background: 'rgba(255,255,255,0.05)',
-                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            background: '#FFFFFF',
+                                            border: '1px solid rgba(0,0,0,0.15)',
                                             borderRadius: 10, padding: '11px 14px',
-                                            color: 'white', fontSize: '0.9rem',
+                                            color: '#101820', fontSize: '0.9rem',
                                             fontFamily: 'inherit', cursor: 'pointer',
                                         }}
                                     >
-                                        {FOCUS_OPTIONS.map(o => <option key={o.value} value={o.value} style={{ background: '#0f172a' }}>{o.label}</option>)}
+                                        {FOCUS_OPTIONS.map(o => <option key={o.value} value={o.value} style={{ background: 'white', color: '#101820' }}>{o.label}</option>)}
                                     </select>
                                 </div>
                             </div>
@@ -451,7 +454,7 @@ export default function KeywordsPage() {
                                 )}
                             </button>
 
-                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.7rem', color: '#71717A', textAlign: 'center' }}>
                                 * Enviaremos el reporte extendido de palabras clave a tu correo corporativo.
                             </div>
                         </div>
@@ -491,10 +494,10 @@ export default function KeywordsPage() {
                                     <button
                                         onClick={copyAll}
                                         style={{
-                                            background: copied ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.06)',
-                                            border: `1px solid ${copied ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.12)'}`,
+                                            background: copied ? 'rgba(16,185,129,0.15)' : 'rgba(0,0,0,0.05)',
+                                            border: `1px solid ${copied ? '#10B981' : 'rgba(0,0,0,0.1)'}`,
                                             borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700,
-                                            color: copied ? '#10B981' : 'white', cursor: 'pointer', fontFamily: 'inherit',
+                                            color: copied ? '#059669' : '#101820', cursor: 'pointer', fontFamily: 'inherit',
                                         }}
                                     >
                                         {copied ? '✓ Copiadas' : `📋 Copiar todas (${totalKeywords})`}
@@ -504,7 +507,7 @@ export default function KeywordsPage() {
                                         style={{
                                             background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)',
                                             borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700,
-                                            color: '#60A5FA', cursor: 'pointer', fontFamily: 'inherit',
+                                            color: '#1D4ED8', cursor: 'pointer', fontFamily: 'inherit',
                                         }}
                                     >
                                         ⬇️ Exportar CSV
@@ -522,9 +525,9 @@ export default function KeywordsPage() {
                                             key={tab.id}
                                             onClick={() => setActiveTab(tab.id)}
                                             style={{
-                                                background: isActive ? 'rgba(255,105,0,0.15)' : 'rgba(255,255,255,0.04)',
-                                                border: `1px solid ${isActive ? '#FF6900' : 'rgba(255,255,255,0.08)'}`,
-                                                borderRadius: 10, padding: '8px 16px', color: isActive ? '#FF6900' : 'rgba(255,255,255,0.5)',
+                                                background: isActive ? 'rgba(255,105,0,0.1)' : 'rgba(0,0,0,0.03)',
+                                                border: `1px solid ${isActive ? '#C2410C' : 'rgba(0,0,0,0.06)'}`,
+                                                borderRadius: 10, padding: '8px 16px', color: isActive ? '#C2410C' : '#52525B',
                                                 fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
                                                 display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s',
                                             }}
@@ -556,12 +559,12 @@ export default function KeywordsPage() {
                             {/* Negative Keywords */}
                             {(result?.negative?.length ?? 0) > 0 && (
                                 <div style={{ marginTop: 32, background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12, padding: '18px 20px' }}>
-                                    <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: 10, color: '#FCA5A5' }}>
+                                    <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: 10, color: '#DC2626' }}>
                                         🚫 Keywords Negativas (a excluir)
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                                         {result?.negative?.map((kw, i) => (
-                                            <span key={i} style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: 20, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#FCA5A5' }}>
+                                            <span key={i} style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: 20, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#DC2626' }}>
                                                 {kw}
                                             </span>
                                         ))}
