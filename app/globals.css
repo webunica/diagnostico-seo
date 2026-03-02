@@ -307,6 +307,10 @@ button {
   background: transparent;
   border: none;
   outline: none;
+  padding: 15px 22px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text);
 }
 
 .url-input:focus-visible {
