@@ -69,11 +69,11 @@ function StatPill({
         <button
             onClick={onClick}
             style={{
-                background: active ? `${color}22` : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${active ? color + '55' : 'rgba(255,255,255,0.08)'}`,
+                background: active ? `${color}15` : 'rgba(0,0,0,0.04)',
+                border: `1px solid ${active ? color : 'rgba(0,0,0,0.1)'}`,
                 borderRadius: 10, padding: '8px 18px',
-                color: active ? color : 'var(--text-muted)',
-                fontWeight: active ? 700 : 500,
+                color: active ? color : '#52525B',
+                fontWeight: active ? 700 : 600,
                 fontSize: '0.85rem',
                 cursor: 'pointer', fontFamily: 'inherit',
                 display: 'flex', alignItems: 'center', gap: 7,
@@ -298,7 +298,19 @@ export default function CrawlPage() {
                                     : <span>✅ Completo — <strong style={{ color: '#C2410C' }}>{urls.length}</strong> URLs en <strong>{detectedDomain}</strong></span>}
                             </div>
                             {done && (
-                                <button onClick={() => exportCSV(urls, detectedDomain)} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700, color: 'white', cursor: 'pointer', fontFamily: 'inherit' }}>⬇️ Exportar CSV</button>
+                                <button
+                                    onClick={() => exportCSV(urls, detectedDomain)}
+                                    style={{
+                                        background: 'rgba(59,130,246,0.1)',
+                                        border: '1px solid rgba(59,130,246,0.25)',
+                                        borderRadius: 8, padding: '8px 16px',
+                                        fontSize: '0.82rem', fontWeight: 700,
+                                        color: '#1D4ED8', cursor: 'pointer',
+                                        fontFamily: 'inherit'
+                                    }}
+                                >
+                                    ⬇️ Exportar CSV
+                                </button>
                             )}
                         </div>
 
@@ -313,10 +325,10 @@ export default function CrawlPage() {
                             <input type="text" placeholder="Filtrar por URL o título…" value={search} onChange={e => setSearch(e.target.value)} style={{ width: '100%', boxSizing: 'border-box', background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10, padding: '12px 14px', color: '#101820', fontSize: '0.9rem', fontFamily: 'inherit' }} />
                         </div>
 
-                        <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, overflow: 'hidden' }}>
+                        <div style={{ background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 14, overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
                             <div style={{ maxHeight: '65vh', overflowY: 'auto' }}>
                                 {filtered.length === 0 ? (
-                                    <div style={{ padding: '40px', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>No URLs found.</div>
+                                    <div style={{ padding: '40px', textAlign: 'center', color: '#71717A' }}>No se encontraron URLs.</div>
                                 ) : filtered.map((u, i) => (
                                     <div key={u.url} style={{ display: 'grid', gridTemplateColumns: '48px 1fr 90px 90px 36px', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                                         <span style={{ fontSize: '0.72rem', color: '#94A3B8', fontWeight: 700 }}>{u.index}</span>
@@ -339,8 +351,8 @@ export default function CrawlPage() {
                 {urls.length === 0 && !crawling && (
                     <div style={{ textAlign: 'center', padding: '80px 0' }}>
                         <div style={{ fontSize: '3rem', marginBottom: 20 }}>🕷️</div>
-                        <div style={{ fontSize: '1.1rem', fontWeight: 700 }}>Crawler de Sitios</div>
-                        <div style={{ color: 'rgba(255,255,255,0.4)', marginTop: 8 }}>Ingresa un dominio para comenzar el escaneo</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#101820' }}>Crawler de Sitios Profesional</div>
+                        <div style={{ color: '#52525B', marginTop: 8, fontSize: '0.95rem' }}>Ingresa un dominio para comenzar el escaneo y descubrir su estructura.</div>
                     </div>
                 )}
             </div>
