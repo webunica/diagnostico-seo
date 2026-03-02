@@ -62,6 +62,7 @@ const SAMPLE_BARS = [
 // ── Main Component ────────────────────────────────────────────────────
 export default function HomePage() {
   const [url, setUrl] = useState('');
+  const [email, setEmail] = useState('');
   const [coupon, setCoupon] = useState('');
   const [showCoupon, setShowCoupon] = useState(false);
   const [couponOk, setCouponOk] = useState(false);
@@ -69,14 +70,19 @@ export default function HomePage() {
   const [freeLoading, setFreeLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // ── Validación simple de email ──────────────────────────────────────
+  const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
   // ── Análisis gratuito ──────────────────────────────────────────────
   const handleFree = useCallback(async (e?: React.MouseEvent) => {
     e?.preventDefault();
     setError('');
     if (!url.trim()) { setError('Por favor ingresa una URL.'); return; }
+    if (!email.trim() || !isValidEmail(email.trim())) { setError('Por favor ingresa un correo válido.'); return; }
     setFreeLoading(true);
-    window.location.href = `/preview?url=${encodeURIComponent(url.trim())}`;
-  }, [url]);
+    // Agregamos email a la URL de preview para seguimiento
+    window.location.href = `/preview?url=${encodeURIComponent(url.trim())}&email=${encodeURIComponent(email.trim())}`;
+  }, [url, email]);
 
   // ── Análisis de pago / cupón ───────────────────────────────────────
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -84,9 +90,14 @@ export default function HomePage() {
     setError('');
     setCouponOk(false);
     if (!url.trim()) { setError('Por favor ingresa una URL.'); return; }
+    if (!email.trim() || !isValidEmail(email.trim())) { setError('Por favor ingresa un correo válido.'); return; }
+
     setLoading(true);
     try {
-      const body: Record<string, string> = { url: url.trim() };
+      const body: Record<string, string> = {
+        url: url.trim(),
+        email: email.trim()
+      };
       if (coupon.trim()) body.coupon = coupon.trim();
 
       const res = await fetch('/api/create-preference', {
@@ -107,7 +118,7 @@ export default function HomePage() {
       setError(err instanceof Error ? err.message : 'Error inesperado.');
       setLoading(false);
     }
-  }, [url, coupon]);
+  }, [url, email, coupon]);
 
   return (
     <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
@@ -155,6 +166,25 @@ export default function HomePage() {
 
           {/* ── FORM estilo Semrush ─── */}
           <form className="url-form" onSubmit={handleSubmit}>
+            {/* Campo Email */}
+            <div style={{ maxWidth: 620, margin: '0 auto 12px', display: 'flex', gap: 10 }}>
+              <div style={{ flex: 1, position: 'relative' }}>
+                <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '1rem', opacity: 0.5 }}>📧</span>
+                <input
+                  type="email"
+                  placeholder="Tu mejor correo electrónico..."
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  disabled={loading || freeLoading}
+                  style={{
+                    width: '100%', padding: '14px 14px 14px 44px', borderRadius: 50, border: '1px solid rgba(0,0,0,0.1)',
+                    background: 'white', fontSize: '0.95rem', fontWeight: 500, fontFamily: 'inherit', boxSizing: 'border-box',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+                  }}
+                />
+              </div>
+            </div>
+
             {/* Barra blanca con botón naranja dentro */}
             <div className="url-form-inner">
               <input
@@ -176,6 +206,10 @@ export default function HomePage() {
                       ? '🎟️ Canjear cupón'
                       : 'Obtener diagnóstico'}
               </button>
+            </div>
+
+            <div style={{ fontSize: '0.7rem', color: '#71717A', marginTop: 10, textAlign: 'center' }}>
+              * Al continuar, aceptas recibir el diagnóstico en tu correo y nuestras políticas de privacidad.
             </div>
 
             {/* Botón gratis secundario */}
@@ -353,23 +387,44 @@ export default function HomePage() {
             </ul>
 
             <form onSubmit={handleSubmit}>
-              <input
-                className="url-input"
-                type="text"
-                placeholder="https://tusitio.cl"
-                value={url}
-                onChange={e => setUrl(e.target.value)}
-                disabled={loading}
-                style={{
-                  width: '100%',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  borderRadius: 10,
-                  marginBottom: 10,
-                  padding: '12px 16px',
-                  boxSizing: 'border-box',
-                }}
-              />
+              <div style={{ marginBottom: 10 }}>
+                <input
+                  type="email"
+                  placeholder="tu@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  disabled={loading}
+                  style={{
+                    width: '100%',
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: 10,
+                    marginBottom: 8,
+                    padding: '12px 16px',
+                    boxSizing: 'border-box',
+                    color: '#101820',
+                    fontWeight: 500
+                  }}
+                />
+                <input
+                  className="url-input"
+                  type="text"
+                  placeholder="https://tusitio.cl"
+                  value={url}
+                  onChange={e => setUrl(e.target.value)}
+                  disabled={loading}
+                  style={{
+                    width: '100%',
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: 10,
+                    padding: '12px 16px',
+                    boxSizing: 'border-box',
+                    color: '#101820',
+                    fontWeight: 500
+                  }}
+                />
+              </div>
               <div style={{ display: 'flex', gap: 8, flexDirection: 'column' }}>
                 <button className="btn-buy" type="submit" disabled={loading || freeLoading}>
                   {loading ? '⟳ Procesando…' : 'Obtener Diagnóstico Completo — $9.990'}

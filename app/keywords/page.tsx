@@ -210,6 +210,7 @@ function LoadingSkeleton() {
 // ── Main Page ─────────────────────────────────────────────────────────
 export default function KeywordsPage() {
     const [description, setDescription] = useState('');
+    const [email, setEmail] = useState('');
     const [country, setCountry] = useState('Chile');
     const [focus, setFocus] = useState('');
     const [loading, setLoading] = useState(false);
@@ -218,10 +219,13 @@ export default function KeywordsPage() {
     const [activeTab, setActiveTab] = useState<Tab>('headTerms');
     const [copied, setCopied] = useState(false);
 
+    const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setResult(null);
+        if (!email.trim() || !isValidEmail(email.trim())) { setError('Ingresa un correo válido.'); return; }
         if (!description.trim()) { setError('Describe tu negocio o servicio.'); return; }
         setLoading(true);
 
@@ -229,7 +233,7 @@ export default function KeywordsPage() {
             const res = await fetch('/api/keywords', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ description: description.trim(), country, focus }),
+                body: JSON.stringify({ description: description.trim(), country, focus, email: email.trim() }),
             });
             const data = await res.json();
             if (!res.ok || data.error) throw new Error(data.error ?? 'Error al generar keywords.');
@@ -322,6 +326,28 @@ export default function KeywordsPage() {
 
                     <form onSubmit={handleSubmit}>
                         <div style={{ display: 'grid', gap: 18 }}>
+
+                            {/* Email */}
+                            <div>
+                                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
+                                    📧 Tu Correo Electrónico *
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="tu@negocio.com"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    disabled={loading}
+                                    style={{
+                                        width: '100%', boxSizing: 'border-box',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: 10, padding: '12px 14px',
+                                        color: 'white', fontSize: '0.92rem',
+                                        fontFamily: 'inherit',
+                                    }}
+                                />
+                            </div>
 
                             {/* Descripción */}
                             <div>
@@ -424,6 +450,10 @@ export default function KeywordsPage() {
                                     '🔍 Generar Keywords'
                                 )}
                             </button>
+
+                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>
+                                * Enviaremos el reporte extendido de palabras clave a tu correo corporativo.
+                            </div>
                         </div>
                     </form>
                 </div >

@@ -14,10 +14,14 @@ const VALID_COUPONS_100 = (process.env.COUPON_100 ?? 'COD100')
 
 export async function POST(req: NextRequest) {
     try {
-        const { url, coupon } = await req.json();
+        const { url, coupon, email } = await req.json();
 
         if (!url) {
             return NextResponse.json({ error: 'URL requerida' }, { status: 400 });
+        }
+
+        if (!email) {
+            return NextResponse.json({ error: 'Email requerido' }, { status: 400 });
         }
 
         // Normalizar y validar URL
@@ -81,7 +85,7 @@ export async function POST(req: NextRequest) {
                 },
                 auto_return: 'approved',
                 statement_descriptor: 'DiagnosticoSEO',
-                metadata: { url: normalizedUrl },
+                metadata: { url: normalizedUrl, email: email },
             },
         });
 

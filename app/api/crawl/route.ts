@@ -59,11 +59,13 @@ function contentTypeLabel(ct: string): string {
 // ── Route ───────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
-    let body: { url?: string; maxUrls?: number };
+    let body: { url?: string; maxUrls?: number; email?: string };
     try { body = await req.json(); }
     catch { return Response.json({ error: 'Body inválido' }, { status: 400 }); }
 
     const rawUrl = body.url?.trim() ?? '';
+    const email = body.email?.trim() ?? '';
+    if (!email) return Response.json({ error: 'Email requerido' }, { status: 400 });
     const maxUrls = Math.min(Math.max(Number(body.maxUrls) || 100, 1), MAX_LIMIT);
 
     if (!rawUrl) return Response.json({ error: 'URL requerida' }, { status: 400 });

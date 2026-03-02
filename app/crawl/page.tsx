@@ -89,6 +89,7 @@ function StatPill({
 // ── Main Page ──────────────────────────────────────────────────────────
 export default function CrawlPage() {
     const [domain, setDomain] = useState('');
+    const [email, setEmail] = useState('');
     const [maxUrls, setMaxUrls] = useState(100);
     const [crawling, setCrawling] = useState(false);
     const [done, setDone] = useState(false);
@@ -99,9 +100,12 @@ export default function CrawlPage() {
     const [copiedUrl, setCopiedUrl] = useState('');
     const abortRef = useRef<AbortController | null>(null);
 
+    const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
     const handleCrawl = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
         setError(''); setDone(false); setUrls([]); setFilter('all'); setSearch('');
+        if (!email.trim() || !isValidEmail(email.trim())) { setError('Ingresa un correo válido.'); return; }
         if (!domain.trim()) { setError('Ingresa un dominio o URL.'); return; }
 
         setCrawling(true);
@@ -112,7 +116,7 @@ export default function CrawlPage() {
             const res = await fetch('/api/crawl', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: domain.trim(), maxUrls }),
+                body: JSON.stringify({ url: domain.trim(), maxUrls, email: email.trim() }),
                 signal: ac.signal,
             });
 
@@ -232,7 +236,24 @@ export default function CrawlPage() {
 
                     {/* Form */}
                     <form onSubmit={handleCrawl} style={{ maxWidth: 680, margin: '0 auto' }}>
-                        <div style={{ display: 'flex', background: 'white', borderRadius: 12, border: '1px solid rgba(0,0,0,0.12)', overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.06)', marginBottom: 16 }}>
+                        {/* Email Row */}
+                        <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto 12px' }}>
+                            <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '1rem', opacity: 0.5 }}>📧</span>
+                            <input
+                                type="email"
+                                placeholder="Tu correo electrónico..."
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                disabled={crawling}
+                                style={{
+                                    width: '100%', padding: '14px 14px 14px 44px', borderRadius: 12, border: '1px solid rgba(0,0,0,0.12)',
+                                    background: 'white', fontSize: '0.97rem', fontWeight: 500, fontFamily: 'inherit', boxSizing: 'border-box',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+                                }}
+                            />
+                        </div>
+
+                        <div style={{ display: 'flex', background: 'white', borderRadius: 12, border: '1px solid rgba(0,0,0,0.12)', overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.06)', marginBottom: 12 }}>
                             <input
                                 type="text"
                                 placeholder="ejemplo.cl o https://ejemplo.cl"
@@ -259,7 +280,9 @@ export default function CrawlPage() {
                             )}
                         </div>
                         {error && <div style={{ color: '#DC2626', fontSize: '0.82rem', marginBottom: 10 }}>⚠️ {error}</div>}
-                        <p style={{ fontSize: '0.76rem', color: '#71717A', textAlign: 'center' }}>Máx. 500 URLs</p>
+                        <p style={{ fontSize: '0.72rem', color: '#71717A', textAlign: 'center' }}>
+                            Máx. 500 URLs · Recibirás el resumen en tu correo.
+                        </p>
                     </form>
                 </div>
             </section>

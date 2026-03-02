@@ -24,10 +24,14 @@ interface KeywordsResponse {
 
 export async function POST(req: NextRequest) {
     try {
-        const { description, country, focus, url } = await req.json();
+        const { description, country, focus, url, email } = await req.json();
 
         if (!description?.trim()) {
             return NextResponse.json({ error: 'Debes describir tu negocio o servicio.' }, { status: 400 });
+        }
+
+        if (!email?.trim()) {
+            return NextResponse.json({ error: 'Debes ingresar tu correo electrónico.' }, { status: 400 });
         }
 
         if (!process.env.GROQ_API_KEY) {
