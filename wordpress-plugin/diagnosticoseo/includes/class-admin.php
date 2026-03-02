@@ -15,6 +15,7 @@ class DSEO_Admin {
         // AJAX handlers (logged-in users)
         add_action( 'wp_ajax_dseo_analyze',          array( 'DSEO_Admin', 'ajax_analyze' ) );
         add_action( 'wp_ajax_dseo_generate',         array( 'DSEO_Admin', 'ajax_generate' ) );
+        add_action( 'wp_ajax_dseo_generate_product', array( 'DSEO_Admin', 'ajax_generate_product' ) );
         add_action( 'wp_ajax_dseo_test_connection',  array( 'DSEO_Admin', 'ajax_test_connection' ) );
     }
 
@@ -146,6 +147,35 @@ class DSEO_Admin {
         if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
             update_post_meta( $post_id, '_dseo_generated_content', wp_json_encode( $result ) );
             update_post_meta( $post_id, '_dseo_primary_keyword',   $keyword );
+        }
+
+        wp_send_json_success( $result );
+    }
+
+    public static function ajax_generate_product() {
+        if ( function_exists( 'set_time_limit' ) ) {
+            set_time_limit( 120 );
+        }
+
+        check_ajax_referer( 'dseo_nonce', 'nonce' );
+        if ( ! current_user_can( 'edit_posts' ) ) wp_send_json_error( 'Sin permisos', 403 );
+
+        $product_name = isset( $_POST['productName'] ) ? sanitize_text_field( $_POST['productName'] ) : '';
+        $keywords     = isset( $_POST['keywords'] ) ? sanitize_text_field( $_POST['keywords'] ) : '';
+        $country      = isset( $_POST['country'] ) ? sanitize_text_field( $_POST['country'] ) : 'Chile';
+
+        if ( ! $product_name ) wp_send_json_error( 'Nombre de producto requerido' );
+
+        $api    = new DSEO_API();
+        $result = $api->generate_product( $product_name, $keywords, $country );
+
+        if ( isset( $result['error'] ) ) {
+            wp_send_json_error( $result['error'] );
+        }
+
+        $post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+        if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
+            update_post_meta( $post_id, '_dseo_generated_product', wp_json_encode( $result ) );
         }
 
         wp_send_json_success( $result );

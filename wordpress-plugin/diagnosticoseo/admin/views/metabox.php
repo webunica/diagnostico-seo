@@ -23,7 +23,8 @@ $has_key = ! empty( $opts['api_key'] );
 <div class="dseo-metabox" id="dseo-metabox"
      data-post-url="<?php echo esc_url( $post_url ); ?>"
      data-post-id="<?php echo esc_attr( $post->ID ); ?>"
-     data-last-generated='<?php echo esc_attr( $last_generated ); ?>'>
+     data-last-generated='<?php echo esc_attr( $last_generated ); ?>'
+     data-last-product='<?php echo esc_attr( $last_product ); ?>'>
 
     <?php if ( ! $has_key ) : ?>
     <div class="dseo-notice dseo-notice-warn">
@@ -36,6 +37,7 @@ $has_key = ! empty( $opts['api_key'] );
     <div class="dseo-tabs">
         <button type="button" class="dseo-tab dseo-tab-active" data-tab="analyze">🔍 Analizar SEO</button>
         <button type="button" class="dseo-tab" data-tab="generate">✨ Generar Contenido</button>
+        <button type="button" class="dseo-tab" data-tab="product">🛒 Ficha de Producto</button>
         <button type="button" class="dseo-tab" data-tab="schema">🗂️ Schema Markup</button>
         <?php if ( $saved_score ) : ?>
         <button type="button" class="dseo-tab" data-tab="results">📊 Último Resultado</button>
@@ -186,6 +188,49 @@ $has_key = ! empty( $opts['api_key'] );
 
             <!-- Stats -->
             <div class="dseo-gen-stats" id="gen-stats"></div>
+        </div>
+    </div>
+
+    <!-- Tab: Product -->
+    <div class="dseo-tab-content" data-content="product" style="display:none;">
+        <div class="dseo-alert dseo-alert-info">
+            🛒 Optimiza tu ficha de producto para Google Shopping y SEO.
+        </div>
+        <div class="dseo-field-group" style="margin-bottom:12px;">
+            <label for="dseo-product-name">Nombre del Producto</label>
+            <input type="text" id="dseo-product-name" placeholder="ej: Zapatilla Nike Air Max 270" />
+        </div>
+        <div class="dseo-field-group">
+            <label for="dseo-product-keywords">Palabras de búsqueda (separadas por coma)</label>
+            <input type="text" id="dseo-product-keywords" placeholder="ej: zapatillas running, nike air max, calzado deportivo" />
+        </div>
+        <button type="button" id="dseo-product-btn" class="dseo-btn dseo-btn-success" style="margin-top:12px;" <?php disabled( ! $has_key ); ?>>
+            🚀 Generar Ficha Optimizada
+        </button>
+
+        <div id="dseo-product-loading" style="display:none;" class="dseo-loading">
+            <div class="dseo-spinner dseo-spinner-orange"></div>
+            <span>Optimizando producto…</span>
+        </div>
+        <div id="dseo-product-error" style="display:none;" class="dseo-notice dseo-notice-error"></div>
+
+        <div id="dseo-product-result" style="display:none; margin-top:20px;">
+            <div class="dseo-generated-block">
+                <div class="dseo-gen-label">Nombre Optimizado</div>
+                <div class="dseo-gen-content" id="product-name-res"></div>
+                <button type="button" class="dseo-copy-btn" data-target="product-name-res">📋 Copiar</button>
+            </div>
+            <div class="dseo-generated-block">
+                <div class="dseo-gen-label">Descripción Corta</div>
+                <div class="dseo-gen-content" id="product-short-res"></div>
+                <button type="button" class="dseo-copy-btn" data-target="product-short-res">📋 Copiar</button>
+            </div>
+            <div class="dseo-generated-block">
+                <div class="dseo-gen-label">Descripción Larga</div>
+                <div class="dseo-gen-content" id="product-long-res"></div>
+                <button type="button" class="dseo-copy-btn" data-target="product-long-res">📋 Copiar</button>
+            </div>
+            <div id="product-features-res"></div>
         </div>
     </div>
 

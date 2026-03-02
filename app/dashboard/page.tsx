@@ -404,6 +404,29 @@ export default function DashboardPage() {
                             {error && <div style={{ background: T.redDim, border: `1px solid ${T.redBorder}`, borderRadius: 8, padding: '8px 12px', fontSize: '0.8rem', color: T.red, marginTop: 10 }}>⚠️ {error}</div>}
                         </div>
 
+                        {/* Tools */}
+                        <div>
+                            <div style={{ fontWeight: 800, fontSize: '1rem', marginBottom: 14 }}>🚀 Herramientas Pro</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+                                <div style={{ background: '#fff', border: `1px solid ${T.border}`, borderRadius: 14, padding: '20px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                                        <div style={{ fontSize: '1.2rem' }}>🛒</div>
+                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, background: T.orangeDim, color: T.orange, padding: '2px 8px', borderRadius: 4, textTransform: 'uppercase' }}>Beta</span>
+                                    </div>
+                                    <div style={{ fontWeight: 800, fontSize: '0.94rem', marginBottom: 6 }}>Optimizador de Productos</div>
+                                    <p style={{ fontSize: '0.8rem', color: T.textMuted, lineHeight: 1.5, marginBottom: 16 }}>
+                                        Crea una ficha de producto perfecta: nombre SEO, beneficios, specs técnicos y schema markup.
+                                    </p>
+                                    <a href="/dashboard/product-optimizer" style={{
+                                        display: 'block', textAlign: 'center', textDecoration: 'none', background: T.orange, color: '#fff',
+                                        fontSize: '0.82rem', fontWeight: 900, padding: '10px', borderRadius: 50, transition: 'all 0.2s'
+                                    }}>
+                                        Probar Optimizador →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Plans */}
                         <div>
                             <div style={{ fontWeight: 800, fontSize: '1rem', marginBottom: 14 }}>📦 Planes disponibles</div>
@@ -492,6 +515,16 @@ export default function DashboardPage() {
   -H "Content-Type: application/json" \\
   -H "X-API-Key: sk_live_TU_KEY" \\
   -d '{"url": "https://tu-sitio.com", "primaryKeyword": "tu keyword"}'`,
+                                    },
+                                    {
+                                        title: 'POST /api/v1/generate-product',
+                                        badge: 'Pro / Agency',
+                                        badgeColor: T.orange,
+                                        desc: 'Genera una ficha de producto optimizada (nombre, descripción, especificaciones, schema).',
+                                        code: `curl -X POST https://diagnosticoseo.vercel.app/api/v1/generate-product \\
+  -H "Content-Type: application/json" \\
+  -H "X-API-Key: sk_live_TU_KEY" \\
+  -d '{"productName": "Nombre Producto", "keywords": ["kw1", "kw2"]}'`,
                                     },
                                 ].map((ep, i) => (
                                     <div key={i} style={{ background: 'rgba(0,0,0,0.25)', border: `1px solid ${T.border}`, borderRadius: 10, overflow: 'hidden' }}>

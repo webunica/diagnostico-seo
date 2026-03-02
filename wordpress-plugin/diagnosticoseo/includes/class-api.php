@@ -76,6 +76,17 @@ class DSEO_API {
     }
 
     /**
+     * Genera una ficha de producto optimizada.
+     */
+    public function generate_product( $product_name, $keywords, $country = 'Chile' ) {
+        return $this->request( '/api/v1/generate-product', array(
+            'productName' => $product_name,
+            'keywords'    => $keywords,
+            'country'     => $country,
+        ) );
+    }
+
+    /**
      * Verifica que la API key funciona.
      */
     public function ping() {

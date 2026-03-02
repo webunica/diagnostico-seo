@@ -21,16 +21,25 @@
         var lastGen = $box.data('last-generated');
         if (lastGen) {
             try {
-                // Si es un string (desde el data-attribute), parsear
                 var data = typeof lastGen === 'string' ? JSON.parse(lastGen) : lastGen;
                 if (data && data.titleTag) {
                     renderGenerated(data);
                     $('#dseo-generate-result').show();
-                    // Switch a la pestaña de generar sugerida si hay contenido
-                    $('[data-tab="generate"]').trigger('click');
                 }
             } catch (e) {
                 console.error('[DiagnósticoSEO] Error al restaurar contenido generado:', e);
+            }
+        }
+        var lastProd = $box.data('last-product');
+        if (lastProd) {
+            try {
+                var dataProd = typeof lastProd === 'string' ? JSON.parse(lastProd) : lastProd;
+                if (dataProd && dataProd.productName) {
+                    renderProduct(dataProd);
+                    $('#dseo-product-result').show();
+                }
+            } catch (e) {
+                console.error('[DiagnósticoSEO] Error al restaurar producto:', e);
             }
         }
     }
@@ -274,6 +283,67 @@
             $('#dseo-generate-btn').prop('disabled', false).text('âœ¨ Generar Contenido SEO');
         });
     });
+
+    /* ── Product Optimization ─────────────────────────────────────── */
+    $('#dseo-product-btn').on('click', function () {
+        var name = $('#dseo-product-name').val().trim();
+        var keywords = $('#dseo-product-keywords').val().trim();
+        var country = $('#dseo-country').val();
+
+        if (!name) { alert('Ingresa el nombre del producto.'); return; }
+
+        var $btn = $(this);
+        $btn.prop('disabled', true).text('⌛ Optimizando…');
+        $('#dseo-product-result, #dseo-product-error').hide();
+        $('#dseo-product-loading').show();
+
+        $.ajax({
+            url: DSEO.ajax_url,
+            method: 'POST',
+            timeout: DSEO.timeout || 90000,
+            data: {
+                action: 'dseo_generate_product',
+                nonce: DSEO.nonce,
+                productName: name,
+                keywords: keywords,
+                country: country,
+                post_id: DSEO.post_id || $('#dseo-metabox').data('post-id') || 0,
+            },
+        }).done(function (resp) {
+            if (!resp.success) {
+                var msg = resp.data || 'Error desconocido';
+                if (msg.indexOf('plan') !== -1) msg += ' → Actualiza en diagnostico-seo.vercel.app/dashboard';
+                $('#dseo-product-error').text('Error: ' + msg).show();
+                return;
+            }
+            renderProduct(resp.data);
+            $('#dseo-product-result').show();
+            $('html, body').animate({ scrollTop: $('#dseo-product-result').offset().top - 60 }, 500);
+        }).fail(function () {
+            $('#dseo-product-error').text('Error de conexión o timeout.').show();
+        }).always(function () {
+            $btn.prop('disabled', false).text('🚀 Generar Ficha Optimizada');
+            $('#dseo-product-loading').hide();
+        });
+    });
+
+    function renderProduct(data) {
+        $('#product-name-res').text(data.productName || '');
+        $('#product-short-res').text(data.shortDescription || '');
+        $('#product-long-res').text(data.longDescription || '');
+
+        var featHTML = '';
+        if (data.features && data.features.length) {
+            featHTML += '<div class="dseo-gen-label" style="margin-top:16px">Características Destacadas</div>';
+            data.features.forEach(function (f) {
+                featHTML += '<div class="dseo-issue" style="border-left:3px solid var(--dseo-accent); background:#fff;">';
+                featHTML += '<strong>' + escHtml(f.title) + '</strong> ';
+                featHTML += '<span>' + escHtml(f.description) + '</span>';
+                featHTML += '</div>';
+            });
+        }
+        $('#product-features-res').html(featHTML);
+    }
 
     function renderGenerated(data) {
         $('#gen-title').text(data.titleTag || '');
