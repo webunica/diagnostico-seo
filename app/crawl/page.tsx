@@ -15,11 +15,11 @@ type FilterStatus = 'all' | '2xx' | '3xx' | '4xx' | '5xx' | 'error';
 
 // ── Helpers ────────────────────────────────────────────────────────────
 function statusColor(s: number) {
-    if (s >= 200 && s < 300) return '#34D399';
-    if (s >= 300 && s < 400) return '#FCD34D';
-    if (s >= 400 && s < 500) return '#F87171';
-    if (s >= 500) return '#FF8C5A';
-    return '#94A3B8'; // error/timeout
+    if (s >= 200 && s < 300) return '#059669';
+    if (s >= 300 && s < 400) return '#B45309';
+    if (s >= 400 && s < 500) return '#DC2626';
+    if (s >= 500) return '#991B1B';
+    return '#52525B'; // error/timeout
 }
 
 function statusBg(s: number) {
@@ -188,15 +188,15 @@ export default function CrawlPage() {
             {/* Navbar */}
             <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                 <div className="navbar-logo">
-                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#FF6900' }}>SEO Diagnostico</span>
+                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#C2410C' }}>SEO Diagnostico</span>
                 </div>
                 <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
-                    <a href="/keywords" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>Keywords</a>
+                    <a href="/" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
+                    <a href="/keywords" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>Keywords</a>
                     <div style={{
                         fontSize: '0.72rem', fontWeight: 800, padding: '4px 12px',
-                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(255,105,0,0.15)',
-                        borderRadius: 20, color: '#FF6900', textTransform: 'uppercase', letterSpacing: '0.05em'
+                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.15)',
+                        borderRadius: 20, color: '#C2410C', textTransform: 'uppercase', letterSpacing: '0.05em'
                     }}>
                         🕷️ Crawl — Free
                     </div>
@@ -214,19 +214,19 @@ export default function CrawlPage() {
                 <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px' }}>
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(255,105,0,0.15)',
+                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.15)',
                         borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
-                        color: '#FF6900', marginBottom: 24, textTransform: 'uppercase'
+                        color: '#C2410C', marginBottom: 24, textTransform: 'uppercase'
                     }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', animation: 'pulse 2s infinite', display: 'inline-block' }} />
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#059669', animation: 'pulse 2s infinite', display: 'inline-block' }} />
                         Crawler BFS en tiempo real · 100% Gratis
                     </div>
 
                     <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 900, marginBottom: 16, lineHeight: 1.1, color: '#101820', letterSpacing: '-0.02em' }}>
-                        Descubre todas las <span style={{ color: '#FF6900' }}>URLs de un dominio</span>
+                        Descubre todas las <span style={{ color: '#C2410C' }}>URLs de un dominio</span>
                     </h1>
 
-                    <p style={{ fontSize: '1.1rem', color: '#666666', maxWidth: 600, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
+                    <p style={{ fontSize: '1.1rem', color: '#52525B', maxWidth: 600, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
                         Crawl inteligente con BFS — sigue todos los enlaces internos y muestra URLs en tiempo real con estado HTTP, tipo y título de página.
                     </p>
 
@@ -255,11 +255,11 @@ export default function CrawlPage() {
                             {crawling ? (
                                 <button type="button" onClick={stopCrawl} style={{ background: '#EF4444', color: 'white', border: 'none', padding: '14px 22px', fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}> detener </button>
                             ) : (
-                                <button type="submit" style={{ background: '#FF6900', color: 'white', border: 'none', padding: '14px 24px', fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', textTransform: 'uppercase' }}> 🕷️ Iniciar Crawl </button>
+                                <button type="submit" style={{ background: '#C2410C', color: 'white', border: 'none', padding: '14px 24px', fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', textTransform: 'uppercase' }}> 🕷️ Iniciar Crawl </button>
                             )}
                         </div>
-                        {error && <div style={{ color: '#EF4444', fontSize: '0.82rem', marginBottom: 10 }}>⚠️ {error}</div>}
-                        <p style={{ fontSize: '0.76rem', color: 'rgba(255,255,255,0.35)', textAlign: 'center' }}>Máx. 500 URLs</p>
+                        {error && <div style={{ color: '#DC2626', fontSize: '0.82rem', marginBottom: 10 }}>⚠️ {error}</div>}
+                        <p style={{ fontSize: '0.76rem', color: '#71717A', textAlign: 'center' }}>Máx. 500 URLs</p>
                     </form>
                 </div>
             </section>
@@ -269,10 +269,10 @@ export default function CrawlPage() {
                 {urls.length > 0 && (
                     <div style={{ marginBottom: 20 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
-                            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'white' }}>
+                            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#101820' }}>
                                 {crawling
-                                    ? <span>🕷️ Crawleando <strong style={{ color: '#FF6900' }}>{detectedDomain}</strong>… <span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 400 }}>{urls.length} encontrados</span></span>
-                                    : <span>✅ Completo — <strong style={{ color: '#FF6900' }}>{urls.length}</strong> URLs en <strong>{detectedDomain}</strong></span>}
+                                    ? <span>🕷️ Crawleando <strong style={{ color: '#C2410C' }}>{detectedDomain}</strong>… <span style={{ color: '#71717A', fontWeight: 400 }}>{urls.length} encontrados</span></span>
+                                    : <span>✅ Completo — <strong style={{ color: '#C2410C' }}>{urls.length}</strong> URLs en <strong>{detectedDomain}</strong></span>}
                             </div>
                             {done && (
                                 <button onClick={() => exportCSV(urls, detectedDomain)} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700, color: 'white', cursor: 'pointer', fontFamily: 'inherit' }}>⬇️ Exportar CSV</button>
@@ -280,14 +280,14 @@ export default function CrawlPage() {
                         </div>
 
                         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
-                            <StatPill label="All" count={urls.length} color="#FFFFFF" active={filter === 'all'} onClick={() => setFilter('all')} />
-                            <StatPill label="2xx" count={count2xx} color="#10B981" active={filter === '2xx'} onClick={() => setFilter('2xx')} />
-                            <StatPill label="3xx" count={count3xx} color="#F59E0B" active={filter === '3xx'} onClick={() => setFilter('3xx')} />
-                            <StatPill label="4xx" count={count4xx} color="#EF4444" active={filter === '4xx'} onClick={() => setFilter('4xx')} />
+                            <StatPill label="All" count={urls.length} color="#101820" active={filter === 'all'} onClick={() => setFilter('all')} />
+                            <StatPill label="2xx" count={count2xx} color="#059669" active={filter === '2xx'} onClick={() => setFilter('2xx')} />
+                            <StatPill label="3xx" count={count3xx} color="#B45309" active={filter === '3xx'} onClick={() => setFilter('3xx')} />
+                            <StatPill label="4xx" count={count4xx} color="#DC2626" active={filter === '4xx'} onClick={() => setFilter('4xx')} />
                         </div>
 
                         <div style={{ position: 'relative', marginBottom: 16 }}>
-                            <input type="text" placeholder="Filtrar por URL o título…" value={search} onChange={e => setSearch(e.target.value)} style={{ width: '100%', boxSizing: 'border-box', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '12px 14px', color: 'white', fontSize: '0.9rem', fontFamily: 'inherit' }} />
+                            <input type="text" placeholder="Filtrar por URL o título…" value={search} onChange={e => setSearch(e.target.value)} style={{ width: '100%', boxSizing: 'border-box', background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10, padding: '12px 14px', color: '#101820', fontSize: '0.9rem', fontFamily: 'inherit' }} />
                         </div>
 
                         <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, overflow: 'hidden' }}>
@@ -295,16 +295,16 @@ export default function CrawlPage() {
                                 {filtered.length === 0 ? (
                                     <div style={{ padding: '40px', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>No URLs found.</div>
                                 ) : filtered.map((u, i) => (
-                                    <div key={u.url} style={{ display: 'grid', gridTemplateColumns: '48px 1fr 90px 90px 36px', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                                        <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)', fontWeight: 700 }}>{u.index}</span>
+                                    <div key={u.url} style={{ display: 'grid', gridTemplateColumns: '48px 1fr 90px 90px 36px', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                                        <span style={{ fontSize: '0.72rem', color: '#94A3B8', fontWeight: 700 }}>{u.index}</span>
                                         <div style={{ minWidth: 0 }}>
-                                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.url}</div>
-                                            <div style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.title}</div>
+                                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#101820', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.url}</div>
+                                            <div style={{ fontSize: '0.74rem', color: '#71717A', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.title}</div>
                                         </div>
                                         <div style={{ textAlign: 'center' }}><span style={{ fontSize: '0.72rem', fontWeight: 800, padding: '3px 8px', borderRadius: 6, background: statusBg(u.status), color: statusColor(u.status) }}>{statusLabel(u.status)}</span></div>
-                                        <div style={{ textAlign: 'center' }}><span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>{u.type}</span></div>
+                                        <div style={{ textAlign: 'center' }}><span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8' }}>{u.type}</span></div>
                                         <div style={{ textAlign: 'center' }}>
-                                            <button onClick={() => copyUrl(u.url)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copiedUrl === u.url ? '#10B981' : 'rgba(255,255,255,0.2)' }}> ⎘ </button>
+                                            <button onClick={() => copyUrl(u.url)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copiedUrl === u.url ? '#059669' : '#CBD5E0' }}> ⎘ </button>
                                         </div>
                                     </div>
                                 ))}
@@ -322,8 +322,8 @@ export default function CrawlPage() {
                 )}
             </div>
 
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '32px 24px', textAlign: 'center' }}>
-                <a href="/" style={{ color: '#FF6900', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}>Audita tu sitio ahora con Inmobiliaria Pilares →</a>
+            <div style={{ borderTop: '1px solid rgba(0,0,0,0.06)', padding: '32px 24px', textAlign: 'center', background: '#FFFFFF' }}>
+                <a href="/" style={{ color: '#C2410C', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}>Audita tu sitio ahora con Inmobiliaria Pilares →</a>
             </div>
 
             <style>{`

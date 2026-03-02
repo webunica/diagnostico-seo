@@ -5,15 +5,15 @@ import { useState, useCallback } from 'react';
 /* ── Tokens claros ────────────────────────────────────────────────── */
 const T = {
     bg: '#F7F7F9', bgCard: '#FFFFFF', border: 'rgba(0,0,0,0.08)',
-    borderMid: 'rgba(0,0,0,0.12)', text: '#101820', textMuted: '#666666',
-    textSubtle: '#999999', orange: '#FF6900', orangeDim: 'rgba(255,105,0,0.08)',
-    orangeBorder: 'rgba(255,105,0,0.15)', accent: '#101820', green: '#10B981',
-    greenDim: 'rgba(16,185,129,0.08)', greenBorder: 'rgba(16,185,129,0.15)',
-    blue: '#3B82F6', blueDim: 'rgba(59,130,246,0.08)', blueBorder: 'rgba(59,130,246,0.15)',
-    yellow: '#F59E0B', yellowDim: 'rgba(245,158,11,0.06)', yellowBorder: 'rgba(245,158,11,0.15)',
-    red: '#EF4444', redDim: 'rgba(239,68,68,0.06)', redBorder: 'rgba(239,68,68,0.15)',
-    brand: '#FF6900', brandDim: 'rgba(255,105,0,0.08)', brandBorder: 'rgba(255,105,0,0.15)',
-    violet: '#8B5CF6',
+    borderMid: 'rgba(0,0,0,0.12)', text: '#101820', textMuted: '#52525B',
+    textSubtle: '#71717A', orange: '#C2410C', orangeDim: 'rgba(194,65,12,0.08)',
+    orangeBorder: 'rgba(194,65,12,0.15)', accent: '#101820', green: '#059669',
+    greenDim: 'rgba(5,150,105,0.08)', greenBorder: 'rgba(5,150,105,0.15)',
+    blue: '#1D4ED8', blueDim: 'rgba(29,78,216,0.08)', blueBorder: 'rgba(29,78,216,0.15)',
+    yellow: '#B45309', yellowDim: 'rgba(180,83,9,0.06)', yellowBorder: 'rgba(180,83,9,0.15)',
+    red: '#B91C1C', redDim: 'rgba(185,28,28,0.06)', redBorder: 'rgba(185,28,28,0.15)',
+    brand: '#C2410C', brandDim: 'rgba(194,65,12,0.08)', brandBorder: 'rgba(194,65,12,0.15)',
+    violet: '#6D28D9',
 } as const;
 
 /* ── Types ────────────────────────────────────────────────────────── */
@@ -51,10 +51,10 @@ function UsageBar({ used, limit }: { used: number; limit: number }) {
                 <span style={{ color: T.textSubtle }}>Requests este mes</span>
                 <span style={{ fontWeight: 700, color }}>{used} / {limit}</span>
             </div>
-            <div style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 4, height: 6, overflow: 'hidden' }}>
+            <div style={{ background: 'rgba(0,0,0,0.07)', borderRadius: 4, height: 6, overflow: 'hidden' }}>
                 <div style={{
                     width: `${pct}%`, height: '100%', borderRadius: 4,
-                    background: `linear-gradient(90deg, ${color}88, ${color})`,
+                    background: color,
                     transition: 'width 0.5s ease',
                 }} />
             </div>
@@ -68,7 +68,7 @@ function UsageBar({ used, limit }: { used: number; limit: number }) {
 /* ── Plan badge ────────────────────────────────────────────────────── */
 function PlanBadge({ plan }: { plan: string }) {
     const cfg: Record<string, { color: string; dim: string; border: string }> = {
-        starter: { color: T.textMuted, dim: 'rgba(255,255,255,0.06)', border: T.border },
+        starter: { color: T.textMuted, dim: 'rgba(0,0,0,0.04)', border: T.border },
         pro: { color: T.blue, dim: T.blueDim, border: T.blueBorder },
         agency: { color: T.yellow, dim: T.yellowDim, border: T.yellowBorder },
     };
@@ -226,7 +226,7 @@ export default function DashboardPage() {
                             onKeyDown={e => e.key === 'Enter' && loadKeys(email)}
                             style={{
                                 width: '100%', boxSizing: 'border-box',
-                                background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`,
+                                background: '#FFFFFF', border: `1px solid ${T.border}`,
                                 borderRadius: 9, padding: '11px 14px', color: T.text,
                                 fontSize: '0.9rem', fontFamily: 'inherit', marginBottom: 12, outline: 'none',
                             }}
@@ -343,7 +343,7 @@ export default function DashboardPage() {
                                                         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                                                             <code style={{
                                                                 fontSize: '0.84rem', color: T.textMuted,
-                                                                background: 'rgba(255,255,255,0.05)',
+                                                                background: 'rgba(0,0,0,0.04)',
                                                                 padding: '3px 10px', borderRadius: 6,
                                                             }}>
                                                                 {k.key}
@@ -387,7 +387,7 @@ export default function DashboardPage() {
                                     value={newLabel} onChange={e => setNewLabel(e.target.value)}
                                     style={{
                                         flex: 1, minWidth: 200, boxSizing: 'border-box',
-                                        background: 'rgba(255,255,255,0.04)', border: `1px solid ${T.border}`,
+                                        background: '#FFFFFF', border: `1px solid ${T.border}`,
                                         borderRadius: 8, padding: '9px 12px', color: T.text,
                                         fontSize: '0.86rem', fontFamily: 'inherit', outline: 'none',
                                     }}
@@ -531,7 +531,7 @@ export default function DashboardPage() {
                                         <div style={{ padding: '12px 16px', borderBottom: `1px solid ${T.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
                                             <div>
                                                 <code style={{ fontSize: '0.84rem', color: T.violet, fontWeight: 700 }}>{ep.title}</code>
-                                                <span style={{ fontSize: '0.68rem', marginLeft: 10, padding: '2px 8px', borderRadius: 20, background: 'rgba(255,255,255,0.05)', color: ep.badgeColor, fontWeight: 600 }}>
+                                                <span style={{ fontSize: '0.68rem', marginLeft: 10, padding: '2px 8px', borderRadius: 20, background: 'rgba(0,0,0,0.04)', color: ep.badgeColor, fontWeight: 600 }}>
                                                     {ep.badge}
                                                 </span>
                                             </div>

@@ -421,7 +421,7 @@ function DetailModal({ item, onClose }: { item: ModalItem; onClose: () => void }
                             border: '1px solid rgba(52,211,153,0.2)',
                             borderRadius: 12, padding: '14px 18px',
                         }}>
-                            <h3 style={{ fontSize: '0.78rem', fontWeight: 700, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
+                            <h3 style={{ fontSize: '0.78rem', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
                                 🔧 Corrección recomendada
                             </h3>
                             <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, margin: 0 }}>
@@ -495,7 +495,7 @@ function ScoreGauge({ score }: { score: number }) {
     const radius = 54;
     const circ = 2 * Math.PI * radius;
     const filled = (score / 100) * circ;
-    const color = score >= 70 ? '#37FFDB' : score >= 40 ? '#f59e0b' : '#ef4444';
+    const color = score >= 70 ? '#059669' : score >= 40 ? '#B45309' : '#DC2626';
 
     return (
         <div className="score-gauge">
@@ -535,9 +535,9 @@ function ReportView({ report }: { report: Report }) {
             {/* Navbar */}
             <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                 <div className="navbar-logo">
-                    <span style={{ color: '#FF6900', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
+                    <span style={{ color: '#C2410C', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
                 </div>
-                <a href="/" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>← Nuevo análisis</a>
+                <a href="/" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>← Nuevo análisis</a>
             </nav>
 
             {/* Header */}
@@ -552,7 +552,7 @@ function ReportView({ report }: { report: Report }) {
                         <div className="report-site-url" style={{ fontSize: '1.8rem', fontWeight: 900, color: '#101820', marginBottom: 12, wordBreak: 'break-all', letterSpacing: '-0.02em' }}>
                             {report.analyzedUrl}
                         </div>
-                        <div className="report-meta" style={{ display: 'flex', gap: 16, fontSize: '0.85rem', color: '#666666', fontWeight: 600 }}>
+                        <div className="report-meta" style={{ display: 'flex', gap: 16, fontSize: '0.85rem', color: '#52525B', fontWeight: 600 }}>
                             <span style={{ background: 'rgba(0,0,0,0.04)', padding: '4px 10px', borderRadius: 6 }}>🏢 {report.businessType}</span>
                             <span style={{ background: 'rgba(0,0,0,0.04)', padding: '4px 10px', borderRadius: 6 }}>⚙️ {report.platform}</span>
                             <span style={{ background: 'rgba(0,0,0,0.04)', padding: '4px 10px', borderRadius: 6 }}>📅 {date}</span>
@@ -587,7 +587,7 @@ function ReportView({ report }: { report: Report }) {
                                         />
                                     </div>
                                     <div className="score-bar-value" style={{
-                                        color: sec.score >= 70 ? 'var(--orange)' : sec.score >= 40 ? 'var(--yellow)' : 'var(--red)',
+                                        color: sec.score >= 70 ? '#059669' : sec.score >= 40 ? '#B45309' : '#DC2626',
                                         fontWeight: 800,
                                         fontSize: '1rem',
                                         width: '40px',

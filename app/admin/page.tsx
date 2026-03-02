@@ -6,12 +6,12 @@ import { useState, useCallback } from 'react';
 const T = {
     bg: '#F7F7F9', bgCard: '#FFFFFF', bgCardHov: '#F0F0F2',
     border: '#E2E8F0', borderMid: '#CBD5E0',
-    text: '#101820', textMuted: '#666666', textSubtle: '#999999',
-    brand: '#FF6900', brandDim: 'rgba(255,105,0,0.06)', brandBorder: 'rgba(255,105,0,0.2)',
-    green: '#10B981', greenDim: 'rgba(16,185,129,0.08)', greenBorder: 'rgba(16,185,129,0.22)',
-    blue: '#3B82F6', blueDim: 'rgba(59,130,246,0.06)', blueBorder: 'rgba(59,130,246,0.20)',
-    yellow: '#F59E0B', yellowDim: 'rgba(245,158,11,0.08)', yellowBorder: 'rgba(245,158,11,0.22)',
-    red: '#EF4444', redDim: 'rgba(239,68,68,0.08)', redBorder: 'rgba(239,68,68,0.22)',
+    text: '#101820', textMuted: '#52525B', textSubtle: '#71717A',
+    brand: '#C2410C', brandDim: 'rgba(194,65,12,0.06)', brandBorder: 'rgba(194,65,12,0.2)',
+    green: '#059669', greenDim: 'rgba(16,185,129,0.08)', greenBorder: 'rgba(16,185,129,0.22)',
+    blue: '#1D4ED8', blueDim: 'rgba(59,130,246,0.06)', blueBorder: 'rgba(59,130,246,0.20)',
+    yellow: '#B45309', yellowDim: 'rgba(245,158,11,0.08)', yellowBorder: 'rgba(245,158,11,0.22)',
+    red: '#DC2626', redDim: 'rgba(239,68,68,0.08)', redBorder: 'rgba(239,68,68,0.22)',
 } as const;
 
 const pill = (bg: string, border: string, color: string, extra?: React.CSSProperties): React.CSSProperties => ({
@@ -34,7 +34,7 @@ interface ApiKey {
 interface PlanDef { id: string; name: string; requestsPerMonth: number; priceMontly: number; }
 
 const PLAN_STYLE: Record<string, { color: string; dim: string; border: string }> = {
-    starter: { color: T.textMuted, dim: 'rgba(255,255,255,0.06)', border: T.border },
+    starter: { color: T.textMuted, dim: 'rgba(0,0,0,0.04)', border: T.border },
     pro: { color: T.brand, dim: T.brandDim, border: T.brandBorder },
     agency: { color: T.yellow, dim: T.yellowDim, border: T.yellowBorder },
 };
@@ -59,7 +59,7 @@ function UsageBar({ used, limit }: { used: number; limit: number }) {
                 <span style={{ color: T.textSubtle }}>Uso</span>
                 <span style={{ fontWeight: 700, color }}>{used}/{limit}</span>
             </div>
-            <div style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 3, height: 4, overflow: 'hidden' }}>
+            <div style={{ background: 'rgba(0,0,0,0.07)', borderRadius: 3, height: 4, overflow: 'hidden' }}>
                 <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 3, transition: 'width 0.4s ease' }} />
             </div>
         </div>

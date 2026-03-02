@@ -114,13 +114,13 @@ export default function HomePage() {
       {/* ── NAVBAR ─────────────────────────────────────────────────── */}
       <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
         <div className="navbar-logo">
-          <span style={{ color: '#FF6900', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
+          <span style={{ color: '#C2410C', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
         </div>
         <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-          <a href="/keywords" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>Keywords</a>
-          <a href="/crawl" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>Crawl</a>
-          <a href="/dashboard" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>API</a>
-          <div style={{ padding: '6px 12px', background: 'rgba(255,105,0,0.1)', color: '#FF6900', borderRadius: 20, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <a href="/keywords" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>Keywords</a>
+          <a href="/crawl" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>Crawl</a>
+          <a href="/dashboard" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>API</a>
+          <div style={{ padding: '6px 12px', background: 'rgba(255,105,0,0.1)', color: '#C2410C', borderRadius: 20, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             $9.990 CLP
           </div>
         </div>
@@ -137,19 +137,19 @@ export default function HomePage() {
         <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 24px' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(255,105,0,0.15)',
+            background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.3)',
             borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
-            color: '#FF6900', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.05em'
+            color: '#C2410C', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.05em'
           }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF6900', animation: 'pulse 2s infinite', display: 'inline-block' }} />
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#C2410C', animation: 'pulse 2s infinite', display: 'inline-block' }} />
             Potenciado por ChatGPT · Resultados en &lt;60 segundos
           </div>
 
           <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', fontWeight: 900, marginBottom: 20, lineHeight: 1.1, color: '#101820', letterSpacing: '-0.03em' }}>
-            Gana visibilidad <span style={{ color: '#FF6900' }}>digital</span> en Chile
+            Gana visibilidad <span style={{ color: '#C2410C' }}>digital</span> en Chile
           </h1>
 
-          <p style={{ fontSize: '1.15rem', color: '#666666', maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
+          <p style={{ fontSize: '1.15rem', color: '#52525B', maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
             Analiza cualquier sitio web y descubre exactamente qué necesitas corregir para aparecer primero en Google. Score 0–100, issues priorizados y plan de acción SEO experto.
           </p>
 
@@ -185,13 +185,13 @@ export default function HomePage() {
                 onClick={handleFree}
                 disabled={loading || freeLoading}
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.75)',
-                  border: '1px solid rgba(255,255,255,0.18)',
+                  background: 'rgba(0,0,0,0.04)',
+                  color: '#52525B',
+                  border: '1px solid rgba(0,0,0,0.1)',
                   borderRadius: 8, padding: '10px 24px',
                   fontSize: '0.88rem', fontWeight: 600,
                   cursor: 'pointer', fontFamily: 'inherit',
-                  transition: 'all 0.2s', backdropFilter: 'blur(8px)',
+                  transition: 'all 0.2s',
                 }}
               >
                 {freeLoading ? '⟳ Cargando…' : '🆓 Probar análisis gratuito (sin pago)'}
@@ -205,7 +205,7 @@ export default function HomePage() {
                 onClick={() => { setShowCoupon(v => !v); setError(''); }}
                 style={{
                   background: 'none', border: 'none',
-                  color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem',
+                  color: '#71717A', fontSize: '0.75rem',
                   cursor: 'pointer', fontFamily: 'inherit',
                   textDecoration: 'underline', textDecorationStyle: 'dotted',
                   padding: 4,
@@ -227,16 +227,16 @@ export default function HomePage() {
                     onChange={e => setCoupon(e.target.value.toUpperCase())}
                     disabled={loading}
                     style={{
-                      background: 'rgba(255,255,255,0.1)',
-                      border: couponOk ? '1.5px solid #34D399' : '1px solid rgba(255,255,255,0.2)',
+                      background: 'rgba(0,0,0,0.03)',
+                      border: couponOk ? '1.5px solid #059669' : '1px solid rgba(0,0,0,0.15)',
                       borderRadius: 8, padding: '8px 14px',
-                      color: 'white', fontSize: '0.88rem',
+                      color: '#101820', fontSize: '0.88rem',
                       fontFamily: 'monospace', fontWeight: 700,
                       letterSpacing: '0.1em', width: 130, textAlign: 'center',
                       lineHeight: 1.5,
                     }}
                   />
-                  <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.4)' }}>
+                  <span style={{ fontSize: '0.74rem', color: '#71717A' }}>
                     {coupon.trim() ? '↑ Clic en «Obtener diagnóstico»' : 'Ingresa tu código'}
                   </span>
                 </div>
@@ -257,9 +257,9 @@ export default function HomePage() {
             <div className="score-preview-header">
               <div className="score-preview-url">
                 🌐 ejemplo.com — Score:{' '}
-                <strong style={{ color: '#F59E0B', marginLeft: 4 }}>54/100</strong>
+                <strong style={{ color: '#B45309', marginLeft: 4 }}>54/100</strong>
               </div>
-              <div className="score-preview-date">Vista previa del reporte</div>
+              <div className="score-preview-date" style={{ color: '#52525B' }}>Vista previa del reporte</div>
             </div>
             <div className="score-bars">
               {SAMPLE_BARS.map(bar => (
@@ -275,10 +275,10 @@ export default function HomePage() {
                     className="score-bar-value"
                     style={{
                       color: bar.status === 'good'
-                        ? '#34D399'
+                        ? '#059669'
                         : bar.status === 'warning'
-                          ? '#FCD34D'
-                          : '#FF8C5A',
+                          ? '#B45309'
+                          : '#DC2626',
                     }}
                   >
                     {bar.pct}
@@ -380,9 +380,9 @@ export default function HomePage() {
                   disabled={loading || freeLoading}
                   style={{
                     background: 'transparent',
-                    border: '1px solid rgba(255,255,255,0.15)',
+                    border: '1px solid rgba(0,0,0,0.15)',
                     borderRadius: 10, padding: '11px',
-                    color: 'var(--text-muted)', fontSize: '0.88rem',
+                    color: '#52525B', fontSize: '0.88rem',
                     fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit',
                     transition: 'all 0.2s',
                   }}
@@ -411,8 +411,8 @@ export default function HomePage() {
       {/* ── FOOTER ─────────────────────────────────────────────────── */}
       <footer style={{ borderTop: '1px solid rgba(0,0,0,0.06)', padding: '60px 24px', textAlign: 'center', background: '#FFFFFF' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ fontSize: '1rem', fontWeight: 900, color: '#FF6900', marginBottom: 12 }}>SEO Diagnostico</div>
-          <p style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 600 }}>© {new Date().getFullYear()} — Análisis SEO Experto con IA</p>
+          <div style={{ fontSize: '1rem', fontWeight: 900, color: '#C2410C', marginBottom: 12 }}>SEO Diagnostico</div>
+          <p style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 600 }}>© {new Date().getFullYear()} — Análisis SEO Experto con IA</p>
           <div style={{ marginTop: 24, display: 'flex', gap: 24, justifyContent: 'center' }}>
             <a href="#" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Términos</a>
             <a href="#" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Privacidad</a>

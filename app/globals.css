@@ -19,8 +19,8 @@
 
   /* Texto sobre fondos CLAROS */
   --text: #101820;
-  --text-muted: #999999;
-  --text-subtle: #4A4F54;
+  --text-muted: #626971;
+  --text-subtle: #313539;
 
   /* Texto sobre fondos OSCUROS (hero, navbar) */
   --text-on-dark: #FFFFFF;
@@ -176,9 +176,9 @@ button {
 }
 
 .badge-price {
-  background: rgba(249, 115, 22, 0.15);
-  border: 1px solid rgba(249, 115, 22, 0.35);
-  color: #fdba74;
+  background: rgba(255, 105, 0, 0.1);
+  border: 1px solid rgba(255, 105, 0, 0.4);
+  color: #c2410c;
   padding: 4px 13px;
   border-radius: 20px;
   font-size: 0.78rem;

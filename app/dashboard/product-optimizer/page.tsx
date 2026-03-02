@@ -5,8 +5,8 @@ import Link from 'next/link';
 
 const T = {
     bg: '#F7F7F9', bgCard: '#FFFFFF', border: 'rgba(0,0,0,0.08)',
-    text: '#101820', textMuted: '#666666', orange: '#FF6900',
-    green: '#10B981', red: '#EF4444'
+    text: '#101820', textMuted: '#52525B', orange: '#C2410C',
+    green: '#059669', red: '#B91C1C'
 } as const;
 
 export default function ProductOptimizerPage() {
@@ -36,10 +36,10 @@ export default function ProductOptimizerPage() {
     return (
         <div style={{ minHeight: '100vh', background: T.bg, color: T.text, padding: '40px 20px', fontFamily: 'Montserrat, sans-serif' }}>
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
-                <Link href="/dashboard" style={{ color: T.textMuted, textDecoration: 'none', fontSize: '0.85rem', fontWeight: 700 }}>← Volver al Dashboard</Link>
+                <Link href="/dashboard" style={{ color: '#52525B', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 700 }}>← Volver al Dashboard</Link>
 
                 <h1 style={{ fontSize: '1.8rem', fontWeight: 900, marginTop: 20 }}>🛒 Optimizador de Fichas de Producto</h1>
-                <p style={{ color: T.textMuted, marginBottom: 30 }}>Genera contenido de alto rendimiento para e-commerce usando IA y SEO avanzado.</p>
+                <p style={{ color: '#52525B', marginBottom: 30 }}>Genera contenido de alto rendimiento para e-commerce usando IA y SEO avanzado.</p>
 
                 <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: '24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
                     <div>
@@ -59,7 +59,8 @@ export default function ProductOptimizerPage() {
 
                     <button onClick={run} disabled={loading} style={{
                         background: T.orange, color: '#fff', border: 'none', borderRadius: 50, padding: '14px',
-                        fontSize: '0.9rem', fontWeight: 900, cursor: 'pointer', transition: 'all 0.2s', opacity: loading ? 0.6 : 1
+                        fontSize: '0.9rem', fontWeight: 900, cursor: 'pointer', transition: 'all 0.2s', opacity: loading ? 0.6 : 1,
+                        boxShadow: '0 4px 12px rgba(194,65,12,0.15)'
                     }}>
                         {loading ? 'Generando ficha...' : '🚀 Generar Ficha Optimizada'}
                     </button>

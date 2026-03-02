@@ -32,7 +32,7 @@ function MiniGauge({ score }: { score: number }) {
     const radius = 44;
     const circ = 2 * Math.PI * radius;
     const filled = (score / 100) * circ;
-    const color = score >= 70 ? '#10B981' : score >= 40 ? '#F59E0B' : '#EF4444';
+    const color = score >= 70 ? '#059669' : score >= 40 ? '#B45309' : '#DC2626';
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
@@ -58,9 +58,9 @@ function MiniGauge({ score }: { score: number }) {
 
 // ── Status config ─────────────────────────────────────────────────────
 const STATUS_CONFIG: Record<CheckStatus, { icon: string; color: string; bg: string; border: string }> = {
-    pass: { icon: '✓', color: '#34D399', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.2)' },
-    warn: { icon: '⚠', color: '#FCD34D', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.2)' },
-    fail: { icon: '✗', color: '#FCA5A5', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.2)' },
+    pass: { icon: '✓', color: '#059669', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.2)' },
+    warn: { icon: '⚠', color: '#B45309', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.2)' },
+    fail: { icon: '✗', color: '#DC2626', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.2)' },
 };
 
 // ── Check Row ─────────────────────────────────────────────────────────
@@ -143,16 +143,16 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
     });
 
     const scoreLabel = report.score >= 70 ? 'Bien' : report.score >= 40 ? 'Mejorable' : 'Crítico';
-    const scoreColor = report.score >= 70 ? '#34D399' : report.score >= 40 ? '#FCD34D' : '#FCA5A5';
+    const scoreColor = report.score >= 70 ? '#059669' : report.score >= 40 ? '#B45309' : '#DC2626';
 
     return (
         <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
             {/* Navbar */}
             <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                 <div className="navbar-logo">
-                    <span style={{ color: '#FF6900', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
+                    <span style={{ color: '#C2410C', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
                 </div>
-                <a href="/" style={{ fontSize: '0.82rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
+                <a href="/" style={{ fontSize: '0.82rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
             </nav>
 
             {/* Hero del reporte gratuito */}
@@ -165,9 +165,9 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
                     {/* Badge gratuito */}
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
+                        background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(5,150,105,0.25)',
                         borderRadius: 20, padding: '5px 14px', fontSize: '0.78rem', fontWeight: 600,
-                        color: '#34D399', marginBottom: 20,
+                        color: '#059669', marginBottom: 20,
                     }}>
                         🆓 Análisis Gratuito
                     </div>
@@ -186,19 +186,19 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
                             <div style={{ display: 'flex', gap: 10, marginTop: 20, flexWrap: 'wrap' }}>
                                 <div style={{
                                     padding: '6px 14px', borderRadius: 8, fontSize: '0.82rem', fontWeight: 600,
-                                    background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#34D399',
+                                    background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(5,150,105,0.2)', color: '#059669',
                                 }}>
                                     ✓ {report.summary.passing} pasaron
                                 </div>
                                 <div style={{
                                     padding: '6px 14px', borderRadius: 8, fontSize: '0.82rem', fontWeight: 600,
-                                    background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', color: '#FCD34D',
+                                    background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(180,83,9,0.2)', color: '#B45309',
                                 }}>
                                     ⚠ {report.summary.warning} por mejorar
                                 </div>
                                 <div style={{
                                     padding: '6px 14px', borderRadius: 8, fontSize: '0.82rem', fontWeight: 600,
-                                    background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#FCA5A5',
+                                    background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(220,38,38,0.2)', color: '#DC2626',
                                 }}>
                                     ✗ {report.summary.failing} críticos
                                 </div>
