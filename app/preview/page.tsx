@@ -146,21 +146,20 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
     const scoreColor = report.score >= 70 ? '#34D399' : report.score >= 40 ? '#FCD34D' : '#FCA5A5';
 
     return (
-        <>
+        <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
             {/* Navbar */}
-            <nav className="navbar">
+            <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                 <div className="navbar-logo">
-                    <div className="logo-icon">🔍</div>
-                    <span>DiagnósticoSEO</span>
+                    <span style={{ color: '#FF6900', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
                 </div>
-                <a href="/" style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>← Inicio</a>
+                <a href="/" style={{ fontSize: '0.82rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
             </nav>
 
             {/* Hero del reporte gratuito */}
             <div style={{
                 paddingTop: 80,
-                background: 'radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.1) 0%, transparent 60%), var(--bg-secondary)',
-                borderBottom: '1px solid var(--border)',
+                background: 'radial-gradient(ellipse at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 60%), #FFFFFF',
+                borderBottom: '1px solid rgba(0,0,0,0.06)',
             }}>
                 <div style={{ maxWidth: 860, margin: '0 auto', padding: '48px 24px 40px' }}>
                     {/* Badge gratuito */}
@@ -313,7 +312,7 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
                     {/* Top accent line */}
                     <div style={{
                         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                        background: 'linear-gradient(90deg, var(--blue), var(--cyan))',
+                        background: 'linear-gradient(90deg, var(--orange), var(--accent))',
                     }} />
 
                     <div style={{ fontSize: '2rem', marginBottom: 12 }}>🚀</div>
@@ -328,14 +327,15 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
                     <button
                         onClick={onUpgrade}
                         style={{
-                            background: 'linear-gradient(135deg, var(--blue), var(--cyan))',
+                            background: 'var(--orange)',
                             color: 'white', border: 'none',
-                            borderRadius: 12, padding: '14px 40px',
-                            fontSize: '1.05rem', fontWeight: 700,
+                            borderRadius: 50, padding: '14px 40px',
+                            fontSize: '1.05rem', fontWeight: 800,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            boxShadow: '0 8px 30px rgba(59,130,246,0.35)',
+                            boxShadow: '0 8px 30px rgba(255, 105, 0, 0.35)',
                             transition: 'all 0.2s',
+                            textTransform: 'uppercase',
                         }}
                     >
                         💎 Ver Diagnóstico Completo — $9.990 CLP
@@ -367,17 +367,18 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
                 <button
                     onClick={onUpgrade}
                     style={{
-                        background: 'linear-gradient(135deg, var(--blue), var(--cyan))',
+                        background: 'var(--orange)',
                         color: 'white', border: 'none',
                         borderRadius: 30, padding: '9px 22px',
-                        fontSize: '0.85rem', fontWeight: 700,
+                        fontSize: '0.85rem', fontWeight: 800,
                         cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
+                        textTransform: 'uppercase',
                     }}
                 >
                     💎 Reporte completo — $9.990
                 </button>
             </div>
-        </>
+        </div>
     );
 }
 

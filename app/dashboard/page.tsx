@@ -2,17 +2,18 @@
 
 import { useState, useCallback } from 'react';
 
-/* ── Tokens oscuros ───────────────────────────────────────────────── */
+/* ── Tokens claros ────────────────────────────────────────────────── */
 const T = {
-    bg: '#080d18', bgCard: 'rgba(255,255,255,0.03)', border: 'rgba(255,255,255,0.08)',
-    borderMid: 'rgba(255,255,255,0.14)', text: '#f0f4ff', textMuted: 'rgba(240,244,255,0.65)',
-    textSubtle: 'rgba(240,244,255,0.38)', purple: '#8b5cf6', purpleDim: 'rgba(139,92,246,0.15)',
-    purpleBorder: 'rgba(139,92,246,0.3)', cyan: '#06b6d4', green: '#34d399',
-    greenDim: 'rgba(52,211,153,0.1)', greenBorder: 'rgba(52,211,153,0.25)',
-    blue: '#60a5fa', blueDim: 'rgba(96,165,250,0.1)', blueBorder: 'rgba(96,165,250,0.2)',
-    yellow: '#fbbf24', yellowDim: 'rgba(251,191,36,0.08)', yellowBorder: 'rgba(251,191,36,0.22)',
-    red: '#f87171', redDim: 'rgba(248,113,113,0.09)', redBorder: 'rgba(248,113,113,0.25)',
-    violet: '#a78bfa', violetDim: 'rgba(167,139,250,0.1)', violetBorder: 'rgba(167,139,250,0.25)',
+    bg: '#F7F7F9', bgCard: '#FFFFFF', border: 'rgba(0,0,0,0.08)',
+    borderMid: 'rgba(0,0,0,0.12)', text: '#101820', textMuted: '#666666',
+    textSubtle: '#999999', orange: '#FF6900', orangeDim: 'rgba(255,105,0,0.08)',
+    orangeBorder: 'rgba(255,105,0,0.15)', accent: '#101820', green: '#10B981',
+    greenDim: 'rgba(16,185,129,0.08)', greenBorder: 'rgba(16,185,129,0.15)',
+    blue: '#3B82F6', blueDim: 'rgba(59,130,246,0.08)', blueBorder: 'rgba(59,130,246,0.15)',
+    yellow: '#F59E0B', yellowDim: 'rgba(245,158,11,0.06)', yellowBorder: 'rgba(245,158,11,0.15)',
+    red: '#EF4444', redDim: 'rgba(239,68,68,0.06)', redBorder: 'rgba(239,68,68,0.15)',
+    brand: '#FF6900', brandDim: 'rgba(255,105,0,0.08)', brandBorder: 'rgba(255,105,0,0.15)',
+    violet: '#8B5CF6',
 } as const;
 
 /* ── Types ────────────────────────────────────────────────────────── */
@@ -29,10 +30,10 @@ function CopyBtn({ text, label = 'Copiar' }: { text: string; label?: string }) {
     return (
         <button onClick={() => { navigator.clipboard.writeText(text); setC(true); setTimeout(() => setC(false), 2000); }}
             style={{
-                background: c ? T.greenDim : 'rgba(255,255,255,0.06)',
+                background: c ? T.greenDim : '#F1F5F9',
                 border: `1px solid ${c ? T.greenBorder : T.border}`,
                 borderRadius: 7, padding: '4px 12px', fontSize: '0.7rem', fontWeight: 700,
-                color: c ? T.green : T.textSubtle, cursor: 'pointer', fontFamily: 'inherit',
+                color: c ? T.green : T.textMuted, cursor: 'pointer', fontFamily: 'inherit',
                 transition: 'all 0.2s', whiteSpace: 'nowrap',
             }}>
             {c ? '✓ Copiado' : label}
@@ -173,27 +174,30 @@ export default function DashboardPage() {
     const activeKeys = keys.filter(k => k.isActive);
 
     return (
-        <div style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: 'Nunito, sans-serif' }}>
+        <div style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: 'Montserrat, sans-serif' }}>
 
             {/* Navbar */}
-            <nav style={{
-                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 60,
+            <nav className="navbar" style={{
+                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 62,
                 padding: '0 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                background: 'rgba(8,13,24,0.95)', backdropFilter: 'blur(20px)',
-                borderBottom: `1px solid ${T.border}`,
+                background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: `1px solid ${T.border}`
             }}>
-                <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, fontWeight: 900, fontSize: '1.1rem', color: T.purple, textDecoration: 'none' }}>
-                    <div style={{ width: 30, height: 30, background: T.purple, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, color: 'white' }}>🔍</div>
-                    DiagnósticoSEO
-                </a>
-                <div style={{ fontSize: '0.82rem', color: T.textSubtle }}>Panel de API Keys</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: T.brand, textDecoration: 'none' }}>SEO Diagnostico</span>
+                    <span style={{ color: T.border }}>|</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: T.textMuted }}>Portal Desarrolladores</span>
+                </div>
+                <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                    <a href="/" style={{ fontSize: '0.84rem', color: T.textMuted, fontWeight: 700, textDecoration: 'none' }}>← Volver a la Web</a>
+                    <a href="/admin" style={{ fontSize: '0.84rem', color: T.textMuted, fontWeight: 700, textDecoration: 'none' }}>Panel Admin</a>
+                </div>
             </nav>
 
             <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 20px 80px' }}>
 
                 {/* Header */}
                 <div style={{ marginBottom: 36, paddingTop: 12 }}>
-                    <div style={{ fontSize: '0.63rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: T.purple, marginBottom: 10 }}>
+                    <div style={{ fontSize: '0.63rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: T.brand, marginBottom: 10 }}>
                         🔑 API Keys
                     </div>
                     <h1 style={{ fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 900, marginBottom: 10 }}>
@@ -207,11 +211,11 @@ export default function DashboardPage() {
                 {/* Email auth */}
                 {!emailSent ? (
                     <div style={{
-                        background: T.bgCard, border: `1px solid ${T.purpleBorder}`,
+                        background: T.bgCard, border: `1px solid ${T.brandBorder}`,
                         borderRadius: 16, padding: '28px 26px',
                         position: 'relative', overflow: 'hidden', maxWidth: 500,
                     }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #8b5cf6, #06b6d4)' }} />
+                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${T.brand}, ${T.blue})` }} />
                         <div style={{ fontWeight: 800, fontSize: '1.05rem', marginBottom: 18 }}>Accede con tu email</div>
                         <p style={{ fontSize: '0.84rem', color: T.textMuted, marginBottom: 20, lineHeight: 1.5 }}>
                             Introduce tu email para ver y gestionar tus API keys.
@@ -229,10 +233,10 @@ export default function DashboardPage() {
                         />
                         {error && <div style={{ background: T.redDim, border: `1px solid ${T.redBorder}`, borderRadius: 8, padding: '9px 12px', fontSize: '0.82rem', color: T.red, marginBottom: 12 }}>⚠️ {error}</div>}
                         <button onClick={() => loadKeys(email)} disabled={loading} style={{
-                            width: '100%', background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
-                            color: 'white', border: 'none', borderRadius: 10, padding: '12px',
+                            width: '100%', background: `linear-gradient(135deg, ${T.brand}, ${T.blue})`,
+                            color: 'white', border: 'none', borderRadius: 50, padding: '12px',
                             fontSize: '0.95rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
-                            opacity: loading ? 0.6 : 1,
+                            opacity: loading ? 0.6 : 1, textTransform: 'uppercase',
                         }}>
                             {loading ? 'Cargando…' : '→ Ver mis API Keys'}
                         </button>
@@ -375,7 +379,7 @@ export default function DashboardPage() {
                         </div>
 
                         {/* Create new key */}
-                        <div style={{ background: T.bgCard, border: `1px solid ${T.purpleBorder}`, borderRadius: 14, padding: '20px 22px' }}>
+                        <div style={{ background: T.bgCard, border: `1px solid ${T.brandBorder}`, borderRadius: 14, padding: '20px 22px' }}>
                             <div style={{ fontWeight: 800, fontSize: '0.95rem', marginBottom: 14 }}>➕ Crear nueva API Key (Starter gratuito)</div>
                             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                                 <input
@@ -389,10 +393,10 @@ export default function DashboardPage() {
                                     }}
                                 />
                                 <button onClick={createKey} disabled={creating} style={{
-                                    background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
-                                    color: 'white', border: 'none', borderRadius: 9, padding: '9px 20px',
+                                    background: `linear-gradient(135deg, ${T.brand}, ${T.blue})`,
+                                    color: 'white', border: 'none', borderRadius: 50, padding: '9px 20px',
                                     fontSize: '0.86rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
-                                    opacity: creating ? 0.6 : 1, whiteSpace: 'nowrap',
+                                    opacity: creating ? 0.6 : 1, whiteSpace: 'nowrap', textTransform: 'uppercase',
                                 }}>
                                     {creating ? 'Creando…' : '+ Generar key'}
                                 </button>

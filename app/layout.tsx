@@ -2,16 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'DiagnósticoSEO — Análisis SEO Profesional Impulsado por ChatGPT',
-  description: 'Obtén un diagnóstico SEO completo de cualquier sitio web en minutos. Score, issues críticos, plan de acción priorizado. Potenciado por ChatGPT.',
-  keywords: 'diagnóstico SEO, análisis SEO Chile, auditoría SEO, SEO profesional',
-  openGraph: {
-    title: 'DiagnósticoSEO — Análisis SEO con IA',
-    description: 'Diagnóstico SEO completo: score, problemas críticos y plan de acción. Potenciado por ChatGPT.',
-    url: 'https://diagnosticoseo.com',
-    siteName: 'DiagnósticoSEO',
-    type: 'website',
-  },
+  title: 'SEO Diagnostico — Análisis SEO Profesional con IA',
+  description: 'Diagnóstico SEO completo: auditoría técnica, on-page e IA. Descubre cómo mejorar tu posicionamiento en Google en segundos.',
+  keywords: 'SEO Diagnostico, auditoría SEO IA, diagnóstico SEO gratis, SEO Chile',
 };
 
 export default function RootLayout({
@@ -24,6 +17,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
       <body>{children}</body>
     </html>

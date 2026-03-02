@@ -110,38 +110,47 @@ export default function HomePage() {
   }, [url, coupon]);
 
   return (
-    <>
+    <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
       {/* ── NAVBAR ─────────────────────────────────────────────────── */}
-      <nav className="navbar">
+      <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
         <div className="navbar-logo">
-          <div className="logo-icon">🔍</div>
-          <span>DiagnósticoSEO</span>
+          <span style={{ color: '#FF6900', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
         </div>
-        <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-          <a href="/keywords">🔑 Keywords</a>
-          <a href="/crawl">🕷️ Crawl</a>
-          <a href="/dashboard" style={{ fontWeight: 700 }}>🔌 API</a>
-          <div className="badge-price">$9.990 CLP / reporte</div>
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+          <a href="/keywords" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>Keywords</a>
+          <a href="/crawl" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>Crawl</a>
+          <a href="/dashboard" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>API</a>
+          <div style={{ padding: '6px 12px', background: 'rgba(255,105,0,0.1)', color: '#FF6900', borderRadius: 20, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            $9.990 CLP
+          </div>
         </div>
       </nav>
 
       {/* ── HERO ───────────────────────────────────────────────────── */}
-      <section className="hero">
-        <div className="hero-content">
-          <div className="hero-badge">
-            <span className="dot" />
+      <section style={{
+        paddingTop: 120,
+        paddingBottom: 80,
+        textAlign: 'center',
+        background: 'radial-gradient(circle at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 70%), #FFFFFF',
+        borderBottom: '1px solid rgba(0,0,0,0.06)',
+      }}>
+        <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 24px' }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(255,105,0,0.15)',
+            borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
+            color: '#FF6900', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.05em'
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF6900', animation: 'pulse 2s infinite', display: 'inline-block' }} />
             Potenciado por ChatGPT · Resultados en &lt;60 segundos
           </div>
 
-          <h1>
-            Gana visibilidad{' '}
-            <span className="gradient-text">digital</span>
-            {' '}en Chile
+          <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', fontWeight: 900, marginBottom: 20, lineHeight: 1.1, color: '#101820', letterSpacing: '-0.03em' }}>
+            Gana visibilidad <span style={{ color: '#FF6900' }}>digital</span> en Chile
           </h1>
 
-          <p className="hero-subtitle">
-            Analiza cualquier sitio web y descubre exactamente qué necesitas corregir
-            para aparecer primero en Google. Score 0–100, issues priorizados y plan de acción.
+          <p style={{ fontSize: '1.15rem', color: '#666666', maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
+            Analiza cualquier sitio web y descubre exactamente qué necesitas corregir para aparecer primero en Google. Score 0–100, issues priorizados y plan de acción SEO experto.
           </p>
 
           {/* ── FORM estilo Semrush ─── */}
@@ -400,14 +409,17 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER ─────────────────────────────────────────────────── */}
-      <footer className="footer">
-        <div className="container">
-          <p>© {new Date().getFullYear()} DiagnósticoSEO.com — Análisis SEO potenciado por ChatGPT</p>
-          <p style={{ marginTop: 8 }}>
-            <a href="#">Términos de uso</a> · <a href="#">Privacidad</a> · <a href="mailto:hola@diagnosticoseo.com">Contacto</a>
-          </p>
+      <footer style={{ borderTop: '1px solid rgba(0,0,0,0.06)', padding: '60px 24px', textAlign: 'center', background: '#FFFFFF' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ fontSize: '1rem', fontWeight: 900, color: '#FF6900', marginBottom: 12 }}>SEO Diagnostico</div>
+          <p style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 600 }}>© {new Date().getFullYear()} — Análisis SEO Experto con IA</p>
+          <div style={{ marginTop: 24, display: 'flex', gap: 24, justifyContent: 'center' }}>
+            <a href="#" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Términos</a>
+            <a href="#" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Privacidad</a>
+            <a href="mailto:hola@diagnosticoseo.com" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Contacto</a>
+          </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

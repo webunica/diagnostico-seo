@@ -287,18 +287,19 @@ function DetailModal({ item, onClose }: { item: ModalItem; onClose: () => void }
                 width: 'min(680px, calc(100vw - 32px))',
                 maxHeight: 'calc(100vh - 48px)',
                 overflowY: 'auto',
-                background: 'linear-gradient(135deg, #1e0050 0%, #160030 100%)',
-                border: '1px solid rgba(168,85,247,0.3)',
+                background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
+                border: '1px solid rgba(0,0,0,0.08)',
                 borderRadius: 20,
-                boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(168,85,247,0.1)',
+                boxShadow: '0 24px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.02)',
                 animation: 'slideUp 0.25s cubic-bezier(0.22, 1, 0.36, 1)',
             }}>
                 {/* Header del modal */}
                 <div style={{
                     padding: '24px 28px 20px',
-                    borderBottom: '1px solid rgba(255,255,255,0.07)',
+                    borderBottom: '1px solid rgba(0,0,0,0.06)',
                     position: 'sticky', top: 0,
-                    background: 'linear-gradient(135deg, #1e0050 0%, #160030 100%)',
+                    background: 'rgba(255,255,255,0.9)',
+                    backdropFilter: 'blur(10px)',
                     borderRadius: '20px 20px 0 0',
                     zIndex: 1,
                 }}>
@@ -314,8 +315,8 @@ function DetailModal({ item, onClose }: { item: ModalItem; onClose: () => void }
                                 {badgeLabel}
                             </span>
                             <h2 style={{
-                                fontSize: '1.15rem', fontWeight: 800, color: 'white',
-                                lineHeight: 1.3, margin: 0,
+                                fontSize: '1.2rem', fontWeight: 900, color: '#101820',
+                                lineHeight: 1.3, margin: 0, letterSpacing: '-0.02em',
                             }}>
                                 {title}
                             </h2>
@@ -323,12 +324,13 @@ function DetailModal({ item, onClose }: { item: ModalItem; onClose: () => void }
                         <button
                             onClick={onClose}
                             style={{
-                                background: 'rgba(255,255,255,0.08)',
-                                border: '1px solid rgba(255,255,255,0.12)',
-                                color: 'rgba(255,255,255,0.6)', borderRadius: 8,
+                                background: 'rgba(0,0,0,0.05)',
+                                border: '1px solid rgba(0,0,0,0.08)',
+                                color: '#101820', borderRadius: 8,
                                 width: 34, height: 34, fontSize: '1rem',
                                 cursor: 'pointer', flexShrink: 0, fontFamily: 'inherit',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                transition: 'all 0.2s',
                             }}
                         >
                             ✕
@@ -361,10 +363,10 @@ function DetailModal({ item, onClose }: { item: ModalItem; onClose: () => void }
 
                     {/* ¿Qué es? */}
                     <div>
-                        <h3 style={{ fontSize: '0.78rem', fontWeight: 700, color: '#c084fc', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px' }}>
+                        <h3 style={{ fontSize: '0.78rem', fontWeight: 800, color: '#FF6900', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px' }}>
                             📋 Descripción
                         </h3>
-                        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, margin: 0 }}>
+                        <p style={{ fontSize: '0.92rem', color: '#101820', lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
                             {desc}
                         </p>
                     </div>
@@ -531,25 +533,31 @@ function ReportView({ report }: { report: Report }) {
             {modal && <DetailModal item={modal} onClose={closeModal} />}
 
             {/* Navbar */}
-            <nav className="navbar">
+            <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                 <div className="navbar-logo">
-                    <div className="logo-icon">🔍</div>
-                    <span>DiagnósticoSEO</span>
+                    <span style={{ color: '#FF6900', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
                 </div>
-                <a href="/">← Nuevo análisis</a>
+                <a href="/" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>← Nuevo análisis</a>
             </nav>
 
             {/* Header */}
-            <div className="report-header">
-                <div className="report-header-inner">
+            <div className="report-header" style={{
+                paddingTop: 100,
+                paddingBottom: 60,
+                background: 'radial-gradient(circle at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 70%), #FFFFFF',
+                borderBottom: '1px solid rgba(0,0,0,0.06)',
+            }}>
+                <div className="report-header-inner" style={{ maxWidth: 1000, margin: '0 auto', padding: '0 24px' }}>
                     <div className="report-site-info">
-                        <div className="report-site-url">{report.analyzedUrl}</div>
-                        <div className="report-meta">
-                            <span>🏢 {report.businessType}</span>
-                            <span>⚙️ {report.platform}</span>
-                            <span>📅 {date}</span>
+                        <div className="report-site-url" style={{ fontSize: '1.8rem', fontWeight: 900, color: '#101820', marginBottom: 12, wordBreak: 'break-all', letterSpacing: '-0.02em' }}>
+                            {report.analyzedUrl}
                         </div>
-                        <p style={{ marginTop: 16, fontSize: '0.96rem', color: 'var(--text-on-dark-muted)', maxWidth: 680, lineHeight: 1.6, fontWeight: 500 }}>
+                        <div className="report-meta" style={{ display: 'flex', gap: 16, fontSize: '0.85rem', color: '#666666', fontWeight: 600 }}>
+                            <span style={{ background: 'rgba(0,0,0,0.04)', padding: '4px 10px', borderRadius: 6 }}>🏢 {report.businessType}</span>
+                            <span style={{ background: 'rgba(0,0,0,0.04)', padding: '4px 10px', borderRadius: 6 }}>⚙️ {report.platform}</span>
+                            <span style={{ background: 'rgba(0,0,0,0.04)', padding: '4px 10px', borderRadius: 6 }}>📅 {date}</span>
+                        </div>
+                        <p style={{ marginTop: 24, fontSize: '1.1rem', color: '#4A4F54', maxWidth: 720, lineHeight: 1.6, fontWeight: 500 }}>
                             {report.summary}
                         </p>
                     </div>

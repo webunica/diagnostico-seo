@@ -1,29 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
-/* SEO Diagnostico WP Plugin — Admin Styles (TOCTOC Skin) */
+/* SEO Diagnostico WP Plugin — Admin Styles (Pilares Skin) */
 
 /* ── Root vars ─────────────────────────────────────────────────────── */
 :root {
-    --dseo-primary: #3200C1;
-    --dseo-accent: #37FFDB;
-    --dseo-dark: #2A00A3;
-    --dseo-bg: #FFFFFF;
-    --dseo-bg-alt: #F8F9FA;
-    --dseo-text: #3200C1;
-    --dseo-text-muted: #343A40;
-    --dseo-border: #3200C1;
-    --dseo-radius: 4px;
+    --dseo-primary: #FF6900;
+    --dseo-accent: #101820;
+    --dseo-dark: #cc5400;
+    --dseo-bg: #F7F7F9;
+    --dseo-bg-alt: #FFFFFF;
+    --dseo-text: #101820;
+    --dseo-text-muted: #666666;
+    --dseo-border: #E2E8F0;
+    --dseo-radius: 8px;
 
     /* Utility colors */
-    --dseo-green: #10b981;
-    --dseo-yellow: #f59e0b;
-    --dseo-red: #ef4444;
+    --dseo-green: #10B981;
+    --dseo-yellow: #F59E0B;
+    --dseo-red: #EF4444;
 }
 
 /* ── Global Tweaks ────────────────────────────────────────────────── */
 .dseo-settings-wrap,
 .dseo-metabox {
-    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--dseo-text);
 }
 
@@ -173,17 +173,16 @@
 }
 
 .dseo-btn-primary {
-    background: var(--dseo-accent);
-    color: var(--dseo-primary);
+    background: var(--dseo-primary);
+    color: #fff;
     border-color: var(--dseo-primary);
-    box-shadow: 4px 4px 0px var(--dseo-primary);
+    box-shadow: 4px 4px 0px var(--dseo-accent);
 }
 
 .dseo-btn-primary:hover {
-    background: #2ce6c5;
+    background: var(--dseo-dark);
     transform: translateY(-2px);
-    box-shadow: 6px 6px 0px var(--dseo-primary);
-    color: var(--dseo-primary);
+    box-shadow: 6px 6px 0px var(--dseo-accent);
 }
 
 .dseo-btn-secondary {
@@ -213,7 +212,7 @@
 }
 
 .dseo-btn-ghost:hover {
-    background: rgba(55, 255, 219, 0.1);
+    background: rgba(255, 105, 0, 0.05);
 }
 
 .dseo-btn:disabled {
@@ -445,12 +444,12 @@
     justify-content: center;
     font-size: 1.8rem;
     font-weight: 900;
-    color: var(--dseo-accent);
+    color: #fff;
 }
 
 .dseo-score-label {
     font-size: 0.8rem;
-    color: var(--dseo-accent);
+    color: #fff;
     text-transform: uppercase;
     font-weight: 900;
     letter-spacing: 0.1em;

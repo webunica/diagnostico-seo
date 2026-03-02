@@ -4,15 +4,14 @@ import { useState, useCallback } from 'react';
 
 /* ── Tokens ────────────────────────────────────────────────────────── */
 const T = {
-    bg: '#07090f', bgCard: 'rgba(255,255,255,0.03)', bgCardHov: 'rgba(255,255,255,0.055)',
-    border: 'rgba(255,255,255,0.08)', borderMid: 'rgba(255,255,255,0.14)',
-    text: '#f0f4ff', textMuted: 'rgba(240,244,255,0.65)', textSubtle: 'rgba(240,244,255,0.36)',
-    purple: '#8b5cf6', purpleDim: 'rgba(139,92,246,0.14)', purpleBorder: 'rgba(139,92,246,0.3)',
-    cyan: '#06b6d4', green: '#34d399', greenDim: 'rgba(52,211,153,0.1)', greenBorder: 'rgba(52,211,153,0.25)',
-    blue: '#60a5fa', blueDim: 'rgba(96,165,250,0.09)', blueBorder: 'rgba(96,165,250,0.22)',
-    yellow: '#fbbf24', yellowDim: 'rgba(251,191,36,0.08)', yellowBorder: 'rgba(251,191,36,0.25)',
-    red: '#f87171', redDim: 'rgba(248,113,113,0.09)', redBorder: 'rgba(248,113,113,0.25)',
-    violet: '#a78bfa',
+    bg: '#F7F7F9', bgCard: '#FFFFFF', bgCardHov: '#F0F0F2',
+    border: '#E2E8F0', borderMid: '#CBD5E0',
+    text: '#101820', textMuted: '#666666', textSubtle: '#999999',
+    brand: '#FF6900', brandDim: 'rgba(255,105,0,0.06)', brandBorder: 'rgba(255,105,0,0.2)',
+    green: '#10B981', greenDim: 'rgba(16,185,129,0.08)', greenBorder: 'rgba(16,185,129,0.22)',
+    blue: '#3B82F6', blueDim: 'rgba(59,130,246,0.06)', blueBorder: 'rgba(59,130,246,0.20)',
+    yellow: '#F59E0B', yellowDim: 'rgba(245,158,11,0.08)', yellowBorder: 'rgba(245,158,11,0.22)',
+    red: '#EF4444', redDim: 'rgba(239,68,68,0.08)', redBorder: 'rgba(239,68,68,0.22)',
 } as const;
 
 const pill = (bg: string, border: string, color: string, extra?: React.CSSProperties): React.CSSProperties => ({
@@ -36,7 +35,7 @@ interface PlanDef { id: string; name: string; requestsPerMonth: number; priceMon
 
 const PLAN_STYLE: Record<string, { color: string; dim: string; border: string }> = {
     starter: { color: T.textMuted, dim: 'rgba(255,255,255,0.06)', border: T.border },
-    pro: { color: T.blue, dim: T.blueDim, border: T.blueBorder },
+    pro: { color: T.brand, dim: T.brandDim, border: T.brandBorder },
     agency: { color: T.yellow, dim: T.yellowDim, border: T.yellowBorder },
 };
 
@@ -109,7 +108,7 @@ function KeyRow({ k, plans, onAction, busy }: {
                 <div>
                     <div style={{ fontWeight: 700, fontSize: '0.88rem', color: T.text }}>{k.email}</div>
                     <div style={{ fontSize: '0.68rem', color: T.textSubtle, marginTop: 2 }}>
-                        {k.label} · <code style={{ color: T.violet }}>{k.key}</code>
+                        {k.label} · <code style={{ color: T.brand }}>{k.key}</code>
                     </div>
                 </div>
 
@@ -170,7 +169,7 @@ function KeyRow({ k, plans, onAction, busy }: {
                                 disabled={busy || selPlan === k.plan}
                                 style={{
                                     background: selPlan === k.plan ? 'rgba(255,255,255,0.04)'
-                                        : 'linear-gradient(135deg,#8b5cf6,#06b6d4)',
+                                        : T.brand,
                                     color: selPlan === k.plan ? T.textSubtle : 'white',
                                     border: 'none', borderRadius: 8, padding: '6px 14px',
                                     fontSize: '0.8rem', fontWeight: 800, cursor: busy || selPlan === k.plan ? 'not-allowed' : 'pointer',
@@ -295,28 +294,20 @@ export default function AdminPage() {
     }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     return (
-        <div style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: 'Nunito, sans-serif' }}>
+        <div style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: 'Montserrat, sans-serif' }}>
 
             {/* Navbar */}
-            <nav style={{
-                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 58,
-                padding: '0 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                background: 'rgba(7,9,15,0.95)', backdropFilter: 'blur(20px)',
-                borderBottom: `1px solid ${T.border}`,
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 900, fontSize: '1rem', color: T.purple, textDecoration: 'none' }}>
-                        <div style={{ width: 28, height: 28, background: T.purple, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: 'white' }}>🔍</div>
-                        DiagnósticoSEO
-                    </a>
-                    <span style={{ color: T.border }}>›</span>
-                    <span style={{ fontSize: '0.84rem', color: T.textSubtle }}>Panel Admin</span>
+            <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <span style={{ fontSize: '1rem', fontWeight: 900, color: '#FF6900', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+                        SEO Diagnostico <span style={{ color: '#101820', marginLeft: 4 }}>Admin</span>
+                    </span>
                 </div>
                 {stats && (
-                    <div style={{ fontSize: '0.72rem', color: T.textSubtle }}>
-                        Storage: <strong style={{ color: stats.backend === 'upstash' ? T.green : T.yellow }}>
-                            {stats.backend === 'upstash' ? '⚡ Upstash Redis' : '📁 Local JSON'}
-                        </strong>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, opacity: 0.6, textTransform: 'uppercase' }}>
+                        Storage: <span style={{ color: stats.backend === 'upstash' ? T.green : T.yellow }}>
+                            {stats.backend === 'upstash' ? '⚡ Upstash Redis' : '📁 Local Storage'}
+                        </span>
                     </div>
                 )}
             </nav>
@@ -327,10 +318,10 @@ export default function AdminPage() {
                 {!authed ? (
                     <div style={{ maxWidth: 420, margin: '60px auto 0' }}>
                         <div style={{
-                            background: T.bgCard, border: `1px solid ${T.purpleBorder}`,
+                            background: T.bgCard, border: `1px solid ${T.brandBorder}`,
                             borderRadius: 16, padding: '28px 26px', position: 'relative', overflow: 'hidden',
                         }}>
-                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,#8b5cf6,#06b6d4)' }} />
+                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: T.brand }} />
                             <div style={{ fontSize: '1.5rem', marginBottom: 12 }}>🔐</div>
                             <div style={{ fontWeight: 900, fontSize: '1.1rem', marginBottom: 6 }}>Acceso Administrador</div>
                             <p style={{ fontSize: '0.84rem', color: T.textMuted, marginBottom: 20, lineHeight: 1.5 }}>
@@ -349,7 +340,7 @@ export default function AdminPage() {
                             />
                             {error && <div style={{ background: T.redDim, border: `1px solid ${T.redBorder}`, borderRadius: 8, padding: '8px 12px', fontSize: '0.8rem', color: T.red, marginBottom: 12 }}>⚠️ {error}</div>}
                             <button onClick={() => load()} disabled={loading} style={{
-                                width: '100%', background: 'linear-gradient(135deg,#8b5cf6,#06b6d4)',
+                                width: '100%', background: T.brand,
                                 color: 'white', border: 'none', borderRadius: 10, padding: '12px',
                                 fontSize: '0.95rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
                                 opacity: loading ? 0.6 : 1,
@@ -384,10 +375,10 @@ export default function AdminPage() {
                             />
                             {['all', 'starter', 'pro', 'agency', 'inactive'].map(f => (
                                 <button key={f} onClick={() => setFilter(f)} style={{
-                                    background: filter === f ? T.purpleDim : 'rgba(255,255,255,0.04)',
-                                    border: `1px solid ${filter === f ? T.purpleBorder : T.border}`,
+                                    background: filter === f ? T.brandDim : 'rgba(255,255,255,0.04)',
+                                    border: `1px solid ${filter === f ? T.brandBorder : T.border}`,
                                     borderRadius: 8, padding: '7px 14px', fontSize: '0.78rem', fontWeight: 700,
-                                    color: filter === f ? T.violet : T.textSubtle,
+                                    color: filter === f ? T.brand : T.textSubtle,
                                     cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.15s',
                                     textTransform: 'capitalize',
                                 }}>

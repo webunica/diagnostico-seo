@@ -32,10 +32,10 @@ interface KeywordsResult {
 
 // ── Config visual ─────────────────────────────────────────────────────
 const INTENT_CONFIG: Record<Intent, { label: string; color: string; bg: string }> = {
-    informational: { label: 'Informacional', color: '#60A5FA', bg: 'rgba(96,165,250,0.12)' },
-    commercial: { label: 'Comercial', color: '#A78BFA', bg: 'rgba(167,139,250,0.12)' },
-    transactional: { label: 'Transaccional', color: '#34D399', bg: 'rgba(52,211,153,0.12)' },
-    navigational: { label: 'Navegacional', color: '#FBBF24', bg: 'rgba(251,191,36,0.12)' },
+    informational: { label: 'Informacional', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)' },
+    commercial: { label: 'Comercial', color: '#8B5CF6', bg: 'rgba(139,92,246,0.1)' },
+    transactional: { label: 'Transaccional', color: '#10B981', bg: 'rgba(16,185,129,0.1)' },
+    navigational: { label: 'Navegacional', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)' },
 };
 
 const DIFF_CONFIG: Record<Difficulty, { label: string; color: string; dots: number }> = {
@@ -75,23 +75,24 @@ function KeywordCard({ kw, index }: { kw: KeywordItem; index: number }) {
 
     return (
         <div style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.07)',
+            background: '#FFFFFF',
+            border: '1px solid rgba(0,0,0,0.06)',
             borderRadius: 12,
             padding: '16px 18px',
             display: 'flex',
             flexDirection: 'column',
             gap: 10,
-            transition: 'border-color 0.2s, background 0.2s',
+            transition: 'all 0.2s',
             animation: `fadeInUp 0.3s ease ${index * 0.04}s both`,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
         }}
             onMouseEnter={e => {
-                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(59,130,246,0.3)';
-                (e.currentTarget as HTMLDivElement).style.background = 'rgba(59,130,246,0.04)';
+                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,105,0,0.3)';
+                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={e => {
-                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.07)';
-                (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.03)';
+                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,0,0,0.06)';
+                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
             }}
         >
             {/* Header */}
@@ -261,48 +262,43 @@ export default function KeywordsPage() {
     };
 
     return (
-        <>
+        <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
+
             {/* Navbar */}
-            <nav className="navbar">
-                <div className="navbar-logo">
-                    <div className="logo-icon">🔍</div>
-                    <span>DiagnósticoSEO</span>
+            <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#FF6900' }}>SEO Diagnostico</span>
                 </div>
-                <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Análisis SEO</a>
-                    <div style={{
-                        fontSize: '0.78rem', fontWeight: 600, padding: '4px 12px',
-                        background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
-                        borderRadius: 20, color: '#34D399',
-                    }}>
-                        🆓 Keywords — Gratis
-                    </div>
+                <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+                    <a href="/" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
+                    <a href="/dashboard" style={{ fontSize: '0.85rem', color: '#666666', fontWeight: 700, textDecoration: 'none' }}>Portal API</a>
+                    <div style={{ padding: '6px 14px', background: 'rgba(255,105,0,0.08)', color: '#FF6900', borderRadius: 20, fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase' }}>Beta IA</div>
                 </div>
             </nav>
 
             {/* Hero */}
             <section style={{
                 paddingTop: 90,
-                background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.55) 0%, transparent 65%), #1a0038',
+                background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,105,0,0.2) 0%, transparent 65%), #0F172A',
                 borderBottom: '1px solid rgba(255,255,255,0.06)',
             }}>
                 <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px 24px 52px', textAlign: 'center' }}>
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(168,85,247,0.3)',
-                        borderRadius: 20, padding: '5px 14px', fontSize: '0.78rem', fontWeight: 600,
-                        color: '#c084fc', marginBottom: 20,
+                        background: 'rgba(255,105,0,0.1)', border: '1px solid rgba(255,105,0,0.3)',
+                        borderRadius: 20, padding: '5px 14px', fontSize: '0.72rem', fontWeight: 800,
+                        color: '#FF6900', marginBottom: 20, textTransform: 'uppercase', letterSpacing: '0.05em'
                     }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#34D399', animation: 'pulse 2s infinite', display: 'inline-block' }} />
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', animation: 'pulse 2s infinite', display: 'inline-block' }} />
                         Potenciado por Llama 3.3 (Groq) · 100% Gratis
                     </div>
 
                     <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.7rem)', fontWeight: 900, marginBottom: 14, lineHeight: 1.15, letterSpacing: '-0.02em', color: 'white' }}>
                         Investigación de{' '}
-                        <span style={{ background: 'linear-gradient(135deg, #d8b4fe, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Palabras Clave</span>
+                        <span style={{ color: '#FF6900' }}>Palabras Clave</span>
                         {' '}con IA
                     </h1>
-                    <p style={{ fontSize: '1rem', color: 'var(--text-muted)', maxWidth: 540, margin: '0 auto', lineHeight: 1.6 }}>
+                    <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.7)', maxWidth: 540, margin: '0 auto', lineHeight: 1.6 }}>
                         Describe tu negocio y obtén 35–45 keywords estratégicas en segundos:
                         head terms, long-tail, preguntas, intención de compra y SEO local.
                     </p>
@@ -315,13 +311,13 @@ export default function KeywordsPage() {
                 {/* Form Card */}
                 <div style={{
                     background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid var(--border)',
+                    border: '1px solid rgba(255,255,255,0.1)',
                     borderRadius: 16, padding: '28px 28px',
                     marginBottom: 36, position: 'relative', overflow: 'hidden',
                 }}>
                     <div style={{
                         position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-                        background: 'linear-gradient(90deg, #10B981, #3B82F6)',
+                        background: '#FF6900',
                     }} />
 
                     <form onSubmit={handleSubmit}>
@@ -329,7 +325,7 @@ export default function KeywordsPage() {
 
                             {/* Descripción */}
                             <div>
-                                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'var(--text)' }}>
+                                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
                                     🏢 Describe tu negocio, producto o servicio *
                                 </label>
                                 <textarea
@@ -343,15 +339,13 @@ export default function KeywordsPage() {
                                         background: 'rgba(255,255,255,0.05)',
                                         border: '1px solid rgba(255,255,255,0.1)',
                                         borderRadius: 10, padding: '12px 14px',
-                                        color: 'var(--text)', fontSize: '0.92rem',
+                                        color: 'white', fontSize: '0.92rem',
                                         fontFamily: 'inherit', resize: 'vertical',
                                         lineHeight: 1.5,
                                         transition: 'border-color 0.2s',
                                     }}
-                                    onFocus={e => (e.target.style.borderColor = 'rgba(59,130,246,0.5)')}
-                                    onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
                                 />
-                                <div style={{ fontSize: '0.74rem', color: 'var(--text-subtle)', marginTop: 4 }}>
+                                <div style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>
                                     {description.length}/500 chars — más detalle = mejores resultados
                                 </div>
                             </div>
@@ -359,7 +353,7 @@ export default function KeywordsPage() {
                             {/* País + Enfoque */}
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                                 <div>
-                                    <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'var(--text)' }}>
+                                    <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
                                         🌎 País / Mercado objetivo
                                     </label>
                                     <select
@@ -371,7 +365,7 @@ export default function KeywordsPage() {
                                             background: 'rgba(255,255,255,0.05)',
                                             border: '1px solid rgba(255,255,255,0.1)',
                                             borderRadius: 10, padding: '11px 14px',
-                                            color: 'var(--text)', fontSize: '0.9rem',
+                                            color: 'white', fontSize: '0.9rem',
                                             fontFamily: 'inherit', cursor: 'pointer',
                                         }}
                                     >
@@ -380,7 +374,7 @@ export default function KeywordsPage() {
                                 </div>
 
                                 <div>
-                                    <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'var(--text)' }}>
+                                    <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: 8, color: 'white' }}>
                                         🎯 Enfoque de keywords
                                     </label>
                                     <select
@@ -392,7 +386,7 @@ export default function KeywordsPage() {
                                             background: 'rgba(255,255,255,0.05)',
                                             border: '1px solid rgba(255,255,255,0.1)',
                                             borderRadius: 10, padding: '11px 14px',
-                                            color: 'var(--text)', fontSize: '0.9rem',
+                                            color: 'white', fontSize: '0.9rem',
                                             fontFamily: 'inherit', cursor: 'pointer',
                                         }}
                                     >
@@ -403,32 +397,31 @@ export default function KeywordsPage() {
 
                             {/* Botón */}
                             {error && (
-                                <div className="error-msg">⚠️ {error}</div>
+                                <div style={{ color: '#EF4444', fontSize: '0.85rem' }}>⚠️ {error}</div>
                             )}
 
                             <button
                                 type="submit"
                                 disabled={loading}
                                 style={{
-                                    background: loading
-                                        ? 'rgba(16,185,129,0.3)'
-                                        : 'linear-gradient(135deg, #10B981, #3B82F6)',
+                                    background: loading ? 'rgba(255,105,0,0.3)' : '#FF6900',
                                     color: 'white', border: 'none',
-                                    borderRadius: 12, padding: '14px',
-                                    fontSize: '1rem', fontWeight: 700,
+                                    borderRadius: 50, padding: '14px',
+                                    fontSize: '1rem', fontWeight: 800,
                                     cursor: loading ? 'not-allowed' : 'pointer',
                                     fontFamily: 'inherit',
                                     transition: 'all 0.2s',
-                                    boxShadow: loading ? 'none' : '0 6px 24px rgba(16,185,129,0.3)',
+                                    boxShadow: loading ? 'none' : '0 6px 20px rgba(255,105,0,0.2)',
+                                    textTransform: 'uppercase',
                                 }}
                             >
                                 {loading ? (
                                     <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                                         <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⟳</span>
-                                        Generando keywords con IA…
+                                        Generando...
                                     </span>
                                 ) : (
-                                    '🔍 Generar Keywords — Gratis'
+                                    '🔍 Generar Keywords'
                                 )}
                             </button>
                         </div>
@@ -438,12 +431,9 @@ export default function KeywordsPage() {
                 {/* Loading */}
                 {loading && (
                     <div>
-                        <div style={{
-                            textAlign: 'center', padding: '20px 0 28px',
-                            color: 'var(--text-muted)', fontSize: '0.88rem',
-                        }}>
+                        <div style={{ textAlign: 'center', padding: '20px 0 28px', color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem' }}>
                             <span style={{ fontSize: '1.4rem', display: 'block', marginBottom: 8 }}>🧠</span>
-                            Llama 3.3 está analizando tu negocio y generando keywords estratégicas…
+                            Generando keywords estratégicas…
                         </div>
                         <LoadingSkeleton />
                     </div>
@@ -452,35 +442,26 @@ export default function KeywordsPage() {
                 {/* Results */}
                 {result && !loading && (
                     <div style={{ animation: 'fadeInUp 0.4s ease' }}>
-
                         {/* Summary bar */}
                         <div style={{
                             display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-                            flexWrap: 'wrap', gap: 16, marginBottom: 24,
-                            padding: '20px 22px',
-                            background: 'rgba(16,185,129,0.05)',
-                            border: '1px solid rgba(16,185,129,0.15)',
+                            flexWrap: 'wrap', gap: 16, marginBottom: 24, padding: '20px 22px',
+                            background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)',
                             borderRadius: 14,
                         }}>
                             <div>
-                                <div style={{ fontSize: '0.8rem', color: '#34D399', fontWeight: 600, marginBottom: 4 }}>
-                                    🎯 Tipo de negocio identificado
-                                </div>
-                                <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{result.businessType}</div>
-                                <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 6, maxWidth: 460 }}>
-                                    {result.summary}
-                                </div>
+                                <div style={{ fontSize: '0.8rem', color: '#10B981', fontWeight: 700, marginBottom: 4 }}>🎯 NEGOCIO IDENTIFICADO</div>
+                                <div style={{ fontWeight: 800, fontSize: '1.1rem' }}>{result.businessType}</div>
+                                <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', marginTop: 6, maxWidth: 460 }}>{result.summary}</div>
                             </div>
                             <div style={{ display: 'flex', gap: 8 }}>
                                 <button
                                     onClick={copyAll}
                                     style={{
-                                        background: copied ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.06)',
-                                        border: `1px solid ${copied ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.12)'}`,
-                                        borderRadius: 8, padding: '8px 16px',
-                                        fontSize: '0.82rem', fontWeight: 600,
-                                        color: copied ? '#34D399' : 'var(--text-muted)',
-                                        cursor: 'pointer', fontFamily: 'inherit',
+                                        background: copied ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.06)',
+                                        border: `1px solid ${copied ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.12)'}`,
+                                        borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700,
+                                        color: copied ? '#10B981' : 'white', cursor: 'pointer', fontFamily: 'inherit',
                                     }}
                                 >
                                     {copied ? '✓ Copiadas' : `📋 Copiar todas (${totalKeywords})`}
@@ -488,10 +469,8 @@ export default function KeywordsPage() {
                                 <button
                                     onClick={() => exportCSV(result)}
                                     style={{
-                                        background: 'rgba(59,130,246,0.1)',
-                                        border: '1px solid rgba(59,130,246,0.25)',
-                                        borderRadius: 8, padding: '8px 16px',
-                                        fontSize: '0.82rem', fontWeight: 600,
+                                        background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)',
+                                        borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700,
                                         color: '#60A5FA', cursor: 'pointer', fontFamily: 'inherit',
                                     }}
                                 >
@@ -501,43 +480,23 @@ export default function KeywordsPage() {
                         </div>
 
                         {/* Tabs */}
-                        <div style={{
-                            display: 'flex', gap: 6, marginBottom: 20,
-                            overflowX: 'auto', paddingBottom: 4,
-                        }}>
+                        <div style={{ display: 'flex', gap: 6, marginBottom: 20, overflowX: 'auto', paddingBottom: 4 }}>
                             {TABS.map(tab => {
-                                const count = ((result[tab.id] as KeywordItem[]) ?? []).length;
+                                const count = result ? ((result[tab.id] as KeywordItem[])?.length ?? 0) : 0;
                                 const isActive = activeTab === tab.id;
                                 return (
                                     <button
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
                                         style={{
-                                            background: isActive
-                                                ? 'linear-gradient(135deg, rgba(59,130,246,0.2), rgba(6,182,212,0.2))'
-                                                : 'rgba(255,255,255,0.04)',
-                                            border: isActive
-                                                ? '1px solid rgba(59,130,246,0.4)'
-                                                : '1px solid rgba(255,255,255,0.08)',
-                                            borderRadius: 10, padding: '8px 16px',
-                                            color: isActive ? 'var(--text)' : 'var(--text-muted)',
-                                            fontWeight: isActive ? 700 : 500,
-                                            fontSize: '0.85rem',
-                                            cursor: 'pointer', fontFamily: 'inherit',
-                                            whiteSpace: 'nowrap',
-                                            display: 'flex', alignItems: 'center', gap: 6,
-                                            transition: 'all 0.2s',
+                                            background: isActive ? 'rgba(255,105,0,0.15)' : 'rgba(255,255,255,0.04)',
+                                            border: `1px solid ${isActive ? '#FF6900' : 'rgba(255,255,255,0.08)'}`,
+                                            borderRadius: 10, padding: '8px 16px', color: isActive ? '#FF6900' : 'rgba(255,255,255,0.5)',
+                                            fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
+                                            display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s',
                                         }}
                                     >
-                                        {tab.icon} {tab.label}
-                                        <span style={{
-                                            background: isActive ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.08)',
-                                            borderRadius: 20, padding: '1px 7px',
-                                            fontSize: '0.72rem', fontWeight: 700,
-                                            color: isActive ? '#60A5FA' : 'var(--text-subtle)',
-                                        }}>
-                                            {count}
-                                        </span>
+                                        {tab.icon} {tab.label} <span style={{ opacity: 0.6 }}>{count}</span>
                                     </button>
                                 );
                             })}
@@ -562,24 +521,14 @@ export default function KeywordsPage() {
                         </div>
 
                         {/* Negative Keywords */}
-                        {result.negative?.length > 0 && (
-                            <div style={{
-                                marginTop: 32,
-                                background: 'rgba(239,68,68,0.04)',
-                                border: '1px solid rgba(239,68,68,0.15)',
-                                borderRadius: 12, padding: '18px 20px',
-                            }}>
-                                <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 10, color: '#FCA5A5' }}>
-                                    🚫 Keywords Negativas (a excluir en Google Ads / filtrar en SEO)
+                        {(result?.negative?.length ?? 0) > 0 && (
+                            <div style={{ marginTop: 32, background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12, padding: '18px 20px' }}>
+                                <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: 10, color: '#FCA5A5' }}>
+                                    🚫 Keywords Negativas (a excluir)
                                 </div>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                                    {result.negative.map((kw, i) => (
-                                        <span key={i} style={{
-                                            fontSize: '0.8rem', padding: '4px 12px', borderRadius: 20,
-                                            background: 'rgba(239,68,68,0.08)',
-                                            border: '1px solid rgba(239,68,68,0.2)',
-                                            color: '#FCA5A5',
-                                        }}>
+                                    {result?.negative?.map((kw, i) => (
+                                        <span key={i} style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: 20, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#FCA5A5' }}>
                                             {kw}
                                         </span>
                                     ))}
@@ -588,31 +537,19 @@ export default function KeywordsPage() {
                         )}
 
                         {/* Footer info */}
-                        <div style={{
-                            textAlign: 'center', marginTop: 36, padding: '16px 0',
-                            borderTop: '1px solid var(--border)',
-                            fontSize: '0.78rem', color: 'var(--text-subtle)',
-                        }}>
-                            Generado con {result.model} · {totalKeywords} keywords en total ·{' '}
-                            <a href="/" style={{ color: 'var(--blue)' }}>
-                                ¿Quieres auditar el SEO de tu sitio? →
-                            </a>
+                        <div style={{ textAlign: 'center', marginTop: 36, padding: '24px 0', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>
+                            Generado con {result?.model} · {totalKeywords} keywords en total ·{' '}
+                            <a href="/" style={{ color: '#FF6900', fontWeight: 700 }}>Audita tu sitio ahora →</a>
                         </div>
                     </div>
                 )}
             </div>
 
             <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        select option { background: #0a0f1e !important; color: white; }
-      `}</style>
-        </>
+                @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                select option { background: #0F172A !important; color: white; }
+            `}</style>
+        </div>
     );
 }
