@@ -9,31 +9,35 @@ import { useSearchParams } from 'next/navigation';
    dark atmosphere independent of those CSS variables.
 ───────────────────────────────────────────────────────────────────── */
 const T = {
-    bg: '#080d18',
-    bgCard: 'rgba(255,255,255,0.03)',
-    bgCardHov: 'rgba(255,255,255,0.055)',
-    border: 'rgba(255,255,255,0.08)',
-    borderMid: 'rgba(255,255,255,0.14)',
-    text: '#f0f4ff',
-    textMuted: 'rgba(240,244,255,0.65)',
-    textSubtle: 'rgba(240,244,255,0.38)',
-    purple: '#8b5cf6',
-    purpleDim: 'rgba(139,92,246,0.18)',
-    purpleBorder: 'rgba(139,92,246,0.3)',
-    cyan: '#06b6d4',
-    green: '#34d399',
-    greenDim: 'rgba(52,211,153,0.12)',
-    greenBorder: 'rgba(52,211,153,0.28)',
-    blue: '#60a5fa',
-    blueDim: 'rgba(96,165,250,0.1)',
-    blueBorder: 'rgba(96,165,250,0.22)',
-    yellow: '#fbbf24',
-    yellowDim: 'rgba(251,191,36,0.08)',
-    yellowBorder: 'rgba(251,191,36,0.25)',
-    red: '#f87171',
-    violet: '#a78bfa',
-    violetDim: 'rgba(167,139,250,0.12)',
-    violetBorder: 'rgba(167,139,250,0.28)',
+    bg: '#F7F7F9',
+    bgNav: 'rgba(255, 255, 255, 0.92)',
+    bgCard: '#FFFFFF',
+    bgCardHov: '#FAFAFA',
+    border: 'rgba(0,0,0,0.08)',
+    borderMid: 'rgba(0,0,0,0.14)',
+    text: '#101820',
+    textMuted: '#52525B',
+    textSubtle: '#71717A',
+    orange: '#C2410C',
+    orangeDim: 'rgba(194,65,12,0.08)',
+    orangeBorder: 'rgba(194,65,12,0.2)',
+    purple: '#6D28D9',
+    purpleDim: 'rgba(109,40,217,0.08)',
+    purpleBorder: 'rgba(109,40,217,0.18)',
+    cyan: '#0891B2',
+    green: '#059669',
+    greenDim: 'rgba(5,150,105,0.08)',
+    greenBorder: 'rgba(5,150,105,0.2)',
+    blue: '#1D4ED8',
+    blueDim: 'rgba(29,78,216,0.08)',
+    blueBorder: 'rgba(29,78,216,0.2)',
+    yellow: '#B45309',
+    yellowDim: 'rgba(180,83,9,0.08)',
+    yellowBorder: 'rgba(180,83,9,0.25)',
+    red: '#DC2626',
+    violet: '#7C3AED',
+    violetDim: 'rgba(124,58,237,0.08)',
+    violetBorder: 'rgba(124,58,237,0.2)',
 } as const;
 
 // ── Shared style helpers ───────────────────────────────────────────────
@@ -49,10 +53,11 @@ const card: React.CSSProperties = {
     background: T.bgCard,
     border: `1px solid ${T.border}`,
     borderRadius: 14,
-    padding: '20px 22px',
+    padding: '22px 24px',
     display: 'flex',
     flexDirection: 'column',
     gap: 12,
+    boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
 };
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -80,12 +85,12 @@ function CopyBtn({ text, label = 'Copiar' }: { text: string; label?: string }) {
         <button
             onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
             style={{
-                background: copied ? T.greenDim : 'rgba(255,255,255,0.06)',
-                border: `1px solid ${copied ? T.greenBorder : T.border}`,
+                background: copied ? T.greenDim : 'rgba(0,0,0,0.04)',
+                border: `1px solid ${copied ? T.greenBorder : 'rgba(0,0,0,0.1)'}`,
                 borderRadius: 8, padding: '5px 12px',
-                fontSize: '0.7rem', fontWeight: 700,
-                color: copied ? T.green : T.textSubtle,
-                cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
+                fontSize: '0.72rem', fontWeight: 700,
+                color: copied ? T.green : T.textMuted,
+                cursor: 'pointer', fontFamily: 'inherit',
                 transition: 'all 0.2s', whiteSpace: 'nowrap', flexShrink: 0,
             }}
         >
@@ -160,27 +165,22 @@ function ContentView({ content }: { content: GeneratedContent }) {
             <nav style={{
                 position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 60,
                 padding: '0 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                background: 'rgba(8,13,24,0.92)', backdropFilter: 'blur(20px)',
+                background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(20px)',
                 borderBottom: `1px solid ${T.border}`,
             }}>
                 <a href="/" style={{
                     display: 'flex', alignItems: 'center', gap: 9,
-                    fontSize: '1.1rem', fontWeight: 900, letterSpacing: '-0.04em',
-                    color: T.purple, textDecoration: 'none',
+                    fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.04em',
+                    color: T.orange, textDecoration: 'none',
                 }}>
-                    <div style={{
-                        width: 30, height: 30, background: T.purple, borderRadius: 6,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 15, color: 'white',
-                    }}>🔍</div>
-                    DiagnósticoSEO
+                    SEO Diagnostico
                 </a>
-                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.8rem', color: T.textMuted, textDecoration: 'none' }}>← Inicio</a>
+                <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+                    <a href="/" style={{ fontSize: '0.85rem', color: T.textMuted, fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
                     <button onClick={() => window.print()} style={{
-                        background: T.purpleDim, border: `1px solid ${T.purpleBorder}`,
-                        borderRadius: 8, padding: '6px 14px', fontSize: '0.8rem', fontWeight: 700,
-                        color: T.purple, cursor: 'pointer', fontFamily: 'inherit',
+                        background: T.orangeDim, border: `1px solid ${T.orangeBorder}`,
+                        borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
+                        color: T.orange, cursor: 'pointer', fontFamily: 'inherit', textTransform: 'uppercase'
                     }}>
                         📄 Exportar PDF
                     </button>
@@ -192,18 +192,19 @@ function ContentView({ content }: { content: GeneratedContent }) {
 
                 {/* Header card */}
                 <div style={{
-                    background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(6,182,212,0.05))',
-                    border: `1px solid ${T.purpleBorder}`,
-                    borderRadius: 18, padding: '28px 26px', marginBottom: 28,
+                    background: 'radial-gradient(circle at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 70%), #FFFFFF',
+                    border: `1px solid ${T.border}`,
+                    borderRadius: 18, padding: '32px', marginBottom: 28,
                     position: 'relative', overflow: 'hidden',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.04)'
                 }}>
                     <div style={{
-                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                        background: 'linear-gradient(90deg, #8b5cf6, #06b6d4)'
+                        position: 'absolute', top: 0, left: 0, right: 0, height: 4,
+                        background: T.orange
                     }} />
 
                     <div style={{ ...pill(T.greenDim, T.greenBorder, T.green), marginBottom: 14 }}>
-                        <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, display: 'inline-block', marginRight: 6 }} />
+                        <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, display: 'inline-block', marginRight: 6, animation: 'pulse 2s infinite' }} />
                         Generado con GPT-4o · Score objetivo 100/100
                     </div>
 
@@ -231,26 +232,25 @@ function ContentView({ content }: { content: GeneratedContent }) {
                 </div>
 
                 {/* Tab selector */}
-                <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
+                <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
                     {([
                         { id: 'preview' as const, icon: '👁️', label: 'Vista Previa', sub: 'Como se verá en la web' },
                         { id: 'code' as const, icon: '⚙️', label: 'HTML Listo', sub: 'Para copiar e implementar' },
                     ]).map(t => (
                         <button key={t.id} onClick={() => setTab(t.id)} style={{
                             flex: 1, textAlign: 'left', cursor: 'pointer', fontFamily: 'inherit',
-                            padding: '13px 16px', borderRadius: 12, transition: 'all 0.2s',
-                            background: tab === t.id
-                                ? 'linear-gradient(135deg,rgba(139,92,246,0.18),rgba(6,182,212,0.09))'
-                                : 'rgba(255,255,255,0.03)',
-                            border: `1.5px solid ${tab === t.id ? T.purpleBorder : T.border}`,
+                            padding: '14px 18px', borderRadius: 12, transition: 'all 0.2s',
+                            background: tab === t.id ? '#FFFFFF' : 'rgba(0,0,0,0.02)',
+                            border: `2px solid ${tab === t.id ? T.orange : 'transparent'}`,
+                            boxShadow: tab === t.id ? '0 4px 15px rgba(0,0,0,0.05)' : 'none',
                         }}>
                             <div style={{
-                                fontWeight: 800, fontSize: '0.88rem', marginBottom: 2,
-                                color: tab === t.id ? T.violet : T.textMuted
+                                fontWeight: 800, fontSize: '0.92rem', marginBottom: 2,
+                                color: tab === t.id ? T.orange : T.textMuted
                             }}>
                                 {t.icon} {t.label}
                             </div>
-                            <div style={{ fontSize: '0.71rem', color: T.textSubtle }}>{t.sub}</div>
+                            <div style={{ fontSize: '0.72rem', color: T.textSubtle }}>{t.sub}</div>
                         </button>
                     ))}
                 </div>
@@ -579,7 +579,7 @@ function ContentView({ content }: { content: GeneratedContent }) {
                                     <div style={{ display: 'flex', gap: 8 }}>
                                         <CopyBtn text={content.schemaMarkup} label="Copiar código" />
                                         <button onClick={() => setSchemaOpen(v => !v)} style={{
-                                            background: 'rgba(255,255,255,0.06)', border: `1px solid ${T.border}`,
+                                            background: '#FFFFFF', border: `1px solid ${T.border}`,
                                             borderRadius: 8, padding: '5px 12px', fontSize: '0.7rem', fontWeight: 700,
                                             color: T.textMuted, cursor: 'pointer', fontFamily: 'inherit',
                                         }}>
@@ -588,13 +588,13 @@ function ContentView({ content }: { content: GeneratedContent }) {
                                     </div>
                                 </div>
                                 <p style={{ fontSize: '0.79rem', color: T.textMuted, margin: 0, lineHeight: 1.55 }}>
-                                    Pega este código en el <code style={{ background: 'rgba(255,255,255,0.08)', padding: '1px 6px', borderRadius: 4, color: T.violet }}>&lt;head&gt;</code> de tu página para activar Rich Results en Google.
+                                    Pega este código en el <code style={{ background: 'rgba(0,0,0,0.05)', padding: '1px 6px', borderRadius: 4, color: T.orange }}>&lt;head&gt;</code> de tu página para activar Rich Results en Google.
                                 </p>
                                 {schemaOpen && (
                                     <pre style={{
-                                        background: 'rgba(0,0,0,0.4)', border: `1px solid ${T.border}`,
-                                        borderRadius: 10, padding: '14px 16px', overflowX: 'auto',
-                                        fontSize: '0.72rem', color: '#86EFAC', lineHeight: 1.65,
+                                        background: '#0F172A', border: `1px solid #1E293B`,
+                                        borderRadius: 10, padding: '16px', overflowX: 'auto',
+                                        fontSize: '0.75rem', color: '#10B981', lineHeight: 1.65,
                                         fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-word',
                                         marginTop: 4,
                                     }}>
@@ -631,9 +631,9 @@ function ContentView({ content }: { content: GeneratedContent }) {
                             />
                         </div>
                         <pre style={{
-                            background: 'rgba(0,0,0,0.45)', border: `1px solid ${T.border}`,
-                            borderRadius: 10, padding: '18px',
-                            fontSize: '0.76rem', color: 'rgba(240,244,255,0.82)',
+                            background: '#0F172A', border: `1px solid #1E293B`,
+                            borderRadius: 10, padding: '20px',
+                            fontSize: '0.78rem', color: '#E2E8F0',
                             lineHeight: 1.75, fontFamily: 'monospace',
                             whiteSpace: 'pre-wrap', wordBreak: 'break-word',
                             overflowX: 'auto', marginTop: 4,
@@ -665,8 +665,8 @@ ${s.cta ? `<!-- CTA: ${s.cta} -->` : ''}
             {/* ── STICKY FOOTER BAR ─────────────────────────── */}
             <div style={{
                 position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 80,
-                background: 'rgba(8,13,24,0.97)', backdropFilter: 'blur(18px)',
-                borderTop: `1px solid ${T.border}`, padding: '10px 24px',
+                background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(18px)',
+                borderTop: `1px solid ${T.border}`, padding: '12px 28px',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12,
             }}>
                 <div style={{ fontSize: '0.77rem', color: T.textMuted, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
@@ -674,16 +674,16 @@ ${s.cta ? `<!-- CTA: ${s.cta} -->` : ''}
                     <span>📝 <strong style={{ color: T.text }}>~{content.estimatedWordCount?.toLocaleString()}</strong> palabras</span>
                     <span>{h2count} H2 · {h3count} H3 · {imgcount} imgs</span>
                 </div>
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 12 }}>
                     <button onClick={() => window.history.back()} style={{
                         background: 'transparent', border: `1px solid ${T.border}`,
-                        borderRadius: 8, padding: '7px 16px', fontSize: '0.82rem', fontWeight: 700,
+                        borderRadius: 8, padding: '8px 18px', fontSize: '0.85rem', fontWeight: 700,
                         color: T.textMuted, cursor: 'pointer', fontFamily: 'inherit',
                     }}>← Volver</button>
                     <button onClick={() => window.print()} style={{
-                        background: 'linear-gradient(135deg,#8b5cf6,#06b6d4)',
-                        color: 'white', border: 'none', borderRadius: 8, padding: '7px 20px',
-                        fontSize: '0.82rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
+                        background: T.orange,
+                        color: 'white', border: 'none', borderRadius: 8, padding: '8px 24px',
+                        fontSize: '0.85rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
                     }}>📄 PDF</button>
                 </div>
             </div>
@@ -746,13 +746,13 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
         <div style={{
             minHeight: '100vh', background: T.bg, display: 'flex',
             flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-            padding: '40px 24px', gap: 24, fontFamily: 'Nunito,sans-serif', color: T.text,
+            padding: '40px 24px', gap: 24, fontFamily: 'inherit', color: T.text,
         }}>
-            <div style={{ fontSize: '3rem' }}>🤖</div>
-            <div style={{ fontSize: '1.4rem', fontWeight: 900, textAlign: 'center' }}>GPT-4o generando contenido…</div>
-            <p style={{ fontSize: '0.88rem', color: T.textMuted, textAlign: 'center', maxWidth: 420, lineHeight: 1.6 }}>
-                Analizando keywords, construyendo estructura y redactando contenido optimizado.<br />
-                Esto toma unos <strong style={{ color: T.green }}>20–40 segundos</strong>.
+            <div style={{ fontSize: '3.5rem' }}>🤖</div>
+            <div style={{ fontSize: '1.6rem', fontWeight: 900, textAlign: 'center' }}>GPT-4o generando contenido…</div>
+            <p style={{ fontSize: '0.92rem', color: T.textMuted, textAlign: 'center', maxWidth: 460, lineHeight: 1.6 }}>
+                Analizando keywords sacadas de tu top competencia, construyendo estructura y redactando contenido optimizado.<br />
+                Esto toma unos <strong style={{ color: T.orange }}>20–40 segundos</strong>.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: 360 }}>
                 {steps.map((s, i) => (
@@ -781,20 +781,16 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
         <div style={{ minHeight: '100vh', background: T.bg, fontFamily: 'Nunito,sans-serif', color: T.text }}>
             {/* mini navbar */}
             <nav style={{
-                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 58,
+                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 60,
                 padding: '0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                background: 'rgba(8,13,24,0.95)', backdropFilter: 'blur(18px)',
+                background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(18px)',
                 borderBottom: `1px solid ${T.border}`,
             }}>
                 <a href="/" style={{
                     display: 'flex', alignItems: 'center', gap: 9,
-                    fontWeight: 900, fontSize: '1.05rem', color: T.purple, textDecoration: 'none'
+                    fontWeight: 900, fontSize: '1.2rem', color: T.orange, textDecoration: 'none'
                 }}>
-                    <div style={{
-                        width: 28, height: 28, background: T.purple, borderRadius: 6,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: 'white'
-                    }}>🔍</div>
-                    DiagnósticoSEO
+                    SEO Diagnostico
                 </a>
                 <a href="/" style={{ fontSize: '0.8rem', color: T.textMuted, textDecoration: 'none' }}>← Inicio</a>
             </nav>
@@ -802,12 +798,13 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
             <div style={{ maxWidth: 600, margin: '0 auto', padding: '90px 20px 60px' }}>
                 <div style={{
                     ...card,
-                    border: `1px solid ${T.purpleBorder}`,
+                    border: `1px solid ${T.border}`,
                     position: 'relative', overflow: 'hidden',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.06)'
                 }}>
                     <div style={{
-                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                        background: 'linear-gradient(90deg,#8b5cf6,#06b6d4)'
+                        position: 'absolute', top: 0, left: 0, right: 0, height: 4,
+                        background: T.orange
                     }} />
 
                     <div style={{ fontSize: '2rem', marginBottom: 4 }}>🤖</div>
@@ -836,9 +833,9 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
                         onChange={e => setPrimaryKeyword(e.target.value)}
                         style={{
                             width: '100%', boxSizing: 'border-box',
-                            background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`,
-                            borderRadius: 9, padding: '11px 14px', color: T.text,
-                            fontSize: '0.9rem', fontFamily: 'inherit', marginBottom: 14, outline: 'none',
+                            background: '#FFFFFF', border: `1px solid ${T.borderMid}`,
+                            borderRadius: 9, padding: '12px 14px', color: T.text,
+                            fontSize: '0.95rem', fontFamily: 'inherit', marginBottom: 16, outline: 'none',
                         }}
                     />
 
@@ -851,9 +848,9 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
                         onChange={e => setSecondaryKeywords(e.target.value)}
                         style={{
                             width: '100%', boxSizing: 'border-box',
-                            background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`,
-                            borderRadius: 9, padding: '11px 14px', color: T.text,
-                            fontSize: '0.9rem', fontFamily: 'inherit', marginBottom: 18, outline: 'none',
+                            background: '#FFFFFF', border: `1px solid ${T.borderMid}`,
+                            borderRadius: 9, padding: '12px 14px', color: T.text,
+                            fontSize: '0.95rem', fontFamily: 'inherit', marginBottom: 20, outline: 'none',
                         }}
                     />
 
@@ -868,10 +865,11 @@ function GeneratorForm({ onResult }: { onResult: (c: GeneratedContent) => void }
                     )}
 
                     <button onClick={generate} style={{
-                        width: '100%', background: 'linear-gradient(135deg,#8b5cf6,#06b6d4)',
-                        color: 'white', border: 'none', borderRadius: 11, padding: '14px',
+                        width: '100%', background: T.orange,
+                        color: 'white', border: 'none', borderRadius: 50, padding: '16px',
                         fontSize: '1rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
-                        boxShadow: '0 6px 24px rgba(139,92,246,0.35)',
+                        boxShadow: '0 6px 24px rgba(194,65,12,0.2)',
+                        textTransform: 'uppercase'
                     }}>
                         🤖 Generar Contenido con GPT-4o
                     </button>
@@ -895,8 +893,8 @@ function ContentInner() {
 export default function ContentPage() {
     return (
         <Suspense fallback={
-            <div style={{ minHeight: '100vh', background: '#080d18', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f0f4ff', fontFamily: 'Nunito,sans-serif', fontSize: '1.2rem', gap: 12 }}>
-                <span style={{ fontSize: '2rem' }}>🤖</span> Cargando…
+            <div style={{ minHeight: '100vh', background: '#F7F7F9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#101820', fontFamily: 'inherit', fontSize: '1.2rem', gap: 12 }}>
+                <span style={{ fontSize: '2.5rem' }}>🤖</span> Cargando motor de contenido…
             </div>
         }>
             <ContentInner />
