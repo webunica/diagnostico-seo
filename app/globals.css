@@ -4,40 +4,40 @@
    DESIGN TOKENS — Inmobiliaria Pilares Skin
    ═══════════════════════════════════════════════ */
 :root {
-  /* Fondos */
-  --bg-body: #FFFFFF;
-  --bg-alt: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #FAFAFA;
-  --bg-dark: #FFFFFF;
-  --bg-dark-2: #FFFFFF;
+  /* Fondos Night Mode */
+  --bg-body: #050505;
+  --bg-alt: #0A0A0A;
+  --bg-card: #0D0D0D;
+  --bg-card-hover: #141414;
+  --bg-dark: #000000;
+  --bg-dark-2: #050505;
 
-  /* Bordes */
-  --border: #000000;
-  --border-mid: #000000;
-  --border-hover: #000000;
+  /* Bordes High Contrast */
+  --border: #FFFFFF;
+  --border-mid: #333333;
+  --border-hover: #FFFFFF;
 
-  /* Texto sobre fondos CLAROS */
-  --text: #333333;
-  --text-muted: #666666;
-  --text-subtle: #444444;
+  /* Texto - Light on Dark */
+  --text: #F0F0F0;
+  --text-muted: #888888;
+  --text-subtle: #AAAAAA;
 
-  /* Texto sobre fondos OSCUROS (hero, navbar) */
-  --text-on-dark: #000000;
-  --text-on-dark-muted: #333333;
-  --text-on-dark-subtle: #444444;
+  /* Texto sobre fondos OSCUROS */
+  --text-on-dark: #FFFFFF;
+  --text-on-dark-muted: #CCCCCC;
+  --text-on-dark-subtle: #888888;
 
-  /* Acento (Minimalist Black) */
-  --orange: #000000;
-  --orange-dark: #1a1a1a;
-  --orange-light: #333333;
-  --orange-glow: rgba(0, 0, 0, 0.05);
+  /* Acento (Minimalist White) */
+  --orange: #FFFFFF;
+  --orange-dark: #F0F0F0;
+  --orange-light: #CCCCCC;
+  --orange-glow: rgba(255, 255, 255, 0.1);
 
   /* Otros */
-  --accent: #000000;
-  --green: #333333;
-  --yellow: #333333;
-  --red: #000000;
+  --accent: #FFFFFF;
+  --green: #FFFFFF;
+  --yellow: #CCCCCC;
+  --red: #FFFFFF;
 
   /* Estructura */
   --r-sm: 0px;
@@ -48,7 +48,7 @@
   /* Sombras */
   --shadow-sm: none;
   --shadow-card: none;
-  --shadow-lg: none;
+  --shadow-lg: 0 0 40px rgba(255, 255, 255, 0.03);
 }
 
 body {
