@@ -155,7 +155,7 @@ export default function CrawlPage() {
         } finally {
             setCrawling(false);
         }
-    }, [domain, maxUrls]);
+    }, [domain, maxUrls, email]);
 
     const stopCrawl = () => {
         abortRef.current?.abort();
@@ -173,7 +173,6 @@ export default function CrawlPage() {
     const count2xx = urls.filter(u => u.status >= 200 && u.status < 300).length;
     const count3xx = urls.filter(u => u.status >= 300 && u.status < 400).length;
     const count4xx = urls.filter(u => u.status >= 400 && u.status < 500).length;
-    const count5xx = urls.filter(u => u.status >= 500).length;
     const countErr = urls.filter(u => u.status < 0).length;
 
     const filtered = urls.filter(u => {
@@ -188,161 +187,151 @@ export default function CrawlPage() {
     })();
 
     return (
-        <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#333333', fontFamily: 'Montserrat, sans-serif' }}>
+        <main style={{ minHeight: '100vh', background: '#F8F7FF', color: '#0E0C2C', fontFamily: 'Montserrat, sans-serif' }}>
             {/* Navbar */}
-            <nav className="navbar" style={{ background: '#FFFFFF', borderBottom: '2px solid #000000', height: '70px' }}>
+            <nav className="navbar" style={{ background: '#673DE6', height: '80px', borderBottom: 'none', padding: '0 40px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
                 <div className="navbar-logo">
-                    <span style={{ fontSize: '1.4rem', fontWeight: 900, color: '#000000' }}>SEO Diagnostico</span>
+                    <a href="/" style={{ fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', textDecoration: 'none' }}>SEO DIAGNOSTICO</a>
                 </div>
-                <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>← Inicio</a>
-                    <a href="/keywords" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>Keywords</a>
-                    <div style={{
-                        fontSize: '0.8rem', fontWeight: 900, padding: '6px 16px',
-                        border: '2px solid #000000',
-                        borderRadius: 0, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em'
-                    }}>
-                        🕷️ Crawl — Free
-                    </div>
+                <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+                    <a href="/keywords" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Keywords</a>
+                    <a href="/" style={{
+                        fontSize: '0.85rem', color: '#000000', background: '#D1FD1F',
+                        padding: '12px 24px', fontWeight: 900, textTransform: 'uppercase',
+                        textDecoration: 'none', borderRadius: '50px'
+                    }}>Dashboard</a>
                 </div>
             </nav>
 
-            {/* Hero */}
-            <section style={{
-                paddingTop: 120,
-                paddingBottom: 80,
-                textAlign: 'center',
-                background: '#FFFFFF',
-                borderBottom: '2px solid #000000',
-            }}>
-                <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px' }}>
-                    <div style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.15)',
-                        borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
-                        color: '#C2410C', marginBottom: 24, textTransform: 'uppercase'
-                    }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#059669', animation: 'pulse 2s infinite', display: 'inline-block' }} />
-                        Crawler BFS en tiempo real · 100% Gratis
-                    </div>
-
-                    <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', fontWeight: 900, marginBottom: 20, lineHeight: 1, color: '#000000', letterSpacing: '-0.04em', textTransform: 'uppercase' }}>
-                        Descubre todas las <span style={{ textDecoration: 'underline' }}>URLs de un dominio</span>
-                    </h1>
-
-                    <p style={{ fontSize: '1.1rem', color: '#52525B', maxWidth: 600, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
-                        Crawl inteligente con BFS — sigue todos los enlaces internos y muestra URLs en tiempo real con estado HTTP, tipo y título de página.
+            <div style={{ maxWidth: 1100, margin: '110px auto 60px', padding: '0 24px' }}>
+                {/* Header Section */}
+                <div style={{
+                    background: 'linear-gradient(135deg, #673DE6 0%, #4F2CC9 100%)',
+                    padding: '60px 48px',
+                    borderRadius: '32px',
+                    color: '#FFFFFF',
+                    marginBottom: 48,
+                    boxShadow: '0 20px 60px rgba(103, 61, 230, 0.15)',
+                    textAlign: 'center'
+                }}>
+                    <h1 style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: 16 }}>Technical Crawler</h1>
+                    <p style={{ fontSize: '1.2rem', color: '#E0DAFF', fontWeight: 500, maxWidth: 600, margin: '0 auto 32px' }}>
+                        Analiza la salud técnica de tu sitio web y descubre todas sus URLs en tiempo real.
                     </p>
 
-                    {/* Form */}
-                    <form onSubmit={handleCrawl} style={{ maxWidth: 680, margin: '0 auto' }}>
-                        {/* Email Row */}
-                        <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto 12px' }}>
-                            <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '1rem', opacity: 0.5 }}>📧</span>
+                    {/* Crawl Form */}
+                    <div style={{
+                        background: '#FFFFFF', padding: '12px', borderRadius: '20px',
+                        display: 'flex', gap: 10, maxWidth: 800, margin: '0 auto',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+                    }}>
+                        <input
+                            type="text"
+                            placeholder="https://tusitio.com"
+                            value={domain}
+                            onChange={e => setDomain(e.target.value)}
+                            disabled={crawling}
+                            style={{
+                                flex: 1, padding: '16px 20px', borderRadius: '12px', border: 'none',
+                                background: '#F8F7FF', fontSize: '1rem', fontWeight: 600, outline: 'none', color: '#0E0C2C'
+                            }}
+                        />
+                        <input
+                            type="email"
+                            placeholder="tu@email.com"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            disabled={crawling}
+                            style={{
+                                width: '220px', padding: '16px 20px', borderRadius: '12px', border: 'none',
+                                background: '#F8F7FF', fontSize: '1rem', fontWeight: 600, outline: 'none', color: '#0E0C2C'
+                            }}
+                        />
+                        <button
+                            onClick={handleCrawl}
+                            disabled={crawling}
+                            style={{
+                                background: '#673DE6', color: '#FFFFFF', border: 'none',
+                                borderRadius: '12px', padding: '0 32px', fontSize: '1rem',
+                                fontWeight: 900, cursor: 'pointer', textTransform: 'uppercase'
+                            }}
+                        >
+                            {crawling ? 'SPIIDER...' : 'START'}
+                        </button>
+                    </div>
+                    {error && <div style={{ color: '#FF4D4D', marginTop: 16, fontWeight: 700 }}>⚠️ {error}</div>}
+                </div>
+
+                {/* Results Control Panel */}
+                {(urls.length > 0 || crawling) && (
+                    <div style={{ animation: 'fadeIn 0.5s ease' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                            <div style={{ display: 'flex', gap: 12 }}>
+                                <StatPill label="TOTAL" count={urls.length} color="#673DE6" active={filter === 'all'} onClick={() => setFilter('all')} />
+                                <StatPill label="2xx OK" count={count2xx} color="#22C55E" active={filter === '2xx'} onClick={() => setFilter('2xx')} />
+                                <StatPill label="3xx REDIRECT" count={count3xx} color="#F59E0B" active={filter === '3xx'} onClick={() => setFilter('3xx')} />
+                                <StatPill label="4xx ERROR" count={count4xx} color="#EF4444" active={filter === '4xx'} onClick={() => setFilter('4xx')} />
+                            </div>
+                            <div style={{ display: 'flex', gap: 12 }}>
+                                {crawling && (
+                                    <button onClick={stopCrawl} style={{ background: '#FF4D4D', color: '#FFFFFF', border: 'none', padding: '8px 20px', borderRadius: '50px', fontWeight: 800, cursor: 'pointer' }}>STOP</button>
+                                )}
+                                {done && (
+                                    <button onClick={() => exportCSV(urls, detectedDomain)} style={{ background: '#D1FD1F', color: '#000000', border: 'none', padding: '8px 20px', borderRadius: '50px', fontWeight: 900, cursor: 'pointer' }}>EXPORT CSV</button>
+                                )}
+                            </div>
+                        </div>
+
+                        <div style={{ marginBottom: 20 }}>
                             <input
-                                type="email"
-                                placeholder="Tu correo electrónico..."
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                disabled={crawling}
+                                type="text"
+                                placeholder="Filtrar por URL o título..."
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
                                 style={{
-                                    width: '100%', padding: '14px 14px 14px 44px', borderRadius: 12, border: '1px solid rgba(0,0,0,0.12)',
-                                    background: 'white', fontSize: '0.97rem', fontWeight: 500, fontFamily: 'inherit', boxSizing: 'border-box',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+                                    width: '100%', padding: '16px 24px', borderRadius: '16px',
+                                    border: '1px solid #E0DAFF', background: '#FFFFFF',
+                                    fontSize: '0.95rem', fontWeight: 600, color: '#0E0C2C', outline: 'none'
                                 }}
                             />
                         </div>
 
-                        <div style={{ display: 'flex', background: 'white', borderRadius: 0, border: '2px solid #000000', overflow: 'hidden', marginBottom: 16 }}>
-                            <input
-                                type="text"
-                                placeholder="ejemplo.cl o https://ejemplo.cl"
-                                value={domain}
-                                onChange={e => setDomain(e.target.value)}
-                                disabled={crawling}
-                                style={{ flex: 1, border: 'none', color: '#000000', fontSize: '1rem', padding: '16px 20px', fontFamily: 'inherit', background: 'transparent', fontWeight: 800 }}
-                            />
-                            <select
-                                value={maxUrls}
-                                onChange={e => setMaxUrls(Number(e.target.value))}
-                                disabled={crawling}
-                                style={{ border: 'none', borderLeft: '2px solid #000000', background: 'white', color: '#000000', fontSize: '0.9rem', padding: '0 16px', fontFamily: 'inherit', cursor: 'pointer', fontWeight: 800 }}
-                            >
-                                <option value={50}>50 URLs</option>
-                                <option value={100}>100 URLs</option>
-                                <option value={200}>200 URLs</option>
-                                <option value={500}>500 URLs</option>
-                            </select>
-                            {crawling ? (
-                                <button type="button" onClick={stopCrawl} style={{ background: '#000000', color: 'white', border: 'none', padding: '14px 28px', fontSize: '1rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', textTransform: 'uppercase' }}> Detener </button>
-                            ) : (
-                                <button type="submit" style={{ background: '#000000', color: 'white', border: 'none', padding: '14px 32px', fontSize: '1rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', textTransform: 'uppercase' }}> 🕷️ Crawl </button>
-                            )}
-                        </div>
-                        {error && <div style={{ color: '#DC2626', fontSize: '0.82rem', marginBottom: 10 }}>⚠️ {error}</div>}
-                        <p style={{ fontSize: '0.72rem', color: '#71717A', textAlign: 'center' }}>
-                            Máx. 500 URLs · Recibirás el resumen en tu correo.
-                        </p>
-                    </form>
-                </div>
-            </section>
-
-            {/* Results area */}
-            <div style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 24px 80px' }}>
-                {urls.length > 0 && (
-                    <div style={{ marginBottom: 20 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
-                            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#101820' }}>
-                                {crawling
-                                    ? <span>🕷️ Crawleando <strong style={{ color: '#C2410C' }}>{detectedDomain}</strong>… <span style={{ color: '#71717A', fontWeight: 400 }}>{urls.length} encontrados</span></span>
-                                    : <span>✅ Completo — <strong style={{ color: '#C2410C' }}>{urls.length}</strong> URLs en <strong>{detectedDomain}</strong></span>}
-                            </div>
-                            {done && (
-                                <button
-                                    onClick={() => exportCSV(urls, detectedDomain)}
-                                    style={{
-                                        background: 'rgba(59,130,246,0.1)',
-                                        border: '1px solid rgba(59,130,246,0.25)',
-                                        borderRadius: 8, padding: '8px 16px',
-                                        fontSize: '0.82rem', fontWeight: 700,
-                                        color: '#1D4ED8', cursor: 'pointer',
-                                        fontFamily: 'inherit'
-                                    }}
-                                >
-                                    ⬇️ Exportar CSV
-                                </button>
-                            )}
-                        </div>
-
-                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
-                            <StatPill label="All" count={urls.length} color="#101820" active={filter === 'all'} onClick={() => setFilter('all')} />
-                            <StatPill label="2xx" count={count2xx} color="#059669" active={filter === '2xx'} onClick={() => setFilter('2xx')} />
-                            <StatPill label="3xx" count={count3xx} color="#B45309" active={filter === '3xx'} onClick={() => setFilter('3xx')} />
-                            <StatPill label="4xx" count={count4xx} color="#DC2626" active={filter === '4xx'} onClick={() => setFilter('4xx')} />
-                        </div>
-
-                        <div style={{ position: 'relative', marginBottom: 16 }}>
-                            <input type="text" placeholder="Filtrar por URL o título…" value={search} onChange={e => setSearch(e.target.value)} style={{ width: '100%', boxSizing: 'border-box', background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10, padding: '12px 14px', color: '#101820', fontSize: '0.9rem', fontFamily: 'inherit' }} />
-                        </div>
-
-                        <div style={{ background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 14, overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-                            <div style={{ maxHeight: '65vh', overflowY: 'auto' }}>
+                        {/* Results List */}
+                        <div style={{
+                            background: '#FFFFFF', borderRadius: '24px', border: '1px solid #E0DAFF',
+                            overflow: 'hidden', boxShadow: '0 10px 40px rgba(103, 61, 230, 0.05)'
+                        }}>
+                            <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
                                 {filtered.length === 0 ? (
-                                    <div style={{ padding: '40px', textAlign: 'center', color: '#71717A' }}>No se encontraron URLs.</div>
-                                ) : filtered.map((u, i) => (
-                                    <div key={u.url} style={{ display: 'grid', gridTemplateColumns: '48px 1fr 90px 90px 36px', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                                        <span style={{ fontSize: '0.72rem', color: '#94A3B8', fontWeight: 700 }}>{u.index}</span>
-                                        <div style={{ minWidth: 0 }}>
-                                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#101820', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.url}</div>
-                                            <div style={{ fontSize: '0.74rem', color: '#71717A', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.title}</div>
-                                        </div>
-                                        <div style={{ textAlign: 'center' }}><span style={{ fontSize: '0.72rem', fontWeight: 800, padding: '3px 8px', borderRadius: 6, background: statusBg(u.status), color: statusColor(u.status) }}>{statusLabel(u.status)}</span></div>
-                                        <div style={{ textAlign: 'center' }}><span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8' }}>{u.type}</span></div>
-                                        <div style={{ textAlign: 'center' }}>
-                                            <button onClick={() => copyUrl(u.url)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copiedUrl === u.url ? '#059669' : '#CBD5E0' }}> ⎘ </button>
-                                        </div>
+                                    <div style={{ padding: '60px', textAlign: 'center', color: '#6C6893', fontWeight: 600 }}>No hay datos para mostrar.</div>
+                                ) : (
+                                    <div style={{ display: 'grid', gap: 1 }}>
+                                        {filtered.map((u, i) => (
+                                            <div key={u.url + i} style={{
+                                                display: 'grid', gridTemplateColumns: '1fr 100px 140px 60px',
+                                                alignItems: 'center', padding: '16px 24px', background: '#FFFFFF',
+                                                borderBottom: '1px solid #F0EDFF', transition: 'background 0.2s'
+                                            }} onMouseEnter={e => e.currentTarget.style.background = '#F8F7FF'} onMouseLeave={e => e.currentTarget.style.background = '#FFFFFF'}>
+                                                <div style={{ minWidth: 0, paddingRight: 20 }}>
+                                                    <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0E0C2C', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.url}</div>
+                                                    <div style={{ fontSize: '0.75rem', color: '#6C6893', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.title || 'Sin título'}</div>
+                                                </div>
+                                                <div style={{ textAlign: 'center' }}>
+                                                    <span style={{
+                                                        fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '50px',
+                                                        background: statusBg(u.status), color: statusColor(u.status)
+                                                    }}>
+                                                        {statusLabel(u.status)}
+                                                    </span>
+                                                </div>
+                                                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6C6893', textTransform: 'uppercase', textAlign: 'center' }}>{u.type}</div>
+                                                <button onClick={() => copyUrl(u.url)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem', opacity: 0.4 }}>
+                                                    {copiedUrl === u.url ? '✅' : 'Copy'}
+                                                </button>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
+                                )}
                             </div>
                         </div>
                     </div>
@@ -350,23 +339,19 @@ export default function CrawlPage() {
 
                 {urls.length === 0 && !crawling && (
                     <div style={{ textAlign: 'center', padding: '80px 0' }}>
-                        <div style={{ fontSize: '3rem', marginBottom: 20 }}>🕷️</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#101820' }}>Crawler de Sitios Profesional</div>
-                        <div style={{ color: '#52525B', marginTop: 8, fontSize: '0.95rem' }}>Ingresa un dominio para comenzar el escaneo y descubrir su estructura.</div>
+                        <div style={{ fontSize: '100px', marginBottom: 24, filter: 'grayscale(1)', opacity: 0.1 }}>🕷️</div>
+                        <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#0E0C2C', marginBottom: 12 }}>Auditores de sitios en tiempo real</h2>
+                        <p style={{ fontSize: '1.1rem', color: '#6C6893', maxWidth: 500, margin: '0 auto' }}>Descubre la arquitectura de tu sitio, identifica errores de rastreo y analiza cada URL al instante.</p>
                     </div>
                 )}
             </div>
 
-            <div style={{ borderTop: '2px solid #000000', padding: '48px 24px', textAlign: 'center', background: '#FFFFFF' }}>
-                <a href="/" style={{ color: '#000000', fontWeight: 900, fontSize: '1rem', textDecoration: 'none', textTransform: 'uppercase' }}>Audita tu sitio ahora con SEO Diagnostico →</a>
-            </div>
-
             <style>{`
-                @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                ::-webkit-scrollbar { width: 6px; }
-                ::-webkit-scrollbar-thumb { background: rgba(255,105,0,0.2); border-radius: 10px; }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+                ::-webkit-scrollbar { width: 8px; }
+                ::-webkit-scrollbar-track { background: #F8F7FF; }
+                ::-webkit-scrollbar-thumb { background: #E0DAFF; border-radius: 10px; }
             `}</style>
-        </div>
+        </main>
     );
 }

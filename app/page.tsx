@@ -121,92 +121,98 @@ export default function HomePage() {
   }, [url, email, coupon]);
 
   return (
-    <main style={{ minHeight: '100vh', background: '#000000', color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif' }}>
-      {/* Navbar Minimalista Premium */}
+    <main style={{ minHeight: '100vh', background: '#FFFFFF', color: '#0E0C2C', fontFamily: 'Montserrat, sans-serif' }}>
+      {/* Navbar Hostinger Style */}
       <nav className="navbar" style={{
-        background: '#000000',
-        borderBottom: '2px solid #FFFFFF',
-        height: '74px',
+        background: '#673DE6',
+        borderBottom: 'none',
+        height: '80px',
         padding: '0 40px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         position: 'fixed',
-        top: 0, left: 0, right: 0, zIndex: 1000
+        top: 0, left: 0, right: 0, zIndex: 1000,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
       }}>
         <div className="navbar-logo">
           <span style={{ fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.04em', color: '#FFFFFF' }}>SEO DIAGNOSTICO</span>
         </div>
         <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
-          <a href="/keywords" style={{ fontSize: '0.9rem', color: '#EEEEEE', fontWeight: 800, textTransform: 'uppercase', textDecoration: 'none' }}>Keywords</a>
-          <a href="/crawl" style={{ fontSize: '0.9rem', color: '#EEEEEE', fontWeight: 800, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
+          <a href="/keywords" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Keywords</a>
+          <a href="/crawl" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
           <a href="/dashboard" style={{
-            fontSize: '0.85rem', color: '#000000', background: '#FFFFFF',
-            padding: '10px 22px', fontWeight: 900, textTransform: 'uppercase',
-            textDecoration: 'none', border: '2px solid #FFFFFF'
-          }}>Acceso Pro</a>
+            fontSize: '0.85rem', color: '#000000', background: '#D1FD1F',
+            padding: '12px 24px', fontWeight: 900, textTransform: 'uppercase',
+            textDecoration: 'none', borderRadius: '50px',
+            transition: 'transform 0.2s'
+          }}
+            onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+          >Acceso Pro</a>
         </div>
       </nav>
 
-      {/* Hero Night Mode Premium */}
+      {/* Hero Hostinger Style */}
       <section style={{
         paddingTop: 180,
         paddingBottom: 100,
         textAlign: 'center',
-        background: '#000000',
-        borderBottom: '3px solid #FFFFFF',
+        background: 'linear-gradient(135deg, #673DE6 0%, #4F2CC9 100%)',
+        color: '#FFFFFF',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        borderRadius: '0 0 50px 50px'
       }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 10,
-            border: '2px solid #FFFFFF', borderRadius: 0,
-            padding: '8px 20px', fontSize: '0.8rem', fontWeight: 900,
-            color: '#FFFFFF', marginBottom: 32, textTransform: 'uppercase', letterSpacing: '0.15em'
+            background: 'rgba(209, 253, 31, 0.15)',
+            border: '1px solid #D1FD1F',
+            borderRadius: '50px',
+            padding: '8px 24px', fontSize: '0.85rem', fontWeight: 800,
+            color: '#D1FD1F', marginBottom: 32, textTransform: 'uppercase', letterSpacing: '0.05em'
           }}>
-            <span style={{ width: 8, height: 8, background: '#FFFFFF', display: 'inline-block' }} />
-            Analiza tu SEO con Inteligencia Artificial
+            🔥 Herramienta SEO N°1 en Chile
           </div>
 
           <h1 style={{
-            fontSize: 'clamp(3rem, 7vw, 5.5rem)',
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
             fontWeight: 900,
             marginBottom: 24,
-            lineHeight: 0.9,
-            letterSpacing: '-0.06em',
+            lineHeight: 1.1,
+            letterSpacing: '-0.02em',
             color: '#FFFFFF',
-            textTransform: 'uppercase'
           }}>
-            El Diagnóstico <br />
-            <span style={{ color: '#000000', background: '#FFFFFF', padding: '0 10px' }}>Más Rápido</span>
+            Ellos triunfan online, <br />
+            <span style={{ color: '#D1FD1F' }}>ahora es tu turno</span>
           </h1>
 
           <p style={{
-            fontSize: '1.3rem',
-            color: '#AAAAAA',
+            fontSize: '1.25rem',
+            color: '#E0DAFF',
             maxWidth: 680,
             margin: '0 auto 48px',
             lineHeight: 1.5,
-            fontWeight: 600
+            fontWeight: 500
           }}>
-            Auditoría técnica y de contenido en segundos. Identifica errores críticos,
-            optimiza tus keywords y supera a tu competencia con reportes profesionales.
+            Analiza tu sitio, identifica errores y mejora tu posicionamiento en minutos.
+            Auditoría SEO avanzada impulsada por IA.
           </p>
 
-          {/* URL Bar Premium */}
+          {/* URL Bar Hostinger */}
           <div style={{ maxWidth: 740, margin: '0 auto' }}>
             <div style={{
               display: 'flex',
-              background: '#000000',
-              border: '4px solid #FFFFFF',
-              borderRadius: 0,
-              padding: '4px',
+              background: '#FFFFFF',
+              borderRadius: '50px',
+              padding: '6px',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
               overflow: 'hidden',
             }}>
               <input
                 type="text"
-                placeholder="INGRESA TU SITIO WEB (EJ: WWW.TUSITIO.COM)"
+                placeholder="Ingresa tu dominio (ej: tusitio.com)"
                 value={url}
                 onChange={e => setUrl(e.target.value)}
                 disabled={loading || freeLoading}
@@ -214,11 +220,10 @@ export default function HomePage() {
                   flex: 1,
                   border: 'none',
                   background: 'transparent',
-                  color: '#FFFFFF',
-                  padding: '16px 24px',
+                  color: '#0E0C2C',
+                  padding: '16px 32px',
                   fontSize: '1.1rem',
-                  fontWeight: 900,
-                  textTransform: 'uppercase',
+                  fontWeight: 600,
                   outline: 'none',
                   fontFamily: 'inherit'
                 }}
@@ -227,39 +232,45 @@ export default function HomePage() {
                 onClick={handleFree}
                 disabled={loading || freeLoading}
                 style={{
-                  background: '#FFFFFF',
-                  color: '#000000',
+                  background: '#12103E',
+                  color: '#FFFFFF',
                   border: 'none',
                   padding: '0 40px',
                   fontSize: '1.1rem',
                   fontWeight: 900,
                   cursor: 'pointer',
-                  textTransform: 'uppercase',
+                  borderRadius: '50px',
                   transition: 'all 0.2s',
                   whiteSpace: 'nowrap'
                 }}
+                onMouseOver={e => e.currentTarget.style.background = '#000000'}
+                onMouseOut={e => e.currentTarget.style.background = '#12103E'}
               >
-                {freeLoading ? 'Analizando...' : 'Analizar Gratis'}
+                {freeLoading ? 'Analizando...' : 'Buscar'}
               </button>
             </div>
             {error && (
-              <div style={{ color: '#FFFFFF', background: '#FF0000', padding: '10px', marginTop: 12, fontWeight: 900, textTransform: 'uppercase' }}>
+              <div style={{ color: '#FF4D4D', background: 'rgba(255, 77, 77, 0.1)', padding: '12px', marginTop: 16, fontWeight: 700, borderRadius: '12px' }}>
                 ⚠️ {error}
               </div>
             )}
-            <p style={{ color: '#888888', marginTop: 24, fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              Reporte instantáneo con métricas On-Page, Técnico y Contenido
+            <p style={{ color: '#E0DAFF', marginTop: 24, fontSize: '0.85rem', fontWeight: 600 }}>
+              Análisis gratuito instantáneo • Resultados precisos • Potenciado con IA
             </p>
           </div>
         </div>
       </section>
 
-      {/* Features Section Night Mode */}
-      <section style={{ padding: '120px 24px', background: '#000000' }}>
+      {/* Features Hostinger Style */}
+      <section style={{ padding: '120px 24px', background: '#F8F7FF' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 80 }}>
-            <h2 style={{ fontSize: '3rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: 16 }}>Herramientas de Elite</h2>
-            <div style={{ width: 100, height: 6, background: '#FFFFFF', margin: '0 auto' }}></div>
+            <span style={{
+              background: '#E0DAFF', color: '#673DE6',
+              padding: '6px 16px', borderRadius: '50px',
+              fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase'
+            }}>Herramientas</span>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, marginTop: 16 }}>Soluciones SEO de Elite</h2>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 32 }}>
@@ -270,162 +281,181 @@ export default function HomePage() {
             ].map((feat, i) => (
               <div key={i} style={{
                 padding: '48px',
-                border: '3px solid #FFFFFF',
+                background: '#FFFFFF',
+                borderRadius: '24px',
+                border: '1px solid #E0DAFF',
                 transition: 'all 0.3s',
-                background: 'transparent'
+                boxShadow: '0 10px 30px rgba(103, 61, 230, 0.05)'
               }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLDivElement).style.background = '#FFFFFF';
-                  (e.currentTarget as HTMLDivElement).style.color = '#000000';
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-10px)';
+                  (e.currentTarget as HTMLDivElement).style.borderColor = '#673DE6';
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLDivElement).style.background = 'transparent';
-                  (e.currentTarget as HTMLDivElement).style.color = '#FFFFFF';
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+                  (e.currentTarget as HTMLDivElement).style.borderColor = '#E0DAFF';
                 }}
               >
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: 16, textTransform: 'uppercase' }}>{feat.title}</h3>
-                <p style={{ fontSize: '1rem', fontWeight: 600, lineHeight: 1.5, opacity: 0.8 }}>{feat.desc}</p>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: 16, color: '#673DE6' }}>{feat.title}</h3>
+                <p style={{ fontSize: '1rem', fontWeight: 500, lineHeight: 1.5, color: '#6C6893' }}>{feat.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ───────────────────────────────────────────── */}
-      <section className="steps-section" style={{ background: '#000000', padding: '120px 24px', borderBottom: '3px solid #FFFFFF' }}>
+      {/* How it works Hostinger Style */}
+      <section style={{ background: '#FFFFFF', padding: '120px 24px' }}>
         <div className="container" style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <p className="section-label" style={{ color: '#AAAAAA', fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', textAlign: 'center', marginBottom: 16 }}>Proceso</p>
-          <h2 className="section-title" style={{ fontSize: '3rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: 16, textAlign: 'center' }}>Listo en 4 pasos simples</h2>
-          <p className="section-subtitle" style={{ fontSize: '1.2rem', color: '#AAAAAA', maxWidth: 680, margin: '0 auto 60px', lineHeight: 1.6, fontWeight: 600, textAlign: 'center' }}>Sin registro, sin suscripciones. Paga y obtén tu reporte al instante.</p>
+          <div style={{ textAlign: 'center', marginBottom: 60 }}>
+            <span style={{
+              background: '#F0EDFF', color: '#673DE6',
+              padding: '6px 16px', borderRadius: '50px',
+              fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase'
+            }}>Proceso</span>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, marginTop: 16 }}>Listo en 4 pasos simples</h2>
+            <p style={{ fontSize: '1.2rem', color: '#6C6893', maxWidth: 680, margin: '16px auto 0' }}>Sin registro, sin suscripciones. Paga y obtén tu reporte al instante.</p>
+          </div>
           <div className="steps-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 32 }}>
             {STEPS.map(s => (
-              <div className="step-item" key={s.n} style={{ padding: '32px', border: '2px solid #FFFFFF', borderRadius: 0, textAlign: 'center' }}>
-                <div className="step-number" style={{ fontSize: '2.5rem', fontWeight: 900, color: '#FFFFFF', marginBottom: 16 }}>{s.n}</div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: 10, textTransform: 'uppercase' }}>{s.title}</h3>
-                <p style={{ fontSize: '0.95rem', color: '#AAAAAA', lineHeight: 1.5 }}>{s.desc}</p>
+              <div className="step-item" key={s.n} style={{
+                padding: '40px',
+                background: '#FFFFFF',
+                borderRadius: '24px',
+                border: '1px solid #E0DAFF',
+                textAlign: 'center',
+                transition: 'all 0.3s'
+              }}
+                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 15px 40px rgba(103, 61, 230, 0.1)'}
+                onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+              >
+                <div className="step-number" style={{
+                  fontSize: '3rem', fontWeight: 900,
+                  color: '#673DE6', marginBottom: 16, opacity: 0.2
+                }}>0{s.n}</div>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: 12 }}>{s.title}</h3>
+                <p style={{ fontSize: '1rem', color: '#6C6893', lineHeight: 1.5 }}>{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PRICING ── */}
-      <section className="section" style={{ background: '#000000', padding: '120px 24px' }}>
+      {/* Pricing Hostinger Style */}
+      <section className="section" style={{ background: '#F8F7FF', padding: '120px 24px' }}>
         <div className="container" style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <p className="section-label" style={{ color: '#AAAAAA', fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', textAlign: 'center', marginBottom: 16 }}>Precio</p>
-          <h2 className="section-title" style={{ fontSize: '3rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: 16, textAlign: 'center' }}>Un solo precio, todo incluido</h2>
-          <p className="section-subtitle" style={{ fontSize: '1.2rem', color: '#AAAAAA', maxWidth: 680, margin: '0 auto 60px', lineHeight: 1.6, fontWeight: 600, textAlign: 'center' }}>Sin suscripción. Sin registro. Paga solo cuando necesites.</p>
+          <div style={{ textAlign: 'center', marginBottom: 60 }}>
+            <span style={{
+              background: '#D1FD1F', color: '#000000',
+              padding: '6px 20px', borderRadius: '50px',
+              fontSize: '0.85rem', fontWeight: 900, textTransform: 'uppercase'
+            }}>Oferta por tiempo limitado</span>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, marginTop: 16 }}>Acceso Completo con Pago Único</h2>
+          </div>
 
-          <div className="pricing-card" style={{ maxWidth: 420, margin: '0 auto', background: '#111111', border: '4px solid #FFFFFF', borderRadius: 0, padding: '48px 32px', textAlign: 'center', position: 'relative' }}>
-            <div className="pricing-badge" style={{ display: 'inline-block', background: '#FFFFFF', color: '#000000', padding: '8px 20px', fontSize: '0.8rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 24 }}>Pago único por reporte</div>
-            <div className="pricing-price" style={{ fontSize: '3.8rem', fontWeight: 900, color: '#FFFFFF', marginBottom: 8 }}>
+          <div className="pricing-card" style={{
+            maxWidth: 480, margin: '0 auto',
+            background: '#FFFFFF',
+            borderRadius: '32px', padding: '60px 48px',
+            textAlign: 'center', position: 'relative',
+            boxShadow: '0 20px 60px rgba(103, 61, 230, 0.1)',
+            border: '2px solid #E0DAFF'
+          }}>
+            <div className="pricing-price" style={{ fontSize: '4.5rem', fontWeight: 900, color: '#673DE6', marginBottom: 8 }}>
               <span className="pricing-currency" style={{ fontSize: '2rem', verticalAlign: 'super' }}>$</span>9.990
             </div>
-            <p className="pricing-period" style={{ fontSize: '1rem', color: '#AAAAAA', marginBottom: 40, fontWeight: 700 }}>pesos chilenos · por reporte</p>
+            <p className="pricing-period" style={{ fontSize: '1.1rem', color: '#6C6893', marginBottom: 48, fontWeight: 700 }}>pesos chilenos · Pago único</p>
 
-            <ul className="pricing-features" style={{ listStyle: 'none', padding: 0, margin: '0 0 40px 0', textAlign: 'left' }}>
+            <ul className="pricing-features" style={{ listStyle: 'none', padding: 0, margin: '0 0 48px 0', textAlign: 'left' }}>
               {PRICING_FEATURES.map(f => (
-                <li key={f.text} style={{ fontSize: '1rem', color: '#FFFFFF', marginBottom: 12, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <span style={{ width: 10, height: 10, background: '#FFFFFF' }}></span>
+                <li key={f.text} style={{ fontSize: '1.1rem', color: '#0E0C2C', marginBottom: 16, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, background: '#D1FD1F', borderRadius: '50%', color: '#000000', fontSize: '14px', fontWeight: 900 }}>✓</span>
                   {f.text}
                 </li>
               ))}
             </ul>
 
             <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: 20 }}>
                 <input
                   type="email"
-                  placeholder="TU@EMAIL.COM"
+                  placeholder="Tu correo electrónico"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   disabled={loading || freeLoading}
                   style={{
                     width: '100%',
-                    background: 'transparent',
-                    border: '2px solid #FFFFFF',
-                    borderRadius: 0,
-                    marginBottom: 10,
-                    padding: '14px 16px',
+                    background: '#F8F7FF',
+                    border: '1px solid #E0DAFF',
+                    borderRadius: '12px',
+                    marginBottom: 12,
+                    padding: '16px 20px',
                     boxSizing: 'border-box',
-                    color: '#FFFFFF',
-                    fontWeight: 900,
-                    fontFamily: 'inherit',
-                    textTransform: 'uppercase'
+                    color: '#0E0C2C',
+                    fontWeight: 600,
+                    fontFamily: 'inherit'
                   }}
                 />
                 <input
                   type="text"
-                  placeholder="HTTPS://TUSITIO.COM"
+                  placeholder="https://tu-sitio-web.com"
                   value={url}
                   onChange={e => setUrl(e.target.value)}
                   disabled={loading || freeLoading}
                   style={{
                     width: '100%',
-                    background: 'transparent',
-                    border: '2px solid #FFFFFF',
-                    borderRadius: 0,
-                    padding: '14px 16px',
+                    background: '#F8F7FF',
+                    border: '1px solid #E0DAFF',
+                    borderRadius: '12px',
+                    padding: '16px 20px',
                     boxSizing: 'border-box',
-                    color: '#FFFFFF',
-                    fontWeight: 900,
-                    fontFamily: 'inherit',
-                    textTransform: 'uppercase'
+                    color: '#0E0C2C',
+                    fontWeight: 600,
+                    fontFamily: 'inherit'
                   }}
                 />
               </div>
-              <div style={{ display: 'flex', gap: 10, flexDirection: 'column' }}>
+              <div style={{ display: 'flex', gap: 12, flexDirection: 'column' }}>
                 <button className="btn-buy" type="submit" disabled={loading || freeLoading} style={{
-                  background: '#FFFFFF',
+                  background: '#D1FD1F',
                   color: '#000000',
                   border: 'none',
-                  borderRadius: 0, padding: '18px',
+                  borderRadius: '50px', padding: '20px',
                   fontSize: '1.2rem', fontWeight: 900,
                   cursor: 'pointer', fontFamily: 'inherit',
                   transition: 'all 0.2s',
                   textTransform: 'uppercase'
                 }}>
-                  {loading ? 'PROCESANDO...' : 'Obtener Reporte — $9.990'}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleFree}
-                  disabled={loading || freeLoading}
-                  style={{
-                    background: 'transparent',
-                    border: '1px solid rgba(255,255,255,0.4)',
-                    borderRadius: 0, padding: '12px',
-                    color: '#FFFFFF', fontSize: '0.9rem',
-                    fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
-                    transition: 'all 0.2s',
-                    textTransform: 'uppercase'
-                  }}
-                >
-                  {freeLoading ? 'CARGANDO...' : 'Prueba Gratuita'}
+                  {loading ? 'PROCESANDO...' : 'Obtener Diagnóstico'}
                 </button>
               </div>
             </form>
 
-            {error && <div style={{ color: '#FF0000', marginTop: 24, fontWeight: 900 }}>⚠️ {error}</div>}
+            {error && <div style={{ color: '#FF4D4D', marginTop: 20, fontWeight: 700 }}>⚠️ {error}</div>}
 
-            <p style={{ fontSize: '0.8rem', color: '#888888', marginTop: 40, fontWeight: 800, textTransform: 'uppercase' }}>
-              🔒 Pago 100% seguro · PDF Incluido
+            <p style={{ fontSize: '0.85rem', color: '#6C6893', marginTop: 32, fontWeight: 700, textTransform: 'uppercase' }}>
+              🔒 Pago Seguro • Soporte 24/7 • PDF Incluido
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
+      {/* Footer Hostinger Style */}
       <footer style={{
-        background: '#000000',
+        background: '#0E0C2C',
         color: '#FFFFFF',
-        padding: '80px 24px',
+        padding: '100px 24px',
         textAlign: 'center',
-        borderTop: '3px solid #FFFFFF'
+        borderRadius: '50px 50px 0 0'
       }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: 24, letterSpacing: '-0.04em' }}>SEO DIAGNOSTICO</div>
-          <div style={{ fontSize: '0.85rem', fontWeight: 800, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+          <div style={{ fontSize: '2rem', fontWeight: 900, marginBottom: 24, letterSpacing: '-0.04em' }}>SEO DIAGNOSTICO</div>
+          <div style={{ display: 'flex', gap: 40, justifyContent: 'center', marginBottom: 48 }}>
+            <a href="/keywords" style={{ color: '#E0DAFF', textDecoration: 'none', fontWeight: 700 }}>Keywords</a>
+            <a href="/crawl" style={{ color: '#E0DAFF', textDecoration: 'none', fontWeight: 700 }}>Crawler</a>
+            <a href="/dashboard" style={{ color: '#E0DAFF', textDecoration: 'none', fontWeight: 700 }}>API</a>
+          </div>
+          <div style={{ fontSize: '0.9rem', fontWeight: 700, opacity: 0.4, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
             © 2026 WEBUNICA · AGENCIA DE SEO & IA EN CHILE
           </div>
         </div>

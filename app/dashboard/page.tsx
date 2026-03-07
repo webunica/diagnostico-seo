@@ -2,18 +2,28 @@
 
 import { useState, useCallback } from 'react';
 
-/* ── Tokens claros ────────────────────────────────────────────────── */
+/* ── Design Tokens ────────────────────────────────────────────────── */
 const T = {
-    bg: '#FFFFFF', bgCard: '#FFFFFF', border: '#000000',
-    borderMid: '#000000', text: '#333333', textMuted: '#444444',
-    textSubtle: '#666666', orange: '#000000', orangeDim: '#f0f0f0',
-    orangeBorder: '#000000', accent: '#000000', green: '#000000',
-    greenDim: '#f0f0f0', greenBorder: '#000000',
-    blue: '#000000', blueDim: '#f0f0f0', blueBorder: '#000000',
-    yellow: '#000000', yellowDim: '#f0f0f0', yellowBorder: '#000000',
-    red: '#000000', redDim: '#f0f0f0', redBorder: '#000000',
-    brand: '#000000', brandDim: '#f0f0f0', brandBorder: '#000000',
-    violet: '#000000',
+    bg: '#F8F7FF',
+    bgCard: '#FFFFFF',
+    border: '#E0DAFF',
+    borderMid: '#F0EDFF',
+    text: '#0E0C2C',
+    textMuted: '#6C6893',
+    textSubtle: '#8F8BA8',
+    brand: '#673DE6',
+    brandDim: '#F2F0FF',
+    brandBorder: '#673DE6',
+    accent: '#D1FD1F',
+    green: '#22C55E',
+    greenDim: '#F0FDF4',
+    blue: '#3B82F6',
+    blueDim: '#EFF6FF',
+    yellow: '#F59E0B',
+    yellowDim: '#FFFBEB',
+    red: '#EF4444',
+    redDim: '#FEF2F2',
+    violet: '#4F2CC9',
 } as const;
 
 /* ── Types ────────────────────────────────────────────────────────── */
@@ -24,60 +34,54 @@ interface ApiKey {
 }
 interface Plan { id: string; name: string; requestsPerMonth: number; priceMontly: number; features: string[]; }
 
-/* ── Copy button ──────────────────────────────────────────────────── */
+/* ── Components ───────────────────────────────────────────────────── */
 function CopyBtn({ text, label = 'Copiar' }: { text: string; label?: string }) {
     const [c, setC] = useState(false);
     return (
         <button onClick={() => { navigator.clipboard.writeText(text); setC(true); setTimeout(() => setC(false), 2000); }}
             style={{
                 background: c ? T.greenDim : '#F1F5F9',
-                border: `1px solid ${c ? T.greenBorder : T.border}`,
-                borderRadius: 7, padding: '4px 12px', fontSize: '0.7rem', fontWeight: 700,
+                border: `1px solid ${c ? T.green : T.border}`,
+                borderRadius: 7, padding: '6px 14px', fontSize: '0.75rem', fontWeight: 800,
                 color: c ? T.green : T.textMuted, cursor: 'pointer', fontFamily: 'inherit',
                 transition: 'all 0.2s', whiteSpace: 'nowrap',
             }}>
-            {c ? '✓ Copiado' : label}
+            {c ? '✓ COPIADO' : label.toUpperCase()}
         </button>
     );
 }
 
-/* ── Progress bar ─────────────────────────────────────────────────── */
 function UsageBar({ used, limit }: { used: number; limit: number }) {
     const pct = Math.min(100, Math.round((used / limit) * 100));
     const color = pct >= 90 ? T.red : pct >= 70 ? T.yellow : T.green;
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', marginBottom: 5 }}>
-                <span style={{ color: T.textSubtle }}>Requests este mes</span>
-                <span style={{ fontWeight: 700, color }}>{used} / {limit}</span>
+        <div style={{ marginTop: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: 6, fontWeight: 700 }}>
+                <span style={{ color: T.textSubtle }}>CONSUMO MENSUAL</span>
+                <span style={{ color }}>{used} / {limit}</span>
             </div>
-            <div style={{ background: 'rgba(0,0,0,0.07)', borderRadius: 4, height: 6, overflow: 'hidden' }}>
+            <div style={{ background: '#F0EDFF', borderRadius: 50, height: 8, overflow: 'hidden' }}>
                 <div style={{
-                    width: `${pct}%`, height: '100%', borderRadius: 4,
+                    width: `${pct}%`, height: '100%', borderRadius: 50,
                     background: color,
                     transition: 'width 0.5s ease',
                 }} />
-            </div>
-            <div style={{ fontSize: '0.67rem', color: T.textSubtle, marginTop: 3 }}>
-                {limit - used} disponibles · Reset {new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toLocaleDateString('es-CL')}
             </div>
         </div>
     );
 }
 
-/* ── Plan badge ────────────────────────────────────────────────────── */
 function PlanBadge({ plan }: { plan: string }) {
-    const cfg: Record<string, { color: string; dim: string; border: string }> = {
-        starter: { color: T.textMuted, dim: 'rgba(0,0,0,0.04)', border: T.border },
-        pro: { color: T.blue, dim: T.blueDim, border: T.blueBorder },
-        agency: { color: T.yellow, dim: T.yellowDim, border: T.yellowBorder },
+    const cfg: Record<string, { color: string; dim: string }> = {
+        starter: { color: T.textMuted, dim: '#F0EDFF' },
+        pro: { color: T.blue, dim: T.blueDim },
+        agency: { color: T.yellow, dim: T.yellowDim },
     };
     const c = cfg[plan] ?? cfg.starter;
     return (
         <span style={{
-            fontSize: '0.68rem', fontWeight: 800, padding: '2px 10px', borderRadius: 20,
-            background: c.dim, border: `1px solid ${c.border}`, color: c.color,
-            textTransform: 'uppercase', letterSpacing: '0.06em',
+            fontSize: '0.7rem', fontWeight: 900, padding: '4px 12px', borderRadius: 50,
+            background: c.dim, color: c.color, textTransform: 'uppercase', letterSpacing: '0.05em'
         }}>
             {plan}
         </span>
@@ -98,15 +102,6 @@ export default function DashboardPage() {
     const [newLabel, setNewLabel] = useState('');
     const [paying, setPaying] = useState<string | null>(null);
 
-    // Detectar ?upgraded=1 al volver de MercadoPago
-    const upgraded = typeof window !== 'undefined'
-        ? new URLSearchParams(window.location.search).get('upgraded') === '1'
-        : false;
-    const upgradedPlan = typeof window !== 'undefined'
-        ? new URLSearchParams(window.location.search).get('plan') ?? ''
-        : '';
-
-    /* Load keys for email */
     const loadKeys = useCallback(async (em: string) => {
         if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { setError('Email inválido.'); return; }
         setLoading(true); setError('');
@@ -121,7 +116,6 @@ export default function DashboardPage() {
         finally { setLoading(false); }
     }, []);
 
-    /* Create new key */
     const createKey = useCallback(async () => {
         setCreating(true); setError(''); setNewKeyShown(null);
         try {
@@ -139,24 +133,8 @@ export default function DashboardPage() {
         finally { setCreating(false); }
     }, [email, newLabel, loadKeys]);
 
-    /* Buy plan — redirect to MercadoPago */
-    const buyPlan = useCallback(async (planId: string, keyId?: string) => {
-        setPaying(planId); setError('');
-        try {
-            const res = await fetch('/api/create-plan-preference', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, plan: planId, keyId: keyId ?? '' }),
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error ?? 'Error al crear pago');
-            window.location.href = data.checkoutUrl;
-        } catch (e) { setError(e instanceof Error ? e.message : 'Error'); }
-        finally { setPaying(null); }
-    }, [email]);
-
-    /* Revoke key */
     const revokeKey = useCallback(async (id: string) => {
+        if (!confirm('¿Estás seguro de revocar esta key? Dejará de funcionar inmediatamente.')) return;
         setRevoking(id);
         try {
             const res = await fetch('/api/keys', {
@@ -164,404 +142,130 @@ export default function DashboardPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id, email }),
             });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error ?? 'Error');
+            if (!res.ok) throw new Error('Error al revocar');
             await loadKeys(email);
         } catch (e) { setError(e instanceof Error ? e.message : 'Error'); }
         finally { setRevoking(null); }
     }, [email, loadKeys]);
 
-    const activeKeys = keys.filter(k => k.isActive);
+    const buyPlan = useCallback(async (planId: string, keyId?: string) => {
+        setPaying(planId);
+        try {
+            const res = await fetch('/api/create-plan-preference', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, plan: planId, keyId: keyId ?? '' }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error ?? 'Error');
+            window.location.href = data.checkoutUrl;
+        } catch (e) { setError(e instanceof Error ? e.message : 'Error'); }
+        finally { setPaying(null); }
+    }, [email]);
 
     return (
-        <div style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: 'Montserrat, sans-serif' }}>
-
+        <main style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: 'Montserrat, sans-serif' }}>
             {/* Navbar */}
-            <nav className="navbar" style={{
-                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 70,
-                padding: '0 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                background: '#FFFFFF', borderBottom: '2px solid #000000'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: '1.4rem', fontWeight: 900, color: '#000000', textDecoration: 'none' }}>SEO Diagnostico</span>
-                    <span style={{ color: '#000000' }}>|</span>
-                    <span style={{ fontSize: '1rem', fontWeight: 900, color: '#333333', textTransform: 'uppercase' }}>Developers</span>
+            <nav className="navbar" style={{ background: T.brand, height: '80px', padding: '0 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+                <div className="navbar-logo">
+                    <a href="/" style={{ fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', textDecoration: 'none' }}>SEO DIAGNOSTICO</a>
                 </div>
-                <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>← Volver</a>
-                    <a href="/admin" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>Admin</a>
+                <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+                    <a href="/keywords" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Keywords</a>
+                    <a href="/crawl" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
+                    <a href="/" style={{ fontSize: '0.85rem', color: '#000000', background: T.accent, padding: '12px 24px', fontWeight: 900, borderRadius: '50px', textDecoration: 'none' }}>Landing</a>
                 </div>
             </nav>
 
-            <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 20px 80px' }}>
-
-                {/* Header */}
-                <div style={{ marginBottom: 40, paddingTop: 20 }}>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#000000', marginBottom: 12 }}>
-                        🔑 API Keys
-                    </div>
-                    <h1 style={{ fontSize: 'clamp(1.8rem,4vw,2.5rem)', fontWeight: 900, marginBottom: 12, textTransform: 'uppercase' }}>
-                        Portal de Desarrolladores
-                    </h1>
-                    <p style={{ fontSize: '0.9rem', color: T.textMuted, lineHeight: 1.6, maxWidth: 520 }}>
-                        Gestiona tus API keys para integrar DiagnósticoSEO en cualquier CMS, plugin o aplicación.
-                    </p>
+            <div style={{ maxWidth: 1000, margin: '110px auto 60px', padding: '0 24px' }}>
+                {/* Hero */}
+                <div style={{ background: 'linear-gradient(135deg, #673DE6 0%, #4F2CC9 100%)', padding: '60px 48px', borderRadius: '32px', color: '#FFFFFF', marginBottom: 48, textAlign: 'center', boxShadow: '0 20px 60px rgba(103,61,230,0.15)' }}>
+                    <h1 style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: 16 }}>API Developer Center</h1>
+                    <p style={{ fontSize: '1.2rem', color: '#E0DAFF', fontWeight: 500, maxWidth: 600, margin: '0 auto' }}>Gestiona tus llaves, revisa tu consumo e integra nuestra IA en tus productos profesionales.</p>
                 </div>
 
-                {/* Email auth */}
                 {!emailSent ? (
-                    <div style={{
-                        background: T.bgCard, border: `1px solid ${T.brandBorder}`,
-                        borderRadius: 16, padding: '28px 26px',
-                        position: 'relative', overflow: 'hidden', maxWidth: 500,
-                    }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${T.brand}, ${T.blue})` }} />
-                        <div style={{ fontWeight: 800, fontSize: '1.05rem', marginBottom: 18 }}>Accede con tu email</div>
-                        <p style={{ fontSize: '0.84rem', color: T.textMuted, marginBottom: 20, lineHeight: 1.5 }}>
-                            Introduce tu email para ver y gestionar tus API keys.
-                        </p>
-                        <input
-                            type="email" placeholder="tu@email.com" value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            onKeyDown={e => e.key === 'Enter' && loadKeys(email)}
-                            style={{
-                                width: '100%', boxSizing: 'border-box',
-                                background: '#FFFFFF', border: `1px solid ${T.border}`,
-                                borderRadius: 9, padding: '11px 14px', color: T.text,
-                                fontSize: '0.9rem', fontFamily: 'inherit', marginBottom: 12, outline: 'none',
-                            }}
-                        />
-                        {error && <div style={{ background: T.redDim, border: `1px solid ${T.redBorder}`, borderRadius: 8, padding: '9px 12px', fontSize: '0.82rem', color: T.red, marginBottom: 12 }}>⚠️ {error}</div>}
-                        <button onClick={() => loadKeys(email)} disabled={loading} style={{
-                            width: '100%', background: '#000000',
-                            color: 'white', border: 'none', borderRadius: 0, padding: '14px',
-                            fontSize: '1rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit',
-                            opacity: loading ? 0.6 : 1, textTransform: 'uppercase',
-                        }}>
-                            {loading ? 'Cargando…' : '→ Ver mis API Keys'}
-                        </button>
+                    /* Login Form */
+                    <div style={{ background: '#FFFFFF', padding: '48px', borderRadius: '24px', border: '1px solid #E0DAFF', maxWidth: 500, margin: '0 auto', boxShadow: '0 10px 40px rgba(103,61,230,0.05)' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: 24, textAlign: 'center' }}>Acceso al Portal</h2>
+                        <div style={{ display: 'grid', gap: 20 }}>
+                            <input type="email" placeholder="tu@email.com" value={email} onChange={e => setEmail(e.target.value)} style={{ padding: '16px', borderRadius: '12px', border: '2px solid #F0EDFF', background: '#F8F7FF', fontWeight: 600, fontFamily: 'inherit' }} />
+                            <button onClick={() => loadKeys(email)} disabled={loading} style={{ background: T.brand, color: '#FFFFFF', border: 'none', borderRadius: '50px', padding: '16px', fontWeight: 900, cursor: 'pointer', textTransform: 'uppercase' }}>{loading ? 'CARGANDO...' : 'VER MIS LLAVES API'}</button>
+                            {error && <div style={{ color: T.red, fontWeight: 700, textAlign: 'center', fontSize: '0.9rem' }}>⚠️ {error}</div>}
+                        </div>
                     </div>
                 ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-
-                        {/* Banner upgrade exitoso */}
-                        {upgraded && (
-                            <div style={{
-                                background: T.greenDim, border: `1px solid ${T.greenBorder}`,
-                                borderRadius: 14, padding: '16px 22px',
-                                display: 'flex', alignItems: 'center', gap: 14,
-                            }}>
-                                <span style={{ fontSize: '1.6rem' }}>🎉</span>
-                                <div>
-                                    <div style={{ fontWeight: 800, color: T.green, marginBottom: 3 }}>
-                                        ¡Pago aprobado! Tu plan fue actualizado
-                                    </div>
-                                    <div style={{ fontSize: '0.82rem', color: T.textMuted }}>
-                                        Tu API key ya tiene acceso al plan {upgradedPlan.toUpperCase()}. Puede tardar unos segundos en reflejarse.
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* User info bar */}
-                        <div style={{
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 12, padding: '14px 18px',
-                            flexWrap: 'wrap', gap: 10,
-                        }}>
+                    /* Dashboard View */
+                    <div style={{ display: 'grid', gap: 40 }}>
+                        {/* User Bar */}
+                        <div style={{ background: '#FFFFFF', padding: '24px 32px', borderRadius: '20px', border: '1px solid #E0DAFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div>
-                                <div style={{ fontSize: '0.7rem', color: T.textSubtle, marginBottom: 2 }}>Email autenticado</div>
-                                <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{email}</div>
+                                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: T.textMuted }}>USUARIO ACREDITADO</div>
+                                <div style={{ fontSize: '1.1rem', fontWeight: 900, color: T.brand }}>{email}</div>
                             </div>
-                            <button onClick={() => { setEmailSent(false); setKeys([]); setNewKeyShown(null); }}
-                                style={{
-                                    background: 'transparent', border: `1px solid ${T.border}`, borderRadius: 8,
-                                    padding: '6px 14px', fontSize: '0.78rem', fontWeight: 600, color: T.textMuted, cursor: 'pointer', fontFamily: 'inherit',
-                                }}>
-                                ← Cambiar email
-                            </button>
+                            <button onClick={() => setEmailSent(false)} style={{ background: '#F0EDFF', color: T.text, border: 'none', padding: '10px 20px', borderRadius: '50px', fontWeight: 800, cursor: 'pointer' }}>CAMBIAR EMAIL</button>
                         </div>
 
-                        {/* ⚠️ New key revealed */}
+                        {/* New Key Alert */}
                         {newKeyShown && (
-                            <div style={{
-                                background: 'rgba(251,191,36,0.07)', border: `1px solid ${T.yellowBorder}`,
-                                borderRadius: 14, padding: '20px 22px',
-                            }}>
-                                <div style={{ fontWeight: 800, color: T.yellow, fontSize: '0.88rem', marginBottom: 8 }}>
-                                    ⚠️ Copia esta API Key ahora — No se mostrará de nuevo
-                                </div>
-                                <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-                                    <code style={{
-                                        flex: 1, background: 'rgba(0,0,0,0.35)', border: `1px solid ${T.border}`,
-                                        borderRadius: 8, padding: '10px 14px', fontSize: '0.82rem',
-                                        color: T.green, fontFamily: 'monospace', wordBreak: 'break-all',
-                                    }}>
-                                        {newKeyShown}
-                                    </code>
-                                    <CopyBtn text={newKeyShown} label="📋 Copiar key" />
-                                </div>
-                                <div style={{ fontSize: '0.73rem', color: T.textSubtle, marginTop: 10 }}>
-                                    Úsala en el header: <code style={{ color: T.violet }}>X-API-Key: {newKeyShown}</code>
+                            <div style={{ background: T.yellowDim, border: `2px solid ${T.yellow}`, padding: '24px', borderRadius: '20px', animation: 'fadeIn 0.5s ease' }}>
+                                <div style={{ fontWeight: 900, color: T.yellow, marginBottom: 12 }}>⚠️ GUARDA TU LLAVE API AHORA (SOLO SE MUESTRA UNA VEZ)</div>
+                                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                                    <code style={{ flex: 1, background: '#FFFFFF', padding: '14px', borderRadius: '10px', fontWeight: 700, border: '1px solid #F59E0B' }}>{newKeyShown}</code>
+                                    <CopyBtn text={newKeyShown} label="Copiar Key" />
                                 </div>
                             </div>
                         )}
 
-                        {/* Active keys */}
+                        {/* API Keys List */}
                         <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
-                                <div style={{ fontWeight: 800, fontSize: '1rem' }}>
-                                    🔑 Mis API Keys <span style={{ color: T.textSubtle, fontWeight: 400, fontSize: '0.82rem' }}>({activeKeys.length})</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: 900 }}>LLAVES API ACTIVAS</h2>
+                                <div style={{ display: 'flex', gap: 12 }}>
+                                    <input type="text" placeholder="Etiqueta para nueva key..." value={newLabel} onChange={e => setNewLabel(e.target.value)} style={{ padding: '10px 16px', borderRadius: '50px', border: '2px solid #F0EDFF', fontWeight: 600, fontSize: '0.85rem' }} />
+                                    <button onClick={createKey} disabled={creating} style={{ background: T.brand, color: '#FFFFFF', border: 'none', padding: '10px 24px', borderRadius: '50px', fontWeight: 900, cursor: 'pointer' }}>{creating ? 'CREANDO...' : '+ NUEVA KEY'}</button>
                                 </div>
                             </div>
-
-                            {activeKeys.length === 0 ? (
-                                <div style={{
-                                    background: T.bgCard, border: `1px solid ${T.border}`,
-                                    borderRadius: 14, padding: '32px', textAlign: 'center',
-                                }}>
-                                    <div style={{ fontSize: '2rem', marginBottom: 10 }}>🗝️</div>
-                                    <div style={{ fontWeight: 700, marginBottom: 6 }}>No tienes API keys aún</div>
-                                    <div style={{ fontSize: '0.84rem', color: T.textMuted }}>Crea tu primera key gratuita (Plan Starter) abajo.</div>
-                                </div>
-                            ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                                    {activeKeys.map(k => (
-                                        <div key={k.id} style={{
-                                            background: T.bgCard, border: `1px solid ${T.border}`,
-                                            borderRadius: 14, padding: '20px 22px',
-                                            position: 'relative', overflow: 'hidden',
-                                        }}>
-                                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: k.plan === 'agency' ? T.yellow : k.plan === 'pro' ? T.blue : T.textSubtle }} />
-                                            <div style={{ paddingLeft: 8 }}>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, flexWrap: 'wrap', marginBottom: 14 }}>
-                                                    <div>
-                                                        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 6 }}>
-                                                            <PlanBadge plan={k.plan} />
-                                                            <span style={{ fontSize: '0.78rem', color: T.textSubtle }}>{k.label}</span>
-                                                        </div>
-                                                        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                                                            <code style={{
-                                                                fontSize: '0.84rem', color: T.textMuted,
-                                                                background: 'rgba(0,0,0,0.04)',
-                                                                padding: '3px 10px', borderRadius: 6,
-                                                            }}>
-                                                                {k.key}
-                                                            </code>
-                                                            <span style={{ fontSize: '0.68rem', color: T.textSubtle }}>
-                                                                (Key truncada por seguridad)
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <button
-                                                        onClick={() => revoking !== k.id && revokeKey(k.id)}
-                                                        disabled={revoking === k.id}
-                                                        style={{
-                                                            background: T.redDim, border: `1px solid ${T.redBorder}`,
-                                                            borderRadius: 8, padding: '5px 12px', fontSize: '0.72rem', fontWeight: 700,
-                                                            color: T.red, cursor: 'pointer', fontFamily: 'inherit',
-                                                            opacity: revoking === k.id ? 0.5 : 1,
-                                                        }}
-                                                    >
-                                                        {revoking === k.id ? 'Revocando…' : '🗑 Revocar'}
-                                                    </button>
-                                                </div>
-                                                <UsageBar used={k.requestsUsed} limit={k.requestsLimit} />
-                                                <div style={{ display: 'flex', gap: 14, marginTop: 10, fontSize: '0.68rem', color: T.textSubtle, flexWrap: 'wrap' }}>
-                                                    <span>Creada: {new Date(k.createdAt).toLocaleDateString('es-CL')}</span>
-                                                    {k.lastUsedAt && <span>Último uso: {new Date(k.lastUsedAt).toLocaleDateString('es-CL')}</span>}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Create new key */}
-                        <div style={{ background: T.bgCard, border: `1px solid ${T.brandBorder}`, borderRadius: 14, padding: '20px 22px' }}>
-                            <div style={{ fontWeight: 800, fontSize: '0.95rem', marginBottom: 14 }}>➕ Crear nueva API Key (Starter gratuito)</div>
-                            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                                <input
-                                    type="text" placeholder="Nombre/etiqueta (ej: wordpress-prod)"
-                                    value={newLabel} onChange={e => setNewLabel(e.target.value)}
-                                    style={{
-                                        flex: 1, minWidth: 200, boxSizing: 'border-box',
-                                        background: '#FFFFFF', border: `1px solid ${T.border}`,
-                                        borderRadius: 8, padding: '9px 12px', color: T.text,
-                                        fontSize: '0.86rem', fontFamily: 'inherit', outline: 'none',
-                                    }}
-                                />
-                                <button onClick={createKey} disabled={creating} style={{
-                                    background: '#000000',
-                                    color: 'white', border: 'none', borderRadius: 0, padding: '10px 24px',
-                                    fontSize: '0.9rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit',
-                                    opacity: creating ? 0.6 : 1, whiteSpace: 'nowrap', textTransform: 'uppercase',
-                                }}>
-                                    {creating ? 'Creando…' : '+ Generar key'}
-                                </button>
-                            </div>
-                            {error && <div style={{ background: T.redDim, border: `1px solid ${T.redBorder}`, borderRadius: 8, padding: '8px 12px', fontSize: '0.8rem', color: T.red, marginTop: 10 }}>⚠️ {error}</div>}
-                        </div>
-
-                        {/* Tools */}
-                        <div>
-                            <div style={{ fontWeight: 800, fontSize: '1rem', marginBottom: 14 }}>🚀 Herramientas Pro</div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
-                                <div style={{ background: '#fff', border: `1px solid ${T.border}`, borderRadius: 14, padding: '20px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                                        <div style={{ fontSize: '1.2rem' }}>🛒</div>
-                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, background: T.orangeDim, color: T.orange, padding: '2px 8px', borderRadius: 4, textTransform: 'uppercase' }}>Beta</span>
-                                    </div>
-                                    <div style={{ fontWeight: 800, fontSize: '0.94rem', marginBottom: 6 }}>Optimizador de Productos</div>
-                                    <p style={{ fontSize: '0.8rem', color: T.textMuted, lineHeight: 1.5, marginBottom: 16 }}>
-                                        Crea una ficha de producto perfecta: nombre SEO, beneficios, specs técnicos y schema markup.
-                                    </p>
-                                    <a href="/dashboard/product-optimizer" style={{
-                                        display: 'block', textAlign: 'center', textDecoration: 'none', background: '#000000', color: '#fff',
-                                        fontSize: '0.9rem', fontWeight: 900, padding: '12px', borderRadius: 0, transition: 'all 0.2s', textTransform: 'uppercase'
-                                    }}>
-                                        Probar Optimizador →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Plans */}
-                        <div>
-                            <div style={{ fontWeight: 800, fontSize: '1rem', marginBottom: 14 }}>📦 Planes disponibles</div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
-                                {plans.map(p => {
-                                    const isYours = activeKeys.some(k => k.plan === p.id);
-                                    const accent = p.id === 'agency' ? T.yellow : p.id === 'pro' ? T.blue : T.textSubtle;
-                                    return (
-                                        <div key={p.id} style={{
-                                            background: T.bgCard,
-                                            border: `1px solid ${isYours ? accent + '55' : T.border}`,
-                                            borderRadius: 14, padding: '18px',
-                                            position: 'relative', overflow: 'hidden',
-                                        }}>
-                                            {isYours && (
-                                                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: accent }} />
-                                            )}
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                            <div style={{ display: 'grid', gap: 20 }}>
+                                {keys.filter(k => k.isActive).length === 0 ? (
+                                    <div style={{ padding: '48px', textAlign: 'center', background: '#FFFFFF', borderRadius: '24px', border: '1px dashed #E0DAFF', color: T.textMuted }}>No tienes llaves activas. Crea una arriba.</div>
+                                ) : (
+                                    keys.filter(k => k.isActive).map(k => (
+                                        <div key={k.id} style={{ background: '#FFFFFF', padding: '32px', borderRadius: '24px', border: '1px solid #E0DAFF', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
                                                 <div>
-                                                    <PlanBadge plan={p.id} />
-                                                    {isYours && <span style={{ fontSize: '0.65rem', color: T.green, marginLeft: 6 }}>✓ Tu plan</span>}
-                                                </div>
-                                                <div style={{ textAlign: 'right' }}>
-                                                    <div style={{ fontWeight: 900, fontSize: '1.1rem', color: T.text }}>
-                                                        {p.priceMontly === 0 ? 'Gratis' : `$${p.priceMontly}`}
+                                                    <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
+                                                        <PlanBadge plan={k.plan} />
+                                                        <span style={{ fontWeight: 800, color: T.text }}>{k.label.toUpperCase()}</span>
                                                     </div>
-                                                    {p.priceMontly > 0 && <div style={{ fontSize: '0.65rem', color: T.textSubtle }}>/mes USD</div>}
+                                                    <code style={{ fontSize: '0.9rem', color: T.textMuted }}>{k.key}</code>
                                                 </div>
+                                                <button onClick={() => revokeKey(k.id)} disabled={revoking === k.id} style={{ background: T.redDim, color: T.red, border: 'none', padding: '8px 16px', borderRadius: '50px', fontWeight: 900, cursor: 'pointer' }}>{revoking === k.id ? '...' : 'ELIMINAR'}</button>
                                             </div>
-                                            <div style={{ fontWeight: 700, fontSize: '0.88rem', color: accent, marginBottom: 10 }}>
-                                                {p.requestsPerMonth.toLocaleString()} requests/mes
-                                            </div>
-                                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 5 }}>
-                                                {p.features.map((f, i) => (
-                                                    <li key={i} style={{ fontSize: '0.78rem', color: T.textMuted, display: 'flex', gap: 6 }}>
-                                                        <span style={{ color: T.green, flexShrink: 0 }}>✓</span>{f}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                            {!isYours && p.priceMontly > 0 && (
-                                                <button
-                                                    onClick={() => buyPlan(p.id, activeKeys[0]?.id)}
-                                                    disabled={paying === p.id || !email}
-                                                    style={{
-                                                        marginTop: 14, width: '100%', fontFamily: 'inherit',
-                                                        background: p.id === 'agency'
-                                                            ? 'linear-gradient(135deg,#f59e0b,#fbbf24)'
-                                                            : 'linear-gradient(135deg,#3b82f6,#60a5fa)',
-                                                        color: '#000', border: 'none', borderRadius: 9,
-                                                        padding: '10px 0', fontSize: '0.84rem', fontWeight: 900,
-                                                        cursor: paying === p.id ? 'not-allowed' : 'pointer',
-                                                        opacity: paying === p.id ? 0.7 : 1,
-                                                        transition: 'all 0.2s',
-                                                    }}
-                                                >
-                                                    {paying === p.id ? '⏳ Redirigiendo…' : `💳 Contratar ${p.name} — $${p.priceMontly}/mes`}
-                                                </button>
-                                            )}
+                                            <UsageBar used={k.requestsUsed} limit={k.requestsLimit} />
                                         </div>
-                                    );
-                                })}
+                                    ))
+                                )}
                             </div>
                         </div>
 
-                        {/* API Docs */}
-                        <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 14, padding: '22px' }}>
-                            <div style={{ fontWeight: 800, fontSize: '0.95rem', marginBottom: 16 }}>📖 Cómo usar la API</div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                                {[
-                                    {
-                                        title: 'POST /api/v1/analyze',
-                                        badge: 'Todos los planes',
-                                        badgeColor: T.green,
-                                        desc: 'Analiza una URL y retorna score SEO, keywords, competidores y más.',
-                                        code: `curl -X POST https://diagnosticoseo.vercel.app/api/v1/analyze \\
-  -H "Content-Type: application/json" \\
-  -H "X-API-Key: sk_live_TU_KEY" \\
-  -d '{"url": "https://tu-sitio.com"}'`,
-                                    },
-                                    {
-                                        title: 'POST /api/v1/generate-content',
-                                        badge: 'Pro / Agency',
-                                        badgeColor: T.blue,
-                                        desc: 'Genera H1/H2/H3/párrafos/schema optimizados con GPT-4o.',
-                                        code: `curl -X POST https://diagnosticoseo.vercel.app/api/v1/generate-content \\
-  -H "Content-Type: application/json" \\
-  -H "X-API-Key: sk_live_TU_KEY" \\
-  -d '{"url": "https://tu-sitio.com", "primaryKeyword": "tu keyword"}'`,
-                                    },
-                                    {
-                                        title: 'POST /api/v1/generate-product',
-                                        badge: 'Pro / Agency',
-                                        badgeColor: T.orange,
-                                        desc: 'Genera una ficha de producto optimizada (nombre, descripción, especificaciones, schema).',
-                                        code: `curl -X POST https://diagnosticoseo.vercel.app/api/v1/generate-product \\
-  -H "Content-Type: application/json" \\
-  -H "X-API-Key: sk_live_TU_KEY" \\
-  -d '{"productName": "Nombre Producto", "keywords": ["kw1", "kw2"]}'`,
-                                    },
-                                ].map((ep, i) => (
-                                    <div key={i} style={{ background: 'rgba(0,0,0,0.25)', border: `1px solid ${T.border}`, borderRadius: 10, overflow: 'hidden' }}>
-                                        <div style={{ padding: '12px 16px', borderBottom: `1px solid ${T.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
-                                            <div>
-                                                <code style={{ fontSize: '0.84rem', color: T.violet, fontWeight: 700 }}>{ep.title}</code>
-                                                <span style={{ fontSize: '0.68rem', marginLeft: 10, padding: '2px 8px', borderRadius: 20, background: 'rgba(0,0,0,0.04)', color: ep.badgeColor, fontWeight: 600 }}>
-                                                    {ep.badge}
-                                                </span>
-                                            </div>
-                                            <CopyBtn text={ep.code} label="Copiar curl" />
-                                        </div>
-                                        <div style={{ padding: '8px 16px', fontSize: '0.75rem', color: T.textSubtle }}>{ep.desc}</div>
-                                        <pre style={{
-                                            padding: '12px 16px', margin: 0, overflowX: 'auto',
-                                            fontSize: '0.72rem', color: '#86EFAC', fontFamily: 'monospace', lineHeight: 1.65,
-                                            background: 'rgba(0,0,0,0.35)',
-                                        }}>
-                                            {ep.code}
-                                        </pre>
-                                    </div>
-                                ))}
+                        {/* Documentation Table */}
+                        <div style={{ background: '#FFFFFF', borderRadius: '24px', border: '1px solid #E0DAFF', overflow: 'hidden' }}>
+                            <div style={{ background: T.brand, color: '#FFFFFF', padding: '24px 32px' }}>
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: 900 }}>GUÍA RÁPIDA DE INTEGRACIÓN</h3>
                             </div>
-
-                            {/* Rate limit headers */}
-                            <div style={{ marginTop: 16, padding: '12px 14px', background: 'rgba(0,0,0,0.2)', borderRadius: 9, border: `1px solid ${T.border}` }}>
-                                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: T.textMuted, marginBottom: 8 }}>Headers de rate limit en cada respuesta:</div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                            <div style={{ padding: '32px' }}>
+                                <div style={{ display: 'grid', gap: 16 }}>
                                     {[
-                                        ['X-RateLimit-Limit', 'Total requests de tu plan este mes'],
-                                        ['X-RateLimit-Remaining', 'Requests disponibles'],
-                                        ['X-RateLimit-Reset', 'Fecha de reset (ISO 8601)'],
-                                        ['X-RateLimit-Plan', 'Tu plan actual: starter | pro | agency'],
-                                    ].map(([h, d]) => (
-                                        <div key={h} style={{ display: 'flex', gap: 10, fontSize: '0.72rem', alignItems: 'baseline' }}>
-                                            <code style={{ color: T.violet, flexShrink: 0, minWidth: 200 }}>{h}</code>
-                                            <span style={{ color: T.textSubtle }}>{d}</span>
+                                        { ep: 'POST /api/v1/analyze', desc: 'Análisis SEO completo de una URL.' },
+                                        { ep: 'POST /api/v1/keywords', desc: 'Exploración de keywords IA para un nicho.' },
+                                    ].map(item => (
+                                        <div key={item.ep} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: '#F8F7FF', borderRadius: '12px' }}>
+                                            <div>
+                                                <code style={{ fontWeight: 800, color: T.brand }}>{item.ep}</code>
+                                                <div style={{ fontSize: '0.8rem', color: T.textMuted, marginTop: 4 }}>{item.desc}</div>
+                                            </div>
+                                            <CopyBtn text={`curl -X POST https://diagnosticoseo.vercel.app${item.ep.split(' ')[1]} -H "X-API-Key: TU_KEY"`} label="Curl" />
                                         </div>
                                     ))}
                                 </div>
@@ -570,6 +274,10 @@ export default function DashboardPage() {
                     </div>
                 )}
             </div>
-        </div>
+
+            <style>{`
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            `}</style>
+        </main>
     );
 }

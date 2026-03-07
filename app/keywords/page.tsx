@@ -241,7 +241,7 @@ export default function KeywordsPage() {
         } finally {
             setLoading(false);
         }
-    }, [description, country, focus]);
+    }, [description, country, focus, email]);
 
     const activeKeywords = result ? ((result[activeTab] as KeywordItem[]) ?? []) : [];
     const totalKeywords = result
@@ -263,314 +263,182 @@ export default function KeywordsPage() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#333333', fontFamily: 'Montserrat, sans-serif' }}>
-
+        <main style={{ minHeight: '100vh', background: '#F8F7FF', color: '#0E0C2C', fontFamily: 'Montserrat, sans-serif' }}>
             {/* Navbar */}
-            <nav className="navbar" style={{ background: '#FFFFFF', borderBottom: '2px solid #000000', height: '70px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: '1.4rem', fontWeight: 900, color: '#000000' }}>SEO Diagnostico</span>
+            <nav className="navbar" style={{ background: '#673DE6', height: '80px', borderBottom: 'none', padding: '0 40px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+                <div className="navbar-logo">
+                    <a href="/" style={{ fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', textDecoration: 'none' }}>SEO DIAGNOSTICO</a>
                 </div>
-                <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 900, textDecoration: 'none', textTransform: 'uppercase' }}>← Inicio</a>
-                    <a href="/dashboard" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 900, textDecoration: 'none', textTransform: 'uppercase' }}>Portal API</a>
-                    <div style={{ padding: '6px 16px', border: '2px solid #000000', color: '#000000', borderRadius: 0, fontSize: '0.8rem', fontWeight: 900, textTransform: 'uppercase' }}>Beta IA</div>
+                <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+                    <a href="/crawl" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
+                    <a href="/" style={{
+                        fontSize: '0.85rem', color: '#000000', background: '#D1FD1F',
+                        padding: '12px 24px', fontWeight: 900, textTransform: 'uppercase',
+                        textDecoration: 'none', borderRadius: '50px'
+                    }}>Dashboard</a>
                 </div>
             </nav>
 
-            {/* Hero */}
-            <section style={{
-                paddingTop: 120,
-                paddingBottom: 80,
-                textAlign: 'center',
-                background: '#FFFFFF',
-                borderBottom: '2px solid #000000',
-            }}>
-                <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
-                    <div style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.15)',
-                        borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
-                        color: '#C2410C', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.05em'
-                    }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#059669', animation: 'pulse 2s infinite', display: 'inline-block' }} />
-                        Potenciado por Llama 3.3 (Groq) · 100% Gratis
-                    </div>
-
-                    <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', fontWeight: 900, marginBottom: 20, lineHeight: 1, color: '#000000', letterSpacing: '-0.04em', textTransform: 'uppercase' }}>
-                        Investigación de{' '}
-                        <span style={{ textDecoration: 'underline' }}>Palabras Clave</span>
-                        {' '}con IA
-                    </h1>
-                    <p style={{ fontSize: '1.1rem', color: '#52525B', maxWidth: 600, margin: '0 auto', lineHeight: 1.6, fontWeight: 500 }}>
-                        Describe tu negocio y obtén 35–45 keywords estratégicas en segundos:
-                        head terms, long-tail, preguntas, intención de compra y SEO local.
+            <div style={{ maxWidth: 1000, margin: '110px auto 60px', padding: '0 24px' }}>
+                {/* Header */}
+                <div style={{
+                    background: 'linear-gradient(135deg, #673DE6 0%, #4F2CC9 100%)',
+                    padding: '60px 48px',
+                    borderRadius: '32px',
+                    color: '#FFFFFF',
+                    marginBottom: 48,
+                    boxShadow: '0 20px 60px rgba(103, 61, 230, 0.15)',
+                    textAlign: 'center'
+                }}>
+                    <span style={{
+                        background: 'rgba(209, 253, 31, 0.2)', color: '#D1FD1F',
+                        padding: '6px 16px', borderRadius: '50px',
+                        fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase'
+                    }}>AI Intelligence</span>
+                    <h1 style={{ fontSize: '3.5rem', fontWeight: 900, margin: '16px 0', letterSpacing: '-0.02em' }}>Keyword Explorer</h1>
+                    <p style={{ fontSize: '1.2rem', color: '#E0DAFF', fontWeight: 500, maxWidth: 700, margin: '0 auto' }}>
+                        Describe tu negocio y nuestra IA generará una estrategia completa de palabras clave en segundos.
                     </p>
                 </div>
-            </section>
-
-            {/* Main */}
-            <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 24px 80px' }}>
 
                 {/* Form Card */}
                 <div style={{
                     background: '#FFFFFF',
-                    border: '3px solid #000000',
-                    borderRadius: 0, padding: '40px',
-                    marginBottom: 40, position: 'relative', overflow: 'hidden',
+                    borderRadius: '24px', padding: '48px',
+                    marginBottom: 48, border: '1px solid #E0DAFF',
+                    boxShadow: '0 10px 40px rgba(103, 61, 230, 0.05)'
                 }}>
-
                     <form onSubmit={handleSubmit}>
-                        <div style={{ display: 'grid', gap: 18 }}>
-
-                            {/* Email */}
-                            <div>
-                                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
-                                    📧 Tu Correo Electrónico *
-                                </label>
-                                <input
-                                    type="email"
-                                    placeholder="tu@negocio.com"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                    disabled={loading}
-                                    style={{
-                                        width: '100%', boxSizing: 'border-box',
-                                        background: '#FFFFFF',
-                                        border: '1px solid rgba(0,0,0,0.15)',
-                                        borderRadius: 10, padding: '12px 14px',
-                                        color: '#101820', fontSize: '0.92rem',
-                                        fontFamily: 'inherit',
-                                    }}
-                                />
-                            </div>
-
-                            {/* Descripción */}
-                            <div>
-                                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
-                                    🏢 Describe tu negocio, producto o servicio *
-                                </label>
-                                <textarea
-                                    value={description}
-                                    onChange={e => setDescription(e.target.value)}
-                                    placeholder="Ej: Taller mecánico especializado en autos japoneses, service, diagnóstico y reparación de motor en Santiago…"
-                                    rows={3}
-                                    disabled={loading}
-                                    style={{
-                                        width: '100%', boxSizing: 'border-box',
-                                        background: '#FFFFFF',
-                                        border: '1px solid rgba(0,0,0,0.15)',
-                                        borderRadius: 10, padding: '12px 14px',
-                                        color: '#101820', fontSize: '0.92rem',
-                                        fontFamily: 'inherit', resize: 'vertical',
-                                        lineHeight: 1.5,
-                                        transition: 'border-color 0.2s',
-                                    }}
-                                />
-                                <div style={{ fontSize: '0.74rem', color: '#71717A', marginTop: 4 }}>
-                                    {description.length}/500 chars — más detalle = mejores resultados
-                                </div>
-                            </div>
-
-                            {/* País + Enfoque */}
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                        <div style={{ display: 'grid', gap: 24 }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                                 <div>
-                                    <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
-                                        🌎 País / Mercado objetivo
-                                    </label>
+                                    <label style={{ display: 'block', fontWeight: 800, fontSize: '0.9rem', marginBottom: 10, color: '#0E0C2C' }}>CORREO ELECTRÓNICO</label>
+                                    <input
+                                        type="email"
+                                        placeholder="tu@email.com"
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                        style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '2px solid #F0EDFF', background: '#F8F7FF', fontWeight: 600, fontFamily: 'inherit' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', fontWeight: 800, fontSize: '0.9rem', marginBottom: 10, color: '#0E0C2C' }}>PAÍS / MERCADO</label>
                                     <select
                                         value={country}
                                         onChange={e => setCountry(e.target.value)}
-                                        disabled={loading}
-                                        style={{
-                                            width: '100%', boxSizing: 'border-box',
-                                            background: '#FFFFFF',
-                                            border: '1px solid rgba(0,0,0,0.15)',
-                                            borderRadius: 10, padding: '11px 14px',
-                                            color: '#101820', fontSize: '0.9rem',
-                                            fontFamily: 'inherit', cursor: 'pointer',
-                                        }}
+                                        style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '2px solid #F0EDFF', background: '#F8F7FF', fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}
                                     >
-                                        {COUNTRIES.map(c => <option key={c} value={c} style={{ background: 'white', color: '#101820' }}>{c}</option>)}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: 8, color: '#101820' }}>
-                                        🎯 Enfoque de keywords
-                                    </label>
-                                    <select
-                                        value={focus}
-                                        onChange={e => setFocus(e.target.value)}
-                                        disabled={loading}
-                                        style={{
-                                            width: '100%', boxSizing: 'border-box',
-                                            background: '#FFFFFF',
-                                            border: '1px solid rgba(0,0,0,0.15)',
-                                            borderRadius: 10, padding: '11px 14px',
-                                            color: '#101820', fontSize: '0.9rem',
-                                            fontFamily: 'inherit', cursor: 'pointer',
-                                        }}
-                                    >
-                                        {FOCUS_OPTIONS.map(o => <option key={o.value} value={o.value} style={{ background: 'white', color: '#101820' }}>{o.label}</option>)}
+                                        {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
                                 </div>
                             </div>
 
-                            {/* Botón */}
-                            {error && (
-                                <div style={{ color: '#EF4444', fontSize: '0.85rem' }}>⚠️ {error}</div>
-                            )}
+                            <div>
+                                <label style={{ display: 'block', fontWeight: 800, fontSize: '0.9rem', marginBottom: 10, color: '#0E0C2C' }}>DESCRIBE TU NEGOCIO O PRODUCTO</label>
+                                <textarea
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                    placeholder="Ej: Agencia de marketing digital en Santiago enfocada en pymes del rubro salud..."
+                                    rows={4}
+                                    style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '2px solid #F0EDFF', background: '#F8F7FF', fontWeight: 600, fontFamily: 'inherit', resize: 'none' }}
+                                />
+                            </div>
 
                             <button
                                 type="submit"
                                 disabled={loading}
                                 style={{
-                                    background: '#000000',
-                                    color: 'white', border: 'none',
-                                    borderRadius: 0, padding: '16px',
-                                    fontSize: '1.1rem', fontWeight: 900,
-                                    cursor: loading ? 'not-allowed' : 'pointer',
-                                    fontFamily: 'inherit',
-                                    transition: 'all 0.2s',
-                                    textTransform: 'uppercase',
+                                    background: '#673DE6', color: '#FFFFFF',
+                                    border: 'none', borderRadius: '50px',
+                                    padding: '20px', fontSize: '1.1rem', fontWeight: 900,
+                                    cursor: 'pointer', textTransform: 'uppercase',
+                                    marginTop: 10, boxShadow: '0 10px 30px rgba(103, 61, 230, 0.2)'
                                 }}
                             >
-                                {loading ? 'Generando...' : '🔍 Generar Keywords'}
+                                {loading ? 'PROCESANDO ESTRATEGIA...' : '🔍 GENERAR ESTRATEGIA DE KEYWORDS'}
                             </button>
-
-                            <div style={{ fontSize: '0.7rem', color: '#71717A', textAlign: 'center' }}>
-                                * Enviaremos el reporte extendido de palabras clave a tu correo corporativo.
-                            </div>
                         </div>
                     </form>
-                </div >
+                    {error && <div style={{ color: '#FF4D4D', marginTop: 24, fontWeight: 800, textAlign: 'center' }}>⚠️ {error}</div>}
+                </div>
 
-                {/* Loading */}
-                {
-                    loading && (
-                        <div>
-                            <div style={{ textAlign: 'center', padding: '20px 0 28px', color: '#52525B', fontSize: '0.88rem' }}>
-                                <span style={{ fontSize: '1.4rem', display: 'block', marginBottom: 8 }}>🧠</span>
-                                Generando keywords estratégicas…
+                {loading && (
+                    <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                        <div style={{ marginBottom: 24, fontSize: '1.5rem', fontWeight: 800, color: '#673DE6' }}>Nuestra IA está trabajando...</div>
+                        <LoadingSkeleton />
+                    </div>
+                )}
+
+                {result && !loading && (
+                    <div style={{ animation: 'fadeIn 0.5s ease' }}>
+                        {/* Summary Bar */}
+                        <div style={{
+                            background: '#FFFFFF', padding: '32px', borderRadius: '24px',
+                            border: '1px solid #E0DAFF', marginBottom: 32,
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                        }}>
+                            <div>
+                                <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#6C6893', marginBottom: 4 }}>NEGOCIO IDENTIFICADO</div>
+                                <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#673DE6' }}>{result.businessType}</div>
                             </div>
-                            <LoadingSkeleton />
+                            <button
+                                onClick={copyAll}
+                                style={{
+                                    background: copied ? '#D1FD1F' : '#F0EDFF',
+                                    color: '#000000', border: 'none',
+                                    padding: '12px 24px', borderRadius: '50px',
+                                    fontWeight: 900, cursor: 'pointer', fontSize: '0.9rem'
+                                }}
+                            >
+                                {copied ? '✓ COPIADAS' : '📋 COPIAR TODAS'}
+                            </button>
                         </div>
-                    )
-                }
 
-                {/* Results */}
-                {
-                    result && !loading && (
-                        <div style={{ animation: 'fadeInUp 0.4s ease' }}>
-                            {/* Summary bar */}
-                            <div style={{
-                                display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-                                flexWrap: 'wrap', gap: 16, marginBottom: 24, padding: '20px 22px',
-                                background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)',
-                                borderRadius: 14,
-                            }}>
-                                <div>
-                                    <div style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 700, marginBottom: 4 }}>🎯 NEGOCIO IDENTIFICADO</div>
-                                    <div style={{ fontWeight: 800, fontSize: '1.1rem' }}>{result.businessType}</div>
-                                    <div style={{ fontSize: '0.85rem', color: '#52525B', marginTop: 6, maxWidth: 460 }}>{result.summary}</div>
-                                </div>
-                                <div style={{ display: 'flex', gap: 8 }}>
+                        {/* Tabs */}
+                        <div style={{ display: 'flex', gap: 10, marginBottom: 32, overflowX: 'auto', paddingBottom: 8 }}>
+                            {TABS.map(tab => {
+                                const count = result[tab.id]?.length ?? 0;
+                                const isActive = activeTab === tab.id;
+                                return (
                                     <button
-                                        onClick={copyAll}
+                                        key={tab.id}
+                                        onClick={() => setActiveTab(tab.id)}
                                         style={{
-                                            background: copied ? 'rgba(16,185,129,0.15)' : 'rgba(0,0,0,0.05)',
-                                            border: `1px solid ${copied ? '#10B981' : 'rgba(0,0,0,0.1)'}`,
-                                            borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700,
-                                            color: copied ? '#059669' : '#101820', cursor: 'pointer', fontFamily: 'inherit',
+                                            background: isActive ? '#673DE6' : '#FFFFFF',
+                                            color: isActive ? '#FFFFFF' : '#6C6893',
+                                            border: '1px solid',
+                                            borderColor: isActive ? '#673DE6' : '#E0DAFF',
+                                            borderRadius: '50px', padding: '12px 24px',
+                                            fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer',
+                                            whiteSpace: 'nowrap', transition: 'all 0.2s',
+                                            display: 'flex', alignItems: 'center', gap: 8
                                         }}
                                     >
-                                        {copied ? '✓ Copiadas' : `📋 Copiar todas (${totalKeywords})`}
+                                        {tab.icon} {tab.label} <span style={{ opacity: 0.6 }}>{count}</span>
                                     </button>
-                                    <button
-                                        onClick={() => exportCSV(result)}
-                                        style={{
-                                            background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)',
-                                            borderRadius: 8, padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700,
-                                            color: '#1D4ED8', cursor: 'pointer', fontFamily: 'inherit',
-                                        }}
-                                    >
-                                        ⬇️ Exportar CSV
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Tabs */}
-                            <div style={{ display: 'flex', gap: 6, marginBottom: 20, overflowX: 'auto', paddingBottom: 4 }}>
-                                {TABS.map(tab => {
-                                    const count = result ? ((result[tab.id] as KeywordItem[])?.length ?? 0) : 0;
-                                    const isActive = activeTab === tab.id;
-                                    return (
-                                        <button
-                                            key={tab.id}
-                                            onClick={() => setActiveTab(tab.id)}
-                                            style={{
-                                                background: isActive ? 'rgba(255,105,0,0.1)' : 'rgba(0,0,0,0.03)',
-                                                border: `1px solid ${isActive ? '#C2410C' : 'rgba(0,0,0,0.06)'}`,
-                                                borderRadius: 10, padding: '8px 16px', color: isActive ? '#C2410C' : '#52525B',
-                                                fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
-                                                display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s',
-                                            }}
-                                        >
-                                            {tab.icon} {tab.label} <span style={{ opacity: 0.6 }}>{count}</span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Tab label */}
-                            <div style={{ marginBottom: 16 }}>
-                                <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                                    {activeTab === 'headTerms' && '🎯 Términos principales de alto volumen — base de tu estrategia SEO'}
-                                    {activeTab === 'longTail' && '🔍 Keywords de nicho con menor competencia y mayor conversión'}
-                                    {activeTab === 'questions' && '❓ Preguntas reales de usuarios — ideales para blog, FAQ y featured snippets'}
-                                    {activeTab === 'commercial' && '🛒 Keywords con intención de compra o contratación — las más valiosas'}
-                                    {activeTab === 'local' && '📍 Keywords con modificadores geográficos — clave para negocios físicos'}
-                                </div>
-                            </div>
-
-                            {/* Keywords Grid */}
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 12 }}>
-                                {activeKeywords.map((kw, i) => (
-                                    <KeywordCard key={kw.keyword + i} kw={kw} index={i} />
-                                ))}
-                            </div>
-
-                            {/* Negative Keywords */}
-                            {(result?.negative?.length ?? 0) > 0 && (
-                                <div style={{ marginTop: 32, background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12, padding: '18px 20px' }}>
-                                    <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: 10, color: '#DC2626' }}>
-                                        🚫 Keywords Negativas (a excluir)
-                                    </div>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                                        {result?.negative?.map((kw, i) => (
-                                            <span key={i} style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: 20, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#DC2626' }}>
-                                                {kw}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Footer info */}
-                            <div style={{ textAlign: 'center', marginTop: 36, padding: '24px 0', borderTop: '1px solid rgba(0,0,0,0.1)', fontSize: '0.8rem', color: '#71717A' }}>
-                                Generado con {result?.model} · {totalKeywords} keywords en total ·{' '}
-                                <a href="/" style={{ color: '#C2410C', fontWeight: 700 }}>Audita tu sitio ahora →</a>
-                            </div>
+                                );
+                            })}
                         </div>
-                    )
-                }
-            </div >
+
+                        {/* Keywords Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
+                            {activeKeywords.map((kw, i) => (
+                                <KeywordCard key={kw.keyword + i} kw={kw} index={i} />
+                            ))}
+                        </div>
+
+                        {/* Footer Info */}
+                        <div style={{ textAlign: 'center', marginTop: 80, padding: '40px 0', borderTop: '1px solid #E0DAFF', color: '#6C6893', fontWeight: 600 }}>
+                            Investigación generada por {result.model} • {totalKeywords} keywords encontradas • <a href="/" style={{ color: '#673DE6', fontWeight: 800, textDecoration: 'none' }}>Audita tu sitio ahora →</a>
+                        </div>
+                    </div>
+                )}
+            </div>
 
             <style>{`
                 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                select option { background: #0F172A !important; color: white; }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
             `}</style>
-        </div >
+        </main>
     );
 }

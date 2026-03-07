@@ -4,51 +4,54 @@
    DESIGN TOKENS — Inmobiliaria Pilares Skin
    ═══════════════════════════════════════════════ */
 :root {
-  /* Fondos Night Mode */
-  --bg-body: #050505;
-  --bg-alt: #0A0A0A;
-  --bg-card: #0D0D0D;
-  --bg-card-hover: #141414;
-  --bg-dark: #000000;
-  --bg-dark-2: #050505;
+  /* Fondos Hostinger Inspired */
+  --bg-body: #FFFFFF;
+  --bg-alt: #F8F7FF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F0EDFF;
+  --bg-dark: #673DE6;
+  /* Hostinger Purple */
+  --bg-dark-2: #4F2CC9;
 
-  /* Bordes High Contrast */
-  --border: #FFFFFF;
-  --border-mid: #333333;
-  --border-hover: #FFFFFF;
+  /* Bordes */
+  --border: #E0DAFF;
+  --border-mid: #673DE6;
+  --border-hover: #D1FD1F;
+  /* Lime Green */
 
-  /* Texto - Light on Dark */
-  --text: #F0F0F0;
-  --text-muted: #888888;
-  --text-subtle: #AAAAAA;
+  /* Texto */
+  --text: #0E0C2C;
+  --text-muted: #6C6893;
+  --text-subtle: #4F4B7C;
 
-  /* Texto sobre fondos OSCUROS */
+  /* Texto sobre fondos PURPURA/OSCUROS */
   --text-on-dark: #FFFFFF;
-  --text-on-dark-muted: #CCCCCC;
-  --text-on-dark-subtle: #888888;
+  --text-on-dark-muted: #E0DAFF;
+  --text-on-dark-subtle: #C2BAFF;
 
-  /* Acento (Minimalist White) */
-  --orange: #FFFFFF;
-  --orange-dark: #F0F0F0;
-  --orange-light: #CCCCCC;
-  --orange-glow: rgba(255, 255, 255, 0.1);
+  /* Acento (Vibrant) */
+  --orange: #673DE6;
+  /* Usado como Primary */
+  --orange-dark: #4F2CC9;
+  --orange-light: #8257FF;
+  --orange-glow: rgba(103, 61, 230, 0.15);
 
-  /* Otros */
-  --accent: #FFFFFF;
-  --green: #FFFFFF;
-  --yellow: #CCCCCC;
-  --red: #FFFFFF;
+  /* Acento Lime */
+  --lime: #D1FD1F;
+  --accent: #D1FD1F;
+  --green: #22C55E;
+  --red: #FF4D4D;
 
   /* Estructura */
-  --r-sm: 0px;
-  --r-md: 0px;
-  --r-lg: 0px;
-  --r-xl: 0px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
 
   /* Sombras */
-  --shadow-sm: none;
-  --shadow-card: none;
-  --shadow-lg: 0 0 40px rgba(255, 255, 255, 0.03);
+  --shadow-sm: 0 2px 4px rgba(103, 61, 230, 0.05);
+  --shadow-card: 0 10px 30px rgba(103, 61, 230, 0.08);
+  --shadow-lg: 0 20px 50px rgba(103, 61, 230, 0.12);
 }
 
 body {
