@@ -69,6 +69,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [freeLoading, setFreeLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   // ── Validación simple de email ──────────────────────────────────────
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
@@ -83,6 +84,13 @@ export default function HomePage() {
     // Agregamos email a la URL de preview para seguimiento
     window.location.href = `/preview?url=${encodeURIComponent(url.trim())}&email=${encodeURIComponent(email.trim())}`;
   }, [url, email]);
+
+  const handleOpenModal = useCallback((e?: React.MouseEvent) => {
+    e?.preventDefault();
+    setError('');
+    if (!url.trim()) { setError('Por favor ingresa una URL válida.'); return; }
+    setShowModal(true);
+  }, [url]);
 
   // ── Análisis de pago / cupón ───────────────────────────────────────
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -229,7 +237,7 @@ export default function HomePage() {
                 }}
               />
               <button
-                onClick={handleFree}
+                onClick={handleOpenModal}
                 disabled={loading || freeLoading}
                 style={{
                   background: '#12103E',
@@ -246,7 +254,7 @@ export default function HomePage() {
                 onMouseOver={e => e.currentTarget.style.background = '#000000'}
                 onMouseOut={e => e.currentTarget.style.background = '#12103E'}
               >
-                {freeLoading ? 'Analizando...' : 'Buscar'}
+                {freeLoading || loading ? 'Procesando...' : 'Buscar'}
               </button>
             </div>
             {error && (
@@ -460,6 +468,100 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Modal Email/Coupon */}
+      {showModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(14, 12, 44, 0.85)',
+          backdropFilter: 'blur(8px)',
+          zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 24, animation: 'fadeIn 0.3s ease'
+        }}>
+          <div style={{
+            background: '#FFFFFF',
+            borderRadius: '32px',
+            padding: '40px 48px',
+            maxWidth: 480, width: '100%',
+            boxShadow: '0 30px 60px rgba(0,0,0,0.3)',
+            position: 'relative'
+          }}>
+            <button
+              onClick={() => setShowModal(false)}
+              style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#6C6893' }}
+            >
+              ✕
+            </button>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: 12, color: '#0E0C2C', letterSpacing: '-0.02em' }}>
+              Último paso 🚀
+            </h2>
+            <p style={{ color: '#6C6893', marginBottom: 24, fontSize: '1.05rem', lineHeight: 1.5 }}>
+              ¿A qué correo te enviamos el reporte detallado de <strong style={{ color: '#673DE6' }}>{url}</strong>?
+            </p>
+
+            <input
+              type="email"
+              placeholder="tu@correo.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              style={{
+                width: '100%', boxSizing: 'border-box',
+                background: '#F8F7FF', border: '2px solid #E0DAFF',
+                borderRadius: '16px', padding: '16px 20px',
+                fontSize: '1rem', fontWeight: 600, color: '#0E0C2C',
+                marginBottom: 16, outline: 'none'
+              }}
+            />
+
+            <button
+              onClick={() => setShowCoupon(!showCoupon)}
+              style={{ background: 'none', border: 'none', color: '#673DE6', fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer', padding: 0, marginBottom: showCoupon ? 12 : 24, textDecoration: 'underline' }}
+            >
+              Tengo un código de descuento PRO
+            </button>
+
+            {showCoupon && (
+              <input
+                type="text"
+                placeholder="PROMOCODE"
+                value={coupon}
+                onChange={e => setCoupon(e.target.value)}
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  background: '#FFFBEB', border: '2px solid #F59E0B',
+                  borderRadius: '16px', padding: '16px 20px',
+                  fontSize: '1rem', fontWeight: 800, color: '#F59E0B',
+                  marginBottom: 24, outline: 'none', textTransform: 'uppercase'
+                }}
+              />
+            )}
+
+            {error && <div style={{ color: '#EF4444', fontWeight: 700, marginBottom: 16, fontSize: '0.9rem' }}>⚠️ {error}</div>}
+
+            {showCoupon && coupon.trim() !== '' ? (
+              <button onClick={(e) => handleSubmit(e as unknown as React.FormEvent)} disabled={loading} style={{
+                width: '100%', background: '#000000', color: '#D1FD1F', border: 'none',
+                borderRadius: '50px', padding: '18px', fontSize: '1.1rem', fontWeight: 900,
+                cursor: 'pointer', transition: 'all 0.2s', textTransform: 'uppercase'
+              }}>
+                {loading ? 'Procesando...' : 'Aplicar Cupón y Continuar'}
+              </button>
+            ) : (
+              <button onClick={handleFree} disabled={freeLoading} style={{
+                width: '100%', background: '#673DE6', color: '#FFFFFF', border: 'none',
+                borderRadius: '50px', padding: '18px', fontSize: '1.1rem', fontWeight: 900,
+                cursor: 'pointer', transition: 'all 0.2s', textTransform: 'uppercase'
+              }}>
+                {freeLoading ? 'Analizando...' : 'Comenzar Análisis Gratis'}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      `}</style>
     </main>
   );
 }
