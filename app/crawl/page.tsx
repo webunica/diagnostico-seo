@@ -15,19 +15,19 @@ type FilterStatus = 'all' | '2xx' | '3xx' | '4xx' | '5xx' | 'error';
 
 // ── Helpers ────────────────────────────────────────────────────────────
 function statusColor(s: number) {
-    if (s >= 200 && s < 300) return '#059669';
-    if (s >= 300 && s < 400) return '#B45309';
-    if (s >= 400 && s < 500) return '#DC2626';
-    if (s >= 500) return '#991B1B';
-    return '#52525B'; // error/timeout
+    if (s >= 200 && s < 300) return '#000000';
+    if (s >= 300 && s < 400) return '#000000';
+    if (s >= 400 && s < 500) return '#000000';
+    if (s >= 500) return '#000000';
+    return '#333333'; // error/timeout
 }
 
 function statusBg(s: number) {
-    if (s >= 200 && s < 300) return 'rgba(52,211,153,0.1)';
-    if (s >= 300 && s < 400) return 'rgba(252,211,77,0.1)';
-    if (s >= 400 && s < 500) return 'rgba(248,113,113,0.1)';
-    if (s >= 500) return 'rgba(255,140,90,0.1)';
-    return 'rgba(148,163,184,0.1)';
+    if (s >= 200 && s < 300) return '#FFFFFF';
+    if (s >= 300 && s < 400) return '#f0f0f0';
+    if (s >= 400 && s < 500) return '#eeeeee';
+    if (s >= 500) return '#dddddd';
+    return '#f0f0f0';
 }
 
 function statusLabel(s: number) {
@@ -188,19 +188,19 @@ export default function CrawlPage() {
     })();
 
     return (
-        <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
+        <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#333333', fontFamily: 'Montserrat, sans-serif' }}>
             {/* Navbar */}
-            <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+            <nav className="navbar" style={{ background: '#FFFFFF', borderBottom: '2px solid #000000', height: '70px' }}>
                 <div className="navbar-logo">
-                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#C2410C' }}>SEO Diagnostico</span>
+                    <span style={{ fontSize: '1.4rem', fontWeight: 900, color: '#000000' }}>SEO Diagnostico</span>
                 </div>
-                <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
-                    <a href="/keywords" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>Keywords</a>
+                <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+                    <a href="/" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>← Inicio</a>
+                    <a href="/keywords" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>Keywords</a>
                     <div style={{
-                        fontSize: '0.72rem', fontWeight: 800, padding: '4px 12px',
-                        background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.15)',
-                        borderRadius: 20, color: '#C2410C', textTransform: 'uppercase', letterSpacing: '0.05em'
+                        fontSize: '0.8rem', fontWeight: 900, padding: '6px 16px',
+                        border: '2px solid #000000',
+                        borderRadius: 0, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em'
                     }}>
                         🕷️ Crawl — Free
                     </div>
@@ -209,11 +209,11 @@ export default function CrawlPage() {
 
             {/* Hero */}
             <section style={{
-                paddingTop: 110,
-                paddingBottom: 60,
+                paddingTop: 120,
+                paddingBottom: 80,
                 textAlign: 'center',
-                background: 'radial-gradient(circle at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 70%), #FFFFFF',
-                borderBottom: '1px solid rgba(0,0,0,0.06)',
+                background: '#FFFFFF',
+                borderBottom: '2px solid #000000',
             }}>
                 <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px' }}>
                     <div style={{
@@ -226,8 +226,8 @@ export default function CrawlPage() {
                         Crawler BFS en tiempo real · 100% Gratis
                     </div>
 
-                    <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 900, marginBottom: 16, lineHeight: 1.1, color: '#101820', letterSpacing: '-0.02em' }}>
-                        Descubre todas las <span style={{ color: '#C2410C' }}>URLs de un dominio</span>
+                    <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', fontWeight: 900, marginBottom: 20, lineHeight: 1, color: '#000000', letterSpacing: '-0.04em', textTransform: 'uppercase' }}>
+                        Descubre todas las <span style={{ textDecoration: 'underline' }}>URLs de un dominio</span>
                     </h1>
 
                     <p style={{ fontSize: '1.1rem', color: '#52525B', maxWidth: 600, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
@@ -253,20 +253,20 @@ export default function CrawlPage() {
                             />
                         </div>
 
-                        <div style={{ display: 'flex', background: 'white', borderRadius: 12, border: '1px solid rgba(0,0,0,0.12)', overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.06)', marginBottom: 12 }}>
+                        <div style={{ display: 'flex', background: 'white', borderRadius: 0, border: '2px solid #000000', overflow: 'hidden', marginBottom: 16 }}>
                             <input
                                 type="text"
                                 placeholder="ejemplo.cl o https://ejemplo.cl"
                                 value={domain}
                                 onChange={e => setDomain(e.target.value)}
                                 disabled={crawling}
-                                style={{ flex: 1, border: 'none', color: '#1a1a2e', fontSize: '0.97rem', padding: '14px 18px', fontFamily: 'inherit', background: 'transparent' }}
+                                style={{ flex: 1, border: 'none', color: '#000000', fontSize: '1rem', padding: '16px 20px', fontFamily: 'inherit', background: 'transparent', fontWeight: 800 }}
                             />
                             <select
                                 value={maxUrls}
                                 onChange={e => setMaxUrls(Number(e.target.value))}
                                 disabled={crawling}
-                                style={{ border: 'none', borderLeft: '1px solid #e5e7eb', background: 'white', color: '#6b7280', fontSize: '0.85rem', padding: '0 14px', fontFamily: 'inherit', cursor: 'pointer' }}
+                                style={{ border: 'none', borderLeft: '2px solid #000000', background: 'white', color: '#000000', fontSize: '0.9rem', padding: '0 16px', fontFamily: 'inherit', cursor: 'pointer', fontWeight: 800 }}
                             >
                                 <option value={50}>50 URLs</option>
                                 <option value={100}>100 URLs</option>
@@ -274,9 +274,9 @@ export default function CrawlPage() {
                                 <option value={500}>500 URLs</option>
                             </select>
                             {crawling ? (
-                                <button type="button" onClick={stopCrawl} style={{ background: '#EF4444', color: 'white', border: 'none', padding: '14px 22px', fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}> detener </button>
+                                <button type="button" onClick={stopCrawl} style={{ background: '#000000', color: 'white', border: 'none', padding: '14px 28px', fontSize: '1rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', textTransform: 'uppercase' }}> Detener </button>
                             ) : (
-                                <button type="submit" style={{ background: '#C2410C', color: 'white', border: 'none', padding: '14px 24px', fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', textTransform: 'uppercase' }}> 🕷️ Iniciar Crawl </button>
+                                <button type="submit" style={{ background: '#000000', color: 'white', border: 'none', padding: '14px 32px', fontSize: '1rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', textTransform: 'uppercase' }}> 🕷️ Crawl </button>
                             )}
                         </div>
                         {error && <div style={{ color: '#DC2626', fontSize: '0.82rem', marginBottom: 10 }}>⚠️ {error}</div>}
@@ -357,8 +357,8 @@ export default function CrawlPage() {
                 )}
             </div>
 
-            <div style={{ borderTop: '1px solid rgba(0,0,0,0.06)', padding: '32px 24px', textAlign: 'center', background: '#FFFFFF' }}>
-                <a href="/" style={{ color: '#C2410C', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}>Audita tu sitio ahora con Inmobiliaria Pilares →</a>
+            <div style={{ borderTop: '2px solid #000000', padding: '48px 24px', textAlign: 'center', background: '#FFFFFF' }}>
+                <a href="/" style={{ color: '#000000', fontWeight: 900, fontSize: '1rem', textDecoration: 'none', textTransform: 'uppercase' }}>Audita tu sitio ahora con SEO Diagnostico →</a>
             </div>
 
             <style>{`

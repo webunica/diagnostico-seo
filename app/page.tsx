@@ -121,17 +121,17 @@ export default function HomePage() {
   }, [url, email, coupon]);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#333333', fontFamily: 'Montserrat, sans-serif' }}>
       {/* ── NAVBAR ─────────────────────────────────────────────────── */}
-      <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+      <nav className="navbar" style={{ background: '#FFFFFF', borderBottom: '2px solid #000000', height: '70px' }}>
         <div className="navbar-logo">
-          <span style={{ color: '#C2410C', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
+          <span style={{ color: '#000000', fontWeight: 900, fontSize: '1.4rem' }}>SEO Diagnostico</span>
         </div>
-        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-          <a href="/keywords" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>Keywords</a>
-          <a href="/crawl" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>Crawl</a>
-          <a href="/dashboard" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>API</a>
-          <div style={{ padding: '6px 12px', background: 'rgba(255,105,0,0.1)', color: '#C2410C', borderRadius: 20, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+          <a href="/keywords" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>Keywords</a>
+          <a href="/crawl" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>Crawl</a>
+          <a href="/dashboard" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>API</a>
+          <div style={{ padding: '8px 16px', border: '2px solid #000000', color: '#000000', borderRadius: 0, fontSize: '0.8rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             $9.990 CLP
           </div>
         </div>
@@ -139,47 +139,45 @@ export default function HomePage() {
 
       {/* ── HERO ───────────────────────────────────────────────────── */}
       <section style={{
-        paddingTop: 120,
-        paddingBottom: 80,
+        paddingTop: 140,
+        paddingBottom: 100,
         textAlign: 'center',
-        background: 'radial-gradient(circle at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 70%), #FFFFFF',
-        borderBottom: '1px solid rgba(0,0,0,0.06)',
+        background: '#FFFFFF',
+        borderBottom: '2px solid #000000',
       }}>
         <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 24px' }}>
           <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            background: 'rgba(255,105,0,0.08)', border: '1px solid rgba(194,65,12,0.3)',
-            borderRadius: 20, padding: '6px 16px', fontSize: '0.72rem', fontWeight: 800,
-            color: '#C2410C', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.05em'
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            border: '2px solid #000000',
+            borderRadius: 0, padding: '8px 20px', fontSize: '0.8rem', fontWeight: 900,
+            color: '#000000', marginBottom: 32, textTransform: 'uppercase', letterSpacing: '0.1em'
           }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#C2410C', animation: 'pulse 2s infinite', display: 'inline-block' }} />
+            <span style={{ width: 8, height: 8, borderRadius: 0, background: '#000000', display: 'inline-block' }} />
             Potenciado por ChatGPT · Resultados en &lt;60 segundos
           </div>
 
-          <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', fontWeight: 900, marginBottom: 20, lineHeight: 1.1, color: '#101820', letterSpacing: '-0.03em' }}>
-            Gana visibilidad <span style={{ color: '#C2410C' }}>digital</span> en Chile
+          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 900, marginBottom: 24, lineHeight: 1, color: '#000000', letterSpacing: '-0.04em', textTransform: 'uppercase' }}>
+            Gana visibilidad <span style={{ textDecoration: 'underline' }}>digital</span> en Chile
           </h1>
 
-          <p style={{ fontSize: '1.15rem', color: '#52525B', maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.6, fontWeight: 500 }}>
+          <p style={{ fontSize: '1.2rem', color: '#333333', maxWidth: 640, margin: '0 auto 50px', lineHeight: 1.6, fontWeight: 700 }}>
             Analiza cualquier sitio web y descubre exactamente qué necesitas corregir para aparecer primero en Google. Score 0–100, issues priorizados y plan de acción SEO experto.
           </p>
 
           {/* ── FORM estilo Semrush ─── */}
           <form className="url-form" onSubmit={handleSubmit}>
             {/* Campo Email */}
-            <div style={{ maxWidth: 620, margin: '0 auto 12px', display: 'flex', gap: 10 }}>
+            <div style={{ maxWidth: 620, margin: '0 auto 16px', display: 'flex', gap: 12 }}>
               <div style={{ flex: 1, position: 'relative' }}>
-                <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '1rem', opacity: 0.5 }}>📧</span>
                 <input
                   type="email"
-                  placeholder="Tu mejor correo electrónico..."
+                  placeholder="Tu correo electrónico..."
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   disabled={loading || freeLoading}
                   style={{
-                    width: '100%', padding: '14px 14px 14px 44px', borderRadius: 50, border: '1px solid rgba(0,0,0,0.1)',
-                    background: 'white', fontSize: '0.95rem', fontWeight: 500, fontFamily: 'inherit', boxSizing: 'border-box',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+                    width: '100%', padding: '16px 24px', borderRadius: 0, border: '2px solid #000000',
+                    background: 'white', fontSize: '1rem', fontWeight: 800, fontFamily: 'inherit', boxSizing: 'border-box',
                   }}
                 />
               </div>
@@ -213,22 +211,23 @@ export default function HomePage() {
             </div>
 
             {/* Botón gratis secundario */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
               <button
                 type="button"
                 onClick={handleFree}
                 disabled={loading || freeLoading}
                 style={{
-                  background: 'rgba(0,0,0,0.04)',
-                  color: '#52525B',
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  borderRadius: 8, padding: '10px 24px',
-                  fontSize: '0.88rem', fontWeight: 600,
+                  background: 'transparent',
+                  color: '#000000',
+                  border: '2px solid #000000',
+                  borderRadius: 0, padding: '12px 32px',
+                  fontSize: '0.95rem', fontWeight: 800,
                   cursor: 'pointer', fontFamily: 'inherit',
                   transition: 'all 0.2s',
+                  textTransform: 'uppercase'
                 }}
               >
-                {freeLoading ? '⟳ Cargando…' : '🆓 Probar análisis gratuito (sin pago)'}
+                {freeLoading ? '⟳ Cargando…' : '🆓 Probar análisis gratuito'}
               </button>
             </div>
 
@@ -287,13 +286,13 @@ export default function HomePage() {
           </form>
 
           {/* Sample preview */}
-          <div className="score-preview">
+          <div className="score-preview" style={{ border: '3px solid #000000', borderRadius: 0, boxShadow: 'none' }}>
             <div className="score-preview-header">
-              <div className="score-preview-url">
+              <div className="score-preview-url" style={{ fontWeight: 900, textTransform: 'uppercase' }}>
                 🌐 ejemplo.com — Score:{' '}
-                <strong style={{ color: '#B45309', marginLeft: 4 }}>54/100</strong>
+                <strong style={{ color: '#000000', marginLeft: 8 }}>54/100</strong>
               </div>
-              <div className="score-preview-date" style={{ color: '#52525B' }}>Vista previa del reporte</div>
+              <div className="score-preview-date" style={{ color: '#666666', fontWeight: 800, textTransform: 'uppercase', fontSize: '0.7rem' }}>Vista previa del reporte</div>
             </div>
             <div className="score-bars">
               {SAMPLE_BARS.map(bar => (
@@ -464,14 +463,14 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER ─────────────────────────────────────────────────── */}
-      <footer style={{ borderTop: '1px solid rgba(0,0,0,0.06)', padding: '60px 24px', textAlign: 'center', background: '#FFFFFF' }}>
+      <footer style={{ borderTop: '2px solid #000000', padding: '80px 24px', textAlign: 'center', background: '#FFFFFF' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ fontSize: '1rem', fontWeight: 900, color: '#C2410C', marginBottom: 12 }}>SEO Diagnostico</div>
-          <p style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 600 }}>© {new Date().getFullYear()} — Análisis SEO Experto con IA</p>
-          <div style={{ marginTop: 24, display: 'flex', gap: 24, justifyContent: 'center' }}>
-            <a href="#" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Términos</a>
-            <a href="#" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Privacidad</a>
-            <a href="mailto:hola@diagnosticoseo.com" style={{ fontSize: '0.8rem', color: '#101820', textDecoration: 'none', fontWeight: 700 }}>Contacto</a>
+          <div style={{ fontSize: '1.2rem', fontWeight: 900, color: '#000000', marginBottom: 16, textTransform: 'uppercase' }}>SEO Diagnostico</div>
+          <p style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 700 }}>© {new Date().getFullYear()} — Análisis SEO Experto con IA</p>
+          <div style={{ marginTop: 32, display: 'flex', gap: 32, justifyContent: 'center' }}>
+            <a href="#" style={{ fontSize: '0.85rem', color: '#000000', textDecoration: 'none', fontWeight: 900, textTransform: 'uppercase' }}>Términos</a>
+            <a href="#" style={{ fontSize: '0.85rem', color: '#000000', textDecoration: 'none', fontWeight: 900, textTransform: 'uppercase' }}>Privacidad</a>
+            <a href="mailto:hola@diagnosticoseo.com" style={{ fontSize: '0.85rem', color: '#000000', textDecoration: 'none', fontWeight: 900, textTransform: 'uppercase' }}>Contacto</a>
           </div>
         </div>
       </footer>

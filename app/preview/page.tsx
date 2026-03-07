@@ -32,24 +32,22 @@ function MiniGauge({ score }: { score: number }) {
     const radius = 44;
     const circ = 2 * Math.PI * radius;
     const filled = (score / 100) * circ;
-    const color = score >= 70 ? '#059669' : score >= 40 ? '#B45309' : '#DC2626';
+    const color = '#333333';
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
             <div style={{ position: 'relative', width: 108, height: 108, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="108" height="108" viewBox="0 0 108 108" style={{ transform: 'rotate(-90deg)' }}>
-                    <circle cx="54" cy="54" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
+                    <circle cx="54" cy="54" r={radius} fill="none" stroke="#EEEEEE" strokeWidth="12" />
                     <circle
                         cx="54" cy="54" r={radius} fill="none"
-                        stroke={color} strokeWidth="10"
-                        strokeLinecap="round"
+                        stroke="#000000" strokeWidth="12"
                         strokeDasharray={`${filled} ${circ}`}
-                        style={{ filter: `drop-shadow(0 0 6px ${color}80)` }}
                     />
                 </svg>
-                <div style={{ position: 'absolute', fontSize: '1.8rem', fontWeight: 900, color }}>{score}</div>
+                <div style={{ position: 'absolute', fontSize: '2rem', fontWeight: 900, color: '#000000' }}>{score}</div>
             </div>
-            <div style={{ fontSize: '0.72rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#000000' }}>
                 Score SEO
             </div>
         </div>
@@ -58,9 +56,9 @@ function MiniGauge({ score }: { score: number }) {
 
 // ── Status config ─────────────────────────────────────────────────────
 const STATUS_CONFIG: Record<CheckStatus, { icon: string; color: string; bg: string; border: string }> = {
-    pass: { icon: '✓', color: '#059669', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.2)' },
-    warn: { icon: '⚠', color: '#B45309', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.2)' },
-    fail: { icon: '✗', color: '#DC2626', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.2)' },
+    pass: { icon: '✓', color: '#000000', bg: '#FFFFFF', border: '#000000' },
+    warn: { icon: '!', color: '#000000', bg: '#FFFFFF', border: '#000000' },
+    fail: { icon: 'X', color: '#000000', bg: '#FFFFFF', border: '#000000' },
 };
 
 // ── Check Row ─────────────────────────────────────────────────────────
@@ -68,9 +66,9 @@ function CheckRow({ check, delay }: { check: FreeCheck; delay: number }) {
     const cfg = STATUS_CONFIG[check.status];
     return (
         <div style={{
-            display: 'flex', gap: 14, padding: '14px 18px',
-            background: cfg.bg, border: `1px solid ${cfg.border}`,
-            borderRadius: 10,
+            display: 'flex', gap: 14, padding: '16px 20px',
+            background: '#FFFFFF', border: `1.5px solid #000000`,
+            borderRadius: 0,
             animation: `fadeInUp 0.4s ease ${delay}s both`,
         }}>
             <div style={{
@@ -146,20 +144,20 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
     const scoreColor = report.score >= 70 ? '#059669' : report.score >= 40 ? '#B45309' : '#DC2626';
 
     return (
-        <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
+        <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#333333', fontFamily: 'Montserrat, sans-serif' }}>
             {/* Navbar */}
-            <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+            <nav className="navbar" style={{ background: '#FFFFFF', borderBottom: '2px solid #000000', height: '70px' }}>
                 <div className="navbar-logo">
-                    <span style={{ color: '#C2410C', fontWeight: 900, fontSize: '1.25rem' }}>SEO Diagnostico</span>
+                    <span style={{ color: '#000000', fontWeight: 900, fontSize: '1.4rem' }}>SEO Diagnostico</span>
                 </div>
-                <a href="/" style={{ fontSize: '0.82rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
+                <a href="/" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 900, textDecoration: 'none', textTransform: 'uppercase' }}>← Inicio</a>
             </nav>
 
             {/* Hero del reporte gratuito */}
             <div style={{
-                paddingTop: 80,
-                background: 'radial-gradient(ellipse at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 60%), #FFFFFF',
-                borderBottom: '1px solid rgba(0,0,0,0.06)',
+                paddingTop: 100,
+                background: '#FFFFFF',
+                borderBottom: '2px solid #000000',
             }}>
                 <div style={{ maxWidth: 860, margin: '0 auto', padding: '48px 24px 40px' }}>
                     {/* Badge gratuito */}
@@ -301,25 +299,20 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
 
                 {/* CTA de upgrade */}
                 <div style={{
-                    background: 'linear-gradient(135deg, rgba(59,130,246,0.12), rgba(6,182,212,0.08))',
-                    border: '1px solid rgba(59,130,246,0.3)',
-                    borderRadius: 20,
-                    padding: '40px 32px',
+                    background: '#FFFFFF',
+                    border: '3px solid #000000',
+                    borderRadius: 0,
+                    padding: '60px 32px',
                     textAlign: 'center',
                     position: 'relative',
                     overflow: 'hidden',
                 }}>
-                    {/* Top accent line */}
-                    <div style={{
-                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                        background: 'linear-gradient(90deg, var(--orange), var(--accent))',
-                    }} />
 
-                    <div style={{ fontSize: '2rem', marginBottom: 12 }}>🚀</div>
-                    <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: 10 }}>
+                    <div style={{ fontSize: '2.5rem', marginBottom: 16 }}>💰</div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: 16, textTransform: 'uppercase' }}>
                         Desbloquea el Diagnóstico Completo
                     </h2>
-                    <p style={{ color: 'var(--text-muted)', marginBottom: 24, maxWidth: 480, margin: '0 auto 24px' }}>
+                    <p style={{ color: '#333333', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px', fontWeight: 700 }}>
                         Obtén el análisis profundo con ChatGPT: {report.estimatedFullIssues}+ issues detallados,
                         plan de acción con tiempos, quick wins y recomendaciones de title y meta listas para implementar.
                     </p>
@@ -327,13 +320,12 @@ function FreeReportView({ report, onUpgrade }: { report: FreeReport; onUpgrade: 
                     <button
                         onClick={onUpgrade}
                         style={{
-                            background: 'var(--orange)',
+                            background: '#000000',
                             color: 'white', border: 'none',
-                            borderRadius: 50, padding: '14px 40px',
-                            fontSize: '1.05rem', fontWeight: 800,
+                            borderRadius: 0, padding: '16px 50px',
+                            fontSize: '1.1rem', fontWeight: 900,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            boxShadow: '0 8px 30px rgba(255, 105, 0, 0.35)',
                             transition: 'all 0.2s',
                             textTransform: 'uppercase',
                         }}

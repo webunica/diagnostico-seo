@@ -32,16 +32,16 @@ interface KeywordsResult {
 
 // ── Config visual ─────────────────────────────────────────────────────
 const INTENT_CONFIG: Record<Intent, { label: string; color: string; bg: string }> = {
-    informational: { label: 'Informacional', color: '#1D4ED8', bg: 'rgba(59,130,246,0.1)' },
-    commercial: { label: 'Comercial', color: '#7C3AED', bg: 'rgba(139,92,246,0.1)' },
-    transactional: { label: 'Transaccional', color: '#059669', bg: 'rgba(16,185,129,0.1)' },
-    navigational: { label: 'Navegacional', color: '#B45309', bg: 'rgba(245,158,11,0.1)' },
+    informational: { label: 'Informacional', color: '#000000', bg: '#f0f0f0' },
+    commercial: { label: 'Comercial', color: '#000000', bg: '#eeeeee' },
+    transactional: { label: 'Transaccional', color: '#000000', bg: '#dddddd' },
+    navigational: { label: 'Navegacional', color: '#000000', bg: '#cccccc' },
 };
 
 const DIFF_CONFIG: Record<Difficulty, { label: string; color: string; dots: number }> = {
-    low: { label: 'Baja', color: '#059669', dots: 1 },
-    medium: { label: 'Media', color: '#B45309', dots: 2 },
-    high: { label: 'Alta', color: '#DC2626', dots: 3 },
+    low: { label: 'Baja', color: '#000000', dots: 1 },
+    medium: { label: 'Media', color: '#000000', dots: 2 },
+    high: { label: 'Alta', color: '#000000', dots: 3 },
 };
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
@@ -76,23 +76,20 @@ function KeywordCard({ kw, index }: { kw: KeywordItem; index: number }) {
     return (
         <div style={{
             background: '#FFFFFF',
-            border: '1px solid rgba(0,0,0,0.06)',
-            borderRadius: 12,
-            padding: '16px 18px',
+            border: '2px solid #000000',
+            borderRadius: 0,
+            padding: '20px',
             display: 'flex',
             flexDirection: 'column',
-            gap: 10,
+            gap: 12,
             transition: 'all 0.2s',
             animation: `fadeInUp 0.3s ease ${index * 0.04}s both`,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
         }}
             onMouseEnter={e => {
-                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,105,0,0.3)';
-                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-2px)';
+                (e.currentTarget as HTMLDivElement).style.background = '#FAFAFA';
             }}
             onMouseLeave={e => {
-                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,0,0,0.06)';
-                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+                (e.currentTarget as HTMLDivElement).style.background = '#FFFFFF';
             }}
         >
             {/* Header */}
@@ -266,27 +263,27 @@ export default function KeywordsPage() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', background: '#F7F7F9', color: '#101820', fontFamily: 'Montserrat, sans-serif' }}>
+        <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#333333', fontFamily: 'Montserrat, sans-serif' }}>
 
             {/* Navbar */}
-            <nav className="navbar" style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+            <nav className="navbar" style={{ background: '#FFFFFF', borderBottom: '2px solid #000000', height: '70px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#C2410C' }}>SEO Diagnostico</span>
+                    <span style={{ fontSize: '1.4rem', fontWeight: 900, color: '#000000' }}>SEO Diagnostico</span>
                 </div>
-                <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>← Inicio</a>
-                    <a href="/dashboard" style={{ fontSize: '0.85rem', color: '#52525B', fontWeight: 700, textDecoration: 'none' }}>Portal API</a>
-                    <div style={{ padding: '6px 14px', background: 'rgba(255,105,0,0.08)', color: '#C2410C', borderRadius: 20, fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase' }}>Beta IA</div>
+                <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+                    <a href="/" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 900, textDecoration: 'none', textTransform: 'uppercase' }}>← Inicio</a>
+                    <a href="/dashboard" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 900, textDecoration: 'none', textTransform: 'uppercase' }}>Portal API</a>
+                    <div style={{ padding: '6px 16px', border: '2px solid #000000', color: '#000000', borderRadius: 0, fontSize: '0.8rem', fontWeight: 900, textTransform: 'uppercase' }}>Beta IA</div>
                 </div>
             </nav>
 
             {/* Hero */}
             <section style={{
-                paddingTop: 110,
-                paddingBottom: 60,
+                paddingTop: 120,
+                paddingBottom: 80,
                 textAlign: 'center',
-                background: 'radial-gradient(circle at 50% 0%, rgba(255,105,0,0.05) 0%, transparent 70%), #FFFFFF',
-                borderBottom: '1px solid rgba(0,0,0,0.06)',
+                background: '#FFFFFF',
+                borderBottom: '2px solid #000000',
             }}>
                 <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
                     <div style={{
@@ -299,9 +296,9 @@ export default function KeywordsPage() {
                         Potenciado por Llama 3.3 (Groq) · 100% Gratis
                     </div>
 
-                    <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 900, marginBottom: 16, lineHeight: 1.1, color: '#101820', letterSpacing: '-0.02em' }}>
+                    <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', fontWeight: 900, marginBottom: 20, lineHeight: 1, color: '#000000', letterSpacing: '-0.04em', textTransform: 'uppercase' }}>
                         Investigación de{' '}
-                        <span style={{ color: '#C2410C' }}>Palabras Clave</span>
+                        <span style={{ textDecoration: 'underline' }}>Palabras Clave</span>
                         {' '}con IA
                     </h1>
                     <p style={{ fontSize: '1.1rem', color: '#52525B', maxWidth: 600, margin: '0 auto', lineHeight: 1.6, fontWeight: 500 }}>
@@ -317,15 +314,10 @@ export default function KeywordsPage() {
                 {/* Form Card */}
                 <div style={{
                     background: '#FFFFFF',
-                    border: '1px solid rgba(0,0,0,0.1)',
-                    borderRadius: 16, padding: '32px',
-                    marginBottom: 36, position: 'relative', overflow: 'hidden',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.06)'
+                    border: '3px solid #000000',
+                    borderRadius: 0, padding: '40px',
+                    marginBottom: 40, position: 'relative', overflow: 'hidden',
                 }}>
-                    <div style={{
-                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                        background: '#C2410C',
-                    }} />
 
                     <form onSubmit={handleSubmit}>
                         <div style={{ display: 'grid', gap: 18 }}>
@@ -433,25 +425,17 @@ export default function KeywordsPage() {
                                 type="submit"
                                 disabled={loading}
                                 style={{
-                                    background: loading ? 'rgba(194,65,12,0.3)' : '#C2410C',
+                                    background: '#000000',
                                     color: 'white', border: 'none',
-                                    borderRadius: 50, padding: '14px',
-                                    fontSize: '1rem', fontWeight: 800,
+                                    borderRadius: 0, padding: '16px',
+                                    fontSize: '1.1rem', fontWeight: 900,
                                     cursor: loading ? 'not-allowed' : 'pointer',
                                     fontFamily: 'inherit',
                                     transition: 'all 0.2s',
-                                    boxShadow: loading ? 'none' : '0 6px 20px rgba(194,65,12,0.2)',
                                     textTransform: 'uppercase',
                                 }}
                             >
-                                {loading ? (
-                                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                                        <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⟳</span>
-                                        Generando...
-                                    </span>
-                                ) : (
-                                    '🔍 Generar Keywords'
-                                )}
+                                {loading ? 'Generando...' : '🔍 Generar Keywords'}
                             </button>
 
                             <div style={{ fontSize: '0.7rem', color: '#71717A', textAlign: 'center' }}>

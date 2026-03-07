@@ -4,16 +4,16 @@ import { useState, useCallback } from 'react';
 
 /* ── Tokens claros ────────────────────────────────────────────────── */
 const T = {
-    bg: '#F7F7F9', bgCard: '#FFFFFF', border: 'rgba(0,0,0,0.08)',
-    borderMid: 'rgba(0,0,0,0.12)', text: '#101820', textMuted: '#52525B',
-    textSubtle: '#71717A', orange: '#C2410C', orangeDim: 'rgba(194,65,12,0.08)',
-    orangeBorder: 'rgba(194,65,12,0.15)', accent: '#101820', green: '#059669',
-    greenDim: 'rgba(5,150,105,0.08)', greenBorder: 'rgba(5,150,105,0.15)',
-    blue: '#1D4ED8', blueDim: 'rgba(29,78,216,0.08)', blueBorder: 'rgba(29,78,216,0.15)',
-    yellow: '#B45309', yellowDim: 'rgba(180,83,9,0.06)', yellowBorder: 'rgba(180,83,9,0.15)',
-    red: '#B91C1C', redDim: 'rgba(185,28,28,0.06)', redBorder: 'rgba(185,28,28,0.15)',
-    brand: '#C2410C', brandDim: 'rgba(194,65,12,0.08)', brandBorder: 'rgba(194,65,12,0.15)',
-    violet: '#6D28D9',
+    bg: '#FFFFFF', bgCard: '#FFFFFF', border: '#000000',
+    borderMid: '#000000', text: '#333333', textMuted: '#444444',
+    textSubtle: '#666666', orange: '#000000', orangeDim: '#f0f0f0',
+    orangeBorder: '#000000', accent: '#000000', green: '#000000',
+    greenDim: '#f0f0f0', greenBorder: '#000000',
+    blue: '#000000', blueDim: '#f0f0f0', blueBorder: '#000000',
+    yellow: '#000000', yellowDim: '#f0f0f0', yellowBorder: '#000000',
+    red: '#000000', redDim: '#f0f0f0', redBorder: '#000000',
+    brand: '#000000', brandDim: '#f0f0f0', brandBorder: '#000000',
+    violet: '#000000',
 } as const;
 
 /* ── Types ────────────────────────────────────────────────────────── */
@@ -178,30 +178,30 @@ export default function DashboardPage() {
 
             {/* Navbar */}
             <nav className="navbar" style={{
-                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 62,
+                position: 'fixed', inset: '0 0 auto 0', zIndex: 100, height: 70,
                 padding: '0 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderBottom: `1px solid ${T.border}`
+                background: '#FFFFFF', borderBottom: '2px solid #000000'
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: T.brand, textDecoration: 'none' }}>SEO Diagnostico</span>
-                    <span style={{ color: T.border }}>|</span>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: T.textMuted }}>Portal Desarrolladores</span>
+                    <span style={{ fontSize: '1.4rem', fontWeight: 900, color: '#000000', textDecoration: 'none' }}>SEO Diagnostico</span>
+                    <span style={{ color: '#000000' }}>|</span>
+                    <span style={{ fontSize: '1rem', fontWeight: 900, color: '#333333', textTransform: 'uppercase' }}>Developers</span>
                 </div>
-                <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                    <a href="/" style={{ fontSize: '0.84rem', color: T.textMuted, fontWeight: 700, textDecoration: 'none' }}>← Volver a la Web</a>
-                    <a href="/admin" style={{ fontSize: '0.84rem', color: T.textMuted, fontWeight: 700, textDecoration: 'none' }}>Panel Admin</a>
+                <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+                    <a href="/" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>← Volver</a>
+                    <a href="/admin" style={{ fontSize: '0.9rem', color: '#333333', fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase' }}>Admin</a>
                 </div>
             </nav>
 
             <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 20px 80px' }}>
 
                 {/* Header */}
-                <div style={{ marginBottom: 36, paddingTop: 12 }}>
-                    <div style={{ fontSize: '0.63rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: T.brand, marginBottom: 10 }}>
+                <div style={{ marginBottom: 40, paddingTop: 20 }}>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#000000', marginBottom: 12 }}>
                         🔑 API Keys
                     </div>
-                    <h1 style={{ fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 900, marginBottom: 10 }}>
-                        Panel de Desarrolladores
+                    <h1 style={{ fontSize: 'clamp(1.8rem,4vw,2.5rem)', fontWeight: 900, marginBottom: 12, textTransform: 'uppercase' }}>
+                        Portal de Desarrolladores
                     </h1>
                     <p style={{ fontSize: '0.9rem', color: T.textMuted, lineHeight: 1.6, maxWidth: 520 }}>
                         Gestiona tus API keys para integrar DiagnósticoSEO en cualquier CMS, plugin o aplicación.
@@ -233,9 +233,9 @@ export default function DashboardPage() {
                         />
                         {error && <div style={{ background: T.redDim, border: `1px solid ${T.redBorder}`, borderRadius: 8, padding: '9px 12px', fontSize: '0.82rem', color: T.red, marginBottom: 12 }}>⚠️ {error}</div>}
                         <button onClick={() => loadKeys(email)} disabled={loading} style={{
-                            width: '100%', background: `linear-gradient(135deg, ${T.brand}, ${T.blue})`,
-                            color: 'white', border: 'none', borderRadius: 50, padding: '12px',
-                            fontSize: '0.95rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
+                            width: '100%', background: '#000000',
+                            color: 'white', border: 'none', borderRadius: 0, padding: '14px',
+                            fontSize: '1rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit',
                             opacity: loading ? 0.6 : 1, textTransform: 'uppercase',
                         }}>
                             {loading ? 'Cargando…' : '→ Ver mis API Keys'}
@@ -393,9 +393,9 @@ export default function DashboardPage() {
                                     }}
                                 />
                                 <button onClick={createKey} disabled={creating} style={{
-                                    background: `linear-gradient(135deg, ${T.brand}, ${T.blue})`,
-                                    color: 'white', border: 'none', borderRadius: 50, padding: '9px 20px',
-                                    fontSize: '0.86rem', fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
+                                    background: '#000000',
+                                    color: 'white', border: 'none', borderRadius: 0, padding: '10px 24px',
+                                    fontSize: '0.9rem', fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit',
                                     opacity: creating ? 0.6 : 1, whiteSpace: 'nowrap', textTransform: 'uppercase',
                                 }}>
                                     {creating ? 'Creando…' : '+ Generar key'}
@@ -418,8 +418,8 @@ export default function DashboardPage() {
                                         Crea una ficha de producto perfecta: nombre SEO, beneficios, specs técnicos y schema markup.
                                     </p>
                                     <a href="/dashboard/product-optimizer" style={{
-                                        display: 'block', textAlign: 'center', textDecoration: 'none', background: T.orange, color: '#fff',
-                                        fontSize: '0.82rem', fontWeight: 900, padding: '10px', borderRadius: 50, transition: 'all 0.2s'
+                                        display: 'block', textAlign: 'center', textDecoration: 'none', background: '#000000', color: '#fff',
+                                        fontSize: '0.9rem', fontWeight: 900, padding: '12px', borderRadius: 0, transition: 'all 0.2s', textTransform: 'uppercase'
                                     }}>
                                         Probar Optimizador →
                                     </a>

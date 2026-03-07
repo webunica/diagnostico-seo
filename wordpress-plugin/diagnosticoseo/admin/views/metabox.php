@@ -257,7 +257,7 @@ $has_key = ! empty( $opts['api_key'] );
             📅 Último análisis: <strong><?php echo esc_html( $analysis_date ); ?></strong>
         </div>
         <div class="dseo-saved-score">
-            <div class="dseo-saved-score-num" style="color:<?php echo intval( $saved_score ) >= 70 ? '#10b981' : ( intval( $saved_score ) >= 40 ? '#f59e0b' : '#ef4444' ); ?>">
+            <div class="dseo-saved-score-num" style="color:#000000; font-weight: 900;">
                 <?php echo esc_html( $saved_score ); ?>/100
             </div>
             <div>Score guardado del último análisis</div>
