@@ -39,11 +39,12 @@ REQUISITOS DEL CONTENIDO:
 2. Title Tag: 55-65 caracteres, keyword principal al inicio.
 3. Meta Description: 145-155 caracteres, persuasiva y con CTA.
 4. H1: único, atractivo, incluye la keyword.
-5. Introducción: 100-150 palabras, atrapando al lector y con la keyword.
-6. Estructura de contenido: Al menos 3 secciones H2 (y subsecciones H3 si aplica) desarrolladas.
-7. Sugerencias de imágenes: Al menos 2 ideas de imágenes con Alt Text SEO.
-8. Call to Action (CTA) final diseñado para conversión.
-9. JSON-LD Schema: apropiado para el tema (Article, LocalBusiness, FAQ etc).
+5. Introducción extensa: 150-250 palabras, atrapando al lector y con la keyword, explicando a fondo de qué trata la página.
+6. Estructura de contenido PROFUNDA: Al menos 4 a 6 secciones H2, y CADA UNA debe tener subsecciones H3 relevantes. 
+7. Contenido Exhaustivo: El texto dentro de "content" debe ser largo, detallado, de calidad periodística o experta. Al menos 300 a 500 palabras por cada sección H2, usando viñetas o listas (<ul>, <li>), negritas (<strong>) para las ideas clave si aplica. Escribe contenido real, NUNCA texto de relleno o "lorem ipsum".
+8. Sugerencias de imágenes: Al menos 4 ideas de imágenes estratégicas con Alt Text SEO.
+9. Call to Action (CTA) final diseñado para conversión.
+10. JSON-LD Schema: apropiado para el tema (Article, LocalBusiness, FAQ etc).
 
 Responde SOLO con un JSON válido usando esta estructura exacta:
 {
@@ -74,7 +75,7 @@ NO incluyas markdown como \`\`\`json, solo devuelve el objeto JSON. Asegúrate d
 
         const completion = await openai.chat.completions.create({
             model: 'gpt-4o',
-            max_tokens: 4000,
+            max_tokens: 8000,
             temperature: 0.7,
             response_format: { type: 'json_object' },
             messages: [
