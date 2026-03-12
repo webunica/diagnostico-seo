@@ -122,6 +122,7 @@ export default function TopicalMapPage() {
                 <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
                     <a href="/crawl" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
                     <a href="/keywords" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Keywords</a>
+                    <a href="/dashboard/seo-wizard" style={{ fontSize: '0.9rem', color: '#D1FD1F', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>SEO Wizard ✨</a>
                     <a href="/dashboard" style={{
                         fontSize: '0.85rem', color: '#000000', background: '#D1FD1F',
                         padding: '12px 24px', fontWeight: 900, textTransform: 'uppercase',

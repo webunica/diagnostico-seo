@@ -149,6 +149,7 @@ export default function HomePage() {
         <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
           <a href="/keywords" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Keywords</a>
           <a href="/crawl" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
+          <a href="/dashboard/seo-wizard" style={{ fontSize: '0.9rem', color: '#D1FD1F', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>SEO Wizard ✨</a>
           <a href="/dashboard" style={{
             fontSize: '0.85rem', color: '#000000', background: '#D1FD1F',
             padding: '12px 24px', fontWeight: 900, textTransform: 'uppercase',
@@ -461,6 +462,7 @@ export default function HomePage() {
           <div style={{ display: 'flex', gap: 40, justifyContent: 'center', marginBottom: 48 }}>
             <a href="/keywords" style={{ color: '#E0DAFF', textDecoration: 'none', fontWeight: 700 }}>Keywords</a>
             <a href="/crawl" style={{ color: '#E0DAFF', textDecoration: 'none', fontWeight: 700 }}>Crawler</a>
+            <a href="/dashboard/seo-wizard" style={{ color: '#D1FD1F', textDecoration: 'none', fontWeight: 800 }}>SEO Wizard ✨</a>
             <a href="/dashboard" style={{ color: '#E0DAFF', textDecoration: 'none', fontWeight: 700 }}>API</a>
           </div>
           <div style={{ fontSize: '0.9rem', fontWeight: 700, opacity: 0.4, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
