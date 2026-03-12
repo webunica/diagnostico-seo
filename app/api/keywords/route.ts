@@ -46,7 +46,7 @@ PAÍS/REGIÓN TARGET: ${country || 'Chile'}
 ENFOQUE: ${focus || 'todos los tipos'}
 ${url ? `SITIO WEB REFERENCIAL: ${url}` : ''}
 
-Genera tussen 35 y 45 palabras clave totales distribuidas en las categorías indicadas.
+Genera entre 70 y 100 palabras clave totales distribuidas en las categorías indicadas.
 Para volumen mensual, usa rangos realistas para ${country || 'Chile'}: 
   - Bajo: < 500 búsquedas/mes
   - Medio: 500–5.000 búsquedas/mes
@@ -67,15 +67,15 @@ Responde EXCLUSIVAMENTE con JSON válido (sin markdown, sin texto extra):
       "contentIdea": "<idea concreta de contenido/página para esta keyword>"
     }
   ],
-  "longTail": [...igual estructura, 10-12 keywords long-tail...],
-  "questions": [...igual estructura, 8-10 preguntas que hace el usuario (¿Cómo...? ¿Cuánto...? ¿Cuál...?)...],
-  "commercial": [...igual estructura, 6-8 keywords de intención comercial/de compra...],
-  "local": [...igual estructura, 5-6 keywords con geo-modificador (ciudad, región, "cerca de mí")...],
-  "negative": ["<keyword negativa 1>", "<keyword negativa 2>", "...5-8 keywords a excluir en ads/SEO"]
+  "longTail": [...igual estructura, 25-30 keywords long-tail...],
+  "questions": [...igual estructura, 20-25 preguntas que hace el usuario (¿Cómo...? ¿Cuánto...? ¿Cuál...?)...],
+  "commercial": [...igual estructura, 15-20 keywords de intención comercial/de compra...],
+  "local": [...igual estructura, 10-15 keywords con geo-modificador (ciudad, región, "cerca de mí")...],
+  "negative": ["<keyword negativa 1>", "<keyword negativa 2>", "...10-15 keywords a excluir en ads/SEO"]
 }
 
 REGLAS IMPORTANTES:
-- headTerms: 8-10 términos principales de alto volumen
+- headTerms: 15-20 términos principales de alto volumen
 - Todas las keywords deben ser en español y relevantes para ${country || 'Chile'}
 - No incluir marcas de competidores
 - Las "questions" deben empezar con palabras interrogativas: cómo, qué, cuándo, cuánto, cuál, dónde, por qué
@@ -90,7 +90,7 @@ REGLAS IMPORTANTES:
 
         const completion = await groq.chat.completions.create({
             model: 'llama-3.3-70b-versatile',
-            max_tokens: 4096,
+            max_tokens: 8000,
             temperature: 0.4,
             response_format: { type: 'json_object' },
             messages: [
