@@ -25,6 +25,10 @@ interface TopicalMapResult {
     monetizationTips: string[];
     generatedAt: string;
     model: string;
+    input?: {
+        seedKeyword: string;
+        country: string;
+    };
 }
 
 const COUNTRIES = ['Chile', 'México', 'Argentina', 'Colombia', 'España', 'Perú', 'Ecuador', 'Venezuela'];
