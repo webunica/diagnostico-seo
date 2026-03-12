@@ -270,6 +270,7 @@ export default function KeywordsPage() {
                     <a href="/" style={{ fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', textDecoration: 'none' }}>SEO DIAGNOSTICO</a>
                 </div>
                 <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+                    <a href="/topical-map" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Topical Map</a>
                     <a href="/crawl" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
                     <a href="/" style={{
                         fontSize: '0.85rem', color: '#000000', background: '#D1FD1F',

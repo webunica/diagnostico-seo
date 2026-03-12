@@ -575,5 +575,78 @@
         });
     });
 
+    /* ── Bulk SEO Generation ─────────────────────────────────────── */
+    $('#cb-select-all-1').on('change', function () {
+        $('.dseo-bulk-item').prop('checked', $(this).prop('checked'));
+    });
+
+    $('#dseo-bulk-start-btn').on('click', function () {
+        var $btn = $(this);
+        var ids = [];
+
+        $('.dseo-bulk-item:checked').each(function () {
+            ids.push($(this).val());
+        });
+
+        if (ids.length === 0) {
+            alert('Por favor, selecciona al menos un post.');
+            return;
+        }
+
+        if (!confirm('¿Estás seguro de que quieres generar SEO para ' + ids.length + ' posts? Esto consumirá créditos de tu plan. No cierres esta ventana hasta terminar.')) {
+            return;
+        }
+
+        var country = $('#dseo-bulk-country').val();
+        $btn.prop('disabled', true).hide();
+        var $progress = $('#dseo-bulk-progress').show();
+        var total = ids.length;
+        var current = 0;
+        var successCount = 0;
+
+        function processNext() {
+            if (current >= total) {
+                $progress.text('¡Terminado! ' + successCount + ' de ' + total + ' procesados correctamente. Recarga la página para ver la lista actualizada.');
+                return;
+            }
+
+            var postId = ids[current];
+            var $row = $('#dseo-bulk-row-' + postId);
+            var $status = $row.find('.dseo-bulk-status');
+
+            $status.html('<span style="color:#f59e0b;">⏳ Procesando...</span>');
+            $progress.text('Procesando ' + (current + 1) + ' de ' + total + '...');
+
+            $.ajax({
+                url: DSEO.ajax_url,
+                method: 'POST',
+                timeout: DSEO.timeout || 90000,
+                data: {
+                    action: 'dseo_bulk_generate',
+                    nonce: DSEO.nonce,
+                    post_id: postId,
+                    country: country
+                }
+            }).done(function (resp) {
+                if (resp.success) {
+                    $status.html('<span style="color:#10b981;">✅ Completado</span>');
+                    $row.find('.dseo-bulk-item').prop('checked', false).prop('disabled', true);
+                    $row.find('th.check-column').css('opacity', '0.5');
+                    successCount++;
+                } else {
+                    $status.html('<span style="color:#ef4444;">❌ Error: ' + (resp.data || 'Desconocido') + '</span>');
+                }
+            }).fail(function (xhr, status) {
+                $status.html('<span style="color:#ef4444;">❌ Timeout/Error (' + status + ')</span>');
+            }).always(function () {
+                current++;
+                // Pequeña pausa de 1.5 segundos para no asfixiar el SaaS ni abusar de rate limits.
+                setTimeout(processNext, 1500);
+            });
+        }
+
+        processNext();
+    });
+
 })(jQuery);
 

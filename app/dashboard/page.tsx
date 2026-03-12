@@ -171,8 +171,10 @@ export default function DashboardPage() {
                     <a href="/" style={{ fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', textDecoration: 'none' }}>SEO DIAGNOSTICO</a>
                 </div>
                 <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+                    <a href="/topical-map" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Topical Map</a>
                     <a href="/keywords" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Keywords</a>
                     <a href="/crawl" style={{ fontSize: '0.9rem', color: '#FFFFFF', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Crawler</a>
+                    <a href="/dashboard/seo-wizard" style={{ fontSize: '0.9rem', color: T.accent, fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>SEO Wizard ✨</a>
                     <a href="/" style={{ fontSize: '0.85rem', color: '#000000', background: T.accent, padding: '12px 24px', fontWeight: 900, borderRadius: '50px', textDecoration: 'none' }}>Landing</a>
                 </div>
             </nav>
@@ -259,6 +261,8 @@ export default function DashboardPage() {
                                     {[
                                         { ep: 'POST /api/v1/analyze', desc: 'Análisis SEO completo de una URL.' },
                                         { ep: 'POST /api/v1/keywords', desc: 'Exploración de keywords IA para un nicho.' },
+                                        { ep: 'POST /api/topical-map', desc: 'Generar Topical Map (Pilar & Clusters).' },
+                                        { ep: 'POST /api/seo-wizard', desc: 'Generador 100/100 de contenido y estructura SEO.' },
                                     ].map(item => (
                                         <div key={item.ep} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: '#F8F7FF', borderRadius: '12px' }}>
                                             <div>

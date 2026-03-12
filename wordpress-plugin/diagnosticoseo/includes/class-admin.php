@@ -16,6 +16,7 @@ class DSEO_Admin {
         add_action( 'wp_ajax_dseo_analyze',          array( 'DSEO_Admin', 'ajax_analyze' ) );
         add_action( 'wp_ajax_dseo_generate',         array( 'DSEO_Admin', 'ajax_generate' ) );
         add_action( 'wp_ajax_dseo_generate_product', array( 'DSEO_Admin', 'ajax_generate_product' ) );
+        add_action( 'wp_ajax_dseo_bulk_generate',    array( 'DSEO_Admin', 'ajax_bulk_generate' ) );
         add_action( 'wp_ajax_dseo_test_connection',  array( 'DSEO_Admin', 'ajax_test_connection' ) );
     }
 
@@ -46,6 +47,15 @@ class DSEO_Admin {
             'manage_options',
             'dseo-product-optimizer',
             array( 'DSEO_Admin', 'product_optimizer_page' )
+        );
+
+        add_submenu_page(
+            'diagnosticoseo',
+            'Generador Masivo (Bulk)',
+            'Generación Masiva',
+            'manage_options',
+            'dseo-bulk-seo',
+            array( 'DSEO_Admin', 'bulk_seo_page' )
         );
     }
 
@@ -112,6 +122,10 @@ class DSEO_Admin {
 
     public static function product_optimizer_page() {
         require_once DSEO_PLUGIN_DIR . 'admin/views/product-optimizer.php';
+    }
+
+    public static function bulk_seo_page() {
+        require_once DSEO_PLUGIN_DIR . 'admin/views/bulk-seo.php';
     }
 
     public static function dashboard_widget() {
@@ -203,6 +217,42 @@ class DSEO_Admin {
         }
 
         wp_send_json_success( $result );
+    }
+
+    public static function ajax_bulk_generate() {
+        if ( function_exists( 'set_time_limit' ) ) {
+            set_time_limit( 120 );
+        }
+
+        check_ajax_referer( 'dseo_nonce', 'nonce' );
+        if ( ! current_user_can( 'edit_posts' ) ) wp_send_json_error( 'Sin permisos', 403 );
+
+        $post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+        $country = isset( $_POST['country'] ) ? sanitize_text_field( $_POST['country'] ) : 'Chile';
+
+        if ( ! $post_id ) wp_send_json_error( 'ID de post requerido' );
+
+        $post = get_post( $post_id );
+        if ( ! $post ) wp_send_json_error( 'Post no encontrado' );
+
+        $url = get_permalink( $post_id );
+        $keyword = $post->post_title; // Usamos el titulo como keyword base
+
+        if ( empty( $url ) || strpos( $url, '?p=' ) !== false ) {
+            wp_send_json_error( 'El post debe estar publicado o tener una URL válida.' );
+        }
+
+        $api    = new DSEO_API();
+        $result = $api->generate_content( $url, $keyword, $country );
+
+        if ( isset( $result['error'] ) ) {
+            wp_send_json_error( $result['error'] );
+        }
+
+        update_post_meta( $post_id, '_dseo_generated_content', wp_json_encode( $result ) );
+        update_post_meta( $post_id, '_dseo_primary_keyword',   $keyword );
+
+        wp_send_json_success( array( 'post_id' => $post_id, 'result' => $result ) );
     }
 
     public static function ajax_test_connection() {
